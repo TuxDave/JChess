@@ -1,12 +1,14 @@
 package com.tuxdave.JChess.core;
 
+import com.tuxdave.JChess.extras.Vector2;
+
 public abstract class Pezzo {
     private String type;
-    private int[] position = new int[2];
+    private Vector2 position = null;
     private boolean alreadyMoved = false;
 
-    /*
-    * asks if apply the move or anly visualize it
-    * returns a table containing the possible target of the move*/
-    public abstract int[][] move(boolean active);
+    //returns a table containing the possible target of the move
+    public abstract Vector2[] getPossibleMoves();
+    //returns true if the destination indicated is a possible target, and then move itself
+    public abstract boolean move(Vector2 _destination);
 }
