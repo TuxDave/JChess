@@ -3,10 +3,10 @@ package com.tuxdave.JChess.core;
 import com.tuxdave.JChess.extras.Vector2;
 
 public abstract class Pezzo {
-    private String type;
-    private int id;
-    private Vector2 position = null;
-    private boolean alreadyMoved = false;
+    protected String type;
+    protected int id;
+    protected Vector2 position = null;
+    protected boolean alreadyMoved = false;
 
     //returns a table containing the possible target of the move
     public abstract Vector2[] getPossibleMoves();
