@@ -16,4 +16,16 @@ public class Vector2 {
         x = c[0];
         y = c[1];
     }
+
+    public String toString(){
+        return "" + x + "," + y;
+    }
+
+    public boolean equals(Vector2 other){
+        if(x == other.x && y == other.y){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

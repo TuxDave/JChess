@@ -1,36 +1,53 @@
 package com.tuxdave.JChess.core;
 
-import com.tuxdave.JChess.extras.Morphable;
 import com.tuxdave.JChess.extras.Vector2;
 
-public class Pedone extends Pezzo implements Morphable {
+public class Pedone extends Pezzo {
 
-    public Pedone(int _id, Vector2 _inizialPos){
+    private boolean alreadyMoved = false;
+
+    public Pedone(String _id, Vector2 _inizialPos){
+        super(_id, _inizialPos);
         type = "pedone";
-        id = _id;
-        if(_inizialPos.x <= CampoDiBattaglia.limits && _inizialPos.y <= CampoDiBattaglia.limits && _inizialPos.x > 0 && _inizialPos.y > 0){
-            position = _inizialPos;
-        }
     }
 
     @Override
     public Vector2[] getPossibleMoves() {
-        return new Vector2[0];
+        Vector2[] v;
+        if(alreadyMoved){
+            v = new Vector2[1];
+            v[0] = new Vector2(position.x, position.y + 1);
+        }else{
+            v = new Vector2[2];
+            v[0] = new Vector2(position.x, position.y + 1);
+            v[1] = new Vector2(position.x, position.y + 2);
+        }
+        return v;
     }
 
     @Override
     public boolean move(Vector2 _destination) {
-        return false;
+        Vector2[] moves = getPossibleMoves();
+        boolean ok = false;
+        for (Vector2 move : moves) {
+            if (move.equals(_destination)) {
+                ok = true;
+            }
+        }
+        if(ok){
+            position = _destination;
+            alreadyMoved = true;
+        }
+        return ok;
     }
 
     /*morph itself in another Piece
-    possible parameters:
-        horse | ensign | tower | queen
-     */
-    @Override
+        possible parameters:
+            horse | ensign | tower | queen
+         */
     public Pezzo morph(String _newType) {
         switch (_newType){
-            /*todo:uncomment this when all piece's classes complited
+            /*todo:uncomment this when all piece's classes will be complited, use this.position and this.id
             case "horse":
                 return new Horse();
                 break;
@@ -45,6 +62,6 @@ public class Pedone extends Pezzo implements Morphable {
                 return new Queen();
              */
         }
-        return new Pedone(1001, new Vector2(0,0));
+        return new Pedone(id, new Vector2(0,0));
     }
 }
