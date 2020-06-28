@@ -2,9 +2,6 @@ package com.tuxdave.JChess.core;
 
 import com.tuxdave.JChess.extras.Vector2;
 
-import java.io.*;
-import java.net.URL;
-
 public abstract class Pezzo {
     protected String type;
     protected String id;
@@ -21,7 +18,9 @@ public abstract class Pezzo {
         setType();
     }
 
-    //returns a table containing the possible target of the move
+    /*returns a table containing the possible target of the move
+    can generate also position that are out of game board, but in this case, the boardClass will exclude that possibility
+     */
     public abstract Vector2[] getPossibleMoves();
     //returns true if the destination indicated is a possible target, and then move itself
     public boolean move(Vector2 _destination){
