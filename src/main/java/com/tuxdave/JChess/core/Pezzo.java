@@ -11,12 +11,14 @@ public abstract class Pezzo {
     protected Vector2 position = null;
 
     public Pezzo(String _id, Vector2 _inizialPos){
+        //check if is the initial position in range with the limits of the battleLand
         if((_inizialPos.x <= CampoDiBattaglia.limits && _inizialPos.y <= CampoDiBattaglia.limits) || (_inizialPos.x > 0 && _inizialPos.y > 0)){
             position = _inizialPos;
         }else{
             throw new IllegalArgumentException("Initial position out of Bounds");
         }
         id = _id;
+        setType();
     }
 
     //returns a table containing the possible target of the move
@@ -42,4 +44,6 @@ public abstract class Pezzo {
     public Vector2 getPosition(){
         return position;
     }
+    //sets the type of the piece in base how to be written this method
+    abstract void setType();
 }

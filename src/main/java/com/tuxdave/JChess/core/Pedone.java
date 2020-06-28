@@ -6,9 +6,8 @@ public class Pedone extends Pezzo {
 
     private boolean alreadyMoved = false;
 
-    public Pedone(String _id, Vector2 _inizialPos){
+    public Pedone(String _id, Vector2 _inizialPos) {
         super(_id, _inizialPos);
-        type = "pedone";
     }
 
     @Override
@@ -39,6 +38,11 @@ public class Pedone extends Pezzo {
             alreadyMoved = true;
         }
         return ok;
+    }
+
+    @Override
+    void setType() {
+        type = "pedone";
     }
 
     /*morph itself in another Piece
