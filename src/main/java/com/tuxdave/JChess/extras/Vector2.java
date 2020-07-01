@@ -8,6 +8,9 @@ public class Vector2 {
         x = _x;
         y = _y;
     }
+    public Vector2(){
+        this(0,0);
+    }
 
     public int[] getCoords(){
         return new int[]{x, y};
