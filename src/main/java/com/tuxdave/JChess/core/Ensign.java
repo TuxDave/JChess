@@ -27,7 +27,6 @@ public class Ensign extends Pezzo{
             }
             inc = 1;
         }
-        System.out.println(count);
         return v;
     }
 
