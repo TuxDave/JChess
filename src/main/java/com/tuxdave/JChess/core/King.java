@@ -3,8 +3,14 @@ package com.tuxdave.JChess.core;
 import com.tuxdave.JChess.extras.Vector2;
 
 public class King extends Pezzo{
-    public King(String _id, Vector2 _inizialPos) {
-        super(_id, _inizialPos);
+
+    /**
+     * @param _id         everything possible string to recognize the piece;
+     * @param _color      Black(B) or White(W);
+     * @param _inizialPos the initial potition where can be the piece
+     */
+    public King(String _id, char _color, Vector2 _inizialPos) {
+        super(_id, _color, _inizialPos);
     }
 
     @Override

@@ -1,24 +1,38 @@
 package com.tuxdave.JChess.core;
 
 import com.tuxdave.JChess.extras.Vector2;
+import javax.swing.*;
 
-public abstract class Pezzo {
+public abstract class Pezzo{
     protected String type;
     protected String id;
+    protected char color;
     protected Vector2 position = null;
 
-    public Pezzo(String _id, Vector2 _inizialPos){
+    /**
+     * @param _id everything possible string to recognize the piece;
+     * @param _color Black(B) or White(W);
+     * @param _inizialPos the initial potition where can be the piece
+     * */
+    public Pezzo(String _id, char _color,Vector2 _inizialPos){
+        super();
         //check if is the initial position in range with the limits of the battleLand
         if((_inizialPos.x <= CampoDiBattaglia.limits && _inizialPos.y <= CampoDiBattaglia.limits) || (_inizialPos.x > 0 && _inizialPos.y > 0)){
             position = _inizialPos;
         }else{
             throw new IllegalArgumentException("Initial position out of Bounds");
         }
+        _color = Character.toUpperCase(_color);
+        if(_color != 'B' && _color != 'W'){
+            throw new IllegalArgumentException("Possible color only Black(B) or White(W)...");
+        }else{
+            color = _color;
+        }
         id = _id;
         setType();
     }
 
-    /*returns a table containing the possible target of the move
+    /*@return a table containing the possible target of the move
     can generate also position that are out of game board, but in this case, the boardClass will exclude that possibility
      */
     public abstract Vector2[] getPossibleMoves();
@@ -42,6 +56,16 @@ public abstract class Pezzo {
     }
     public Vector2 getPosition(){
         return position;
+    }
+    public String getType(){
+        return type;
+    }
+    public String getColor(){
+        if(color == 'B'){
+            return "BLACK";
+        }else{
+            return "WHITE";
+        }
     }
     //sets the type of the piece in base how to be written this method
     abstract void setType();
