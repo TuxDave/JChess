@@ -1,13 +1,12 @@
 package com.tuxdave.JChess.core;
 
 import com.tuxdave.JChess.extras.Vector2;
-import javax.swing.*;
 
 public abstract class Pezzo{
     protected String type;
     protected String id;
     protected char color;
-    protected Vector2 position = null;
+    protected Vector2 position;
 
     /**
      * @param _id everything possible string to recognize the piece;
@@ -17,7 +16,7 @@ public abstract class Pezzo{
     public Pezzo(String _id, char _color,Vector2 _inizialPos){
         super();
         //check if is the initial position in range with the limits of the battleLand
-        if((_inizialPos.x <= CampoDiBattaglia.limits && _inizialPos.y <= CampoDiBattaglia.limits) || (_inizialPos.x > 0 && _inizialPos.y > 0)){
+        if((_inizialPos.x <= BoardProperty.limits && _inizialPos.y <= BoardProperty.limits) || (_inizialPos.x > 0 && _inizialPos.y > 0)){
             position = _inizialPos;
         }else{
             throw new IllegalArgumentException("Initial position out of Bounds");
