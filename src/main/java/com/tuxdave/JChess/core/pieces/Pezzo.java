@@ -1,6 +1,6 @@
 package com.tuxdave.JChess.core.pieces;
 
-import com.tuxdave.JChess.core.BoardProperty;
+import com.tuxdave.JChess.core.GameBoard;
 import com.tuxdave.JChess.extras.Vector2;
 
 public abstract class Pezzo{
@@ -17,7 +17,7 @@ public abstract class Pezzo{
     public Pezzo(String _id, char _color,Vector2 _inizialPos){
         super();
         //check if is the initial position in range with the limits of the battleLand
-        if((_inizialPos.x <= BoardProperty.limits && _inizialPos.y <= BoardProperty.limits) || (_inizialPos.x > 0 && _inizialPos.y > 0)){
+        if((_inizialPos.x <= GameBoard.limits && _inizialPos.y <= GameBoard.limits) || (_inizialPos.x > 0 && _inizialPos.y > 0)){
             position = _inizialPos;
         }else{
             throw new IllegalArgumentException("Initial position out of Bounds");
