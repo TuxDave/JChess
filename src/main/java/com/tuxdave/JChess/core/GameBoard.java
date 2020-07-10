@@ -44,4 +44,18 @@ public class GameBoard {
         }
         return b;
     }
+
+    /**
+     * @param pos is the position where search the a piece
+     * @return a piece if found, else returns null
+     */
+    private Pezzo getPieceByPosition(Vector2 pos){
+        Pezzo ps = null;
+        for(Pezzo p : getAllPieces()){
+            if(p.getPosition().equals(pos)){
+                ps = p;
+            }
+        }
+        return ps;
+    }
 }
