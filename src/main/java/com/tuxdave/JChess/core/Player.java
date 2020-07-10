@@ -30,7 +30,7 @@ public class Player {
         for(short i = 0; i < GameBoard.limits; i++){//pedoni created
             pieces[i] = new Pedone("pedone" + (i+1), color.toCharArray()[0], new Vector2(i+1,y));
         }
-        if (color.equals("white")) { //update of the y in position
+        if (color.equals("white")) { //update of y of the position
             y--;
         } else {
             y++;
