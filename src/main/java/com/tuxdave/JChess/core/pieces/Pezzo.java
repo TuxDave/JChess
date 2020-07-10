@@ -1,5 +1,6 @@
-package com.tuxdave.JChess.core;
+package com.tuxdave.JChess.core.pieces;
 
+import com.tuxdave.JChess.core.BoardProperty;
 import com.tuxdave.JChess.extras.Vector2;
 
 public abstract class Pezzo{

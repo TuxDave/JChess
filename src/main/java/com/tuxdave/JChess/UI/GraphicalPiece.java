@@ -1,11 +1,9 @@
 package com.tuxdave.JChess.UI;
 
-import com.tuxdave.JChess.core.Pezzo;
+import com.tuxdave.JChess.core.pieces.Pezzo;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class GraphicalPiece extends JPanel {
 
