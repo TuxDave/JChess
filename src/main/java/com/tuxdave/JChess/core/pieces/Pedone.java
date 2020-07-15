@@ -56,21 +56,15 @@ public class Pedone extends Pezzo {
          */
     public Pezzo morph(String _newType) {
         switch (_newType){
-            /*todo:uncomment this when all piece's classes will be complited, use this.position and this.id
             case "horse":
-                return new Horse();
-                break;
+                return new Horse(id, color,position);
             case "ensign":
-                return new Ensign();
-                break;
+                return new Ensign(id, color,position);
             case "tower":
-                return new Tower();
-                break;
+                return new Tower(id, color,position);
             case "queen":
             default:
-                return new Queen();
-             */
+                return new Queen(id, color,position);
         }
-        return new Pedone(id, color, new Vector2(0,0));
     }
 }
