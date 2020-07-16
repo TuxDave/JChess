@@ -1,14 +1,19 @@
 package com.tuxdave.JChess.UI;
 
 import com.tuxdave.JChess.core.GameBoard;
+import com.tuxdave.JChess.core.pieces.Pezzo;
 import com.tuxdave.JChess.extras.Vector2;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class GraphicalBoard extends JComponent {
 
     private Vector2[] selectedCells = {};
+    private GameBoard board = new GameBoard();
+    private static final int CELL_SIZE = 64;
 
     {//static properties
         setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -16,13 +21,16 @@ public class GraphicalBoard extends JComponent {
         setMaximumSize(getPreferredSize());
         setMinimumSize(getPreferredSize());
     }
+    {//adding some listeners
+        GraphicalBoardListener l = new GraphicalBoardListener();
+        addMouseListener(l);
+    }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         //draws table's lines
-        final short CELL_SIZE = 64;
         for(int i = 0; i < 8; i++){
             g.drawLine(0, (i+1)*CELL_SIZE, getPreferredSize().width, (i+1)*CELL_SIZE);
             g.drawLine((i+1)*CELL_SIZE,0,(i+1)*CELL_SIZE, getPreferredSize().width);
@@ -68,6 +76,31 @@ public class GraphicalBoard extends JComponent {
     }
 
     /**
+     * @param p - the piece from which to take the selected cells
+     */
+    private void updateSelectedCells(Pezzo p){ //todo: review this to calculate the routes
+        if(p != null){
+            Vector2[] tempSel = p.getPossibleMoves();
+            int l = 0;
+            for(Vector2 _cell : tempSel){
+                if(isAnAcceptableCell(_cell)){
+                    l++;
+                }
+            }
+            selectedCells = new Vector2[l];
+            l = 0;
+            for(Vector2 _cell : tempSel){
+                if(isAnAcceptableCell(_cell)){
+                    selectedCells[l++] = _cell;
+                }
+            }
+        }else{
+            selectedCells = new Vector2[]{};
+        }
+        repaint();
+    }
+
+    /**
      * @param _cell the cell to tests
      * @return true if the cell is acceptable (between the board limits)
      */
@@ -92,7 +125,16 @@ public class GraphicalBoard extends JComponent {
      * @return a Vector2 containing the coords by pixel
      */
     private static Vector2 getPixelCoordsFromCellCoords(Vector2 _cellCoords){
-        return new Vector2((_cellCoords.x-1)*64, _cellCoords.y*64);
+        return new Vector2((_cellCoords.x-1)*CELL_SIZE, _cellCoords.y*CELL_SIZE);
+    }
+
+    /**
+     *
+     * @param _pixelCoords contains the pixel coords to convert in cell coords
+     * @return a cell coord
+     */
+    private static Vector2 getCellCoordsFromPixelCoords(Vector2 _pixelCoords){
+        return new Vector2((int)(_pixelCoords.x / 64) + 1, (int)(_pixelCoords.y / 64) + 1);
     }
 
     /**
@@ -102,5 +144,47 @@ public class GraphicalBoard extends JComponent {
      */
     private int convertCoordsFromReal(int _y){
         return getPreferredSize().height - _y;
+    }
+
+    //i preferred creating a dedicated class that implements the methods because is clearer
+    private class GraphicalBoardListener implements MouseListener {
+        private boolean eatingMode = false;
+
+        /**catch the mouse position on the click time, checks if is there a piece and in case there is, get the possible moves*/
+        private void startEatingMode(Vector2 clickCoords){
+            eatingMode = true;
+            //now check if is there a piece and if is there get the possible move and repaint all
+            if(board.isThereAPiece(clickCoords)){
+                updateSelectedCells(board.getPieceByPosition(clickCoords));
+            }
+        }
+
+        /**eat a piece if is there one or simply move the piece*/
+        private void stopEatingMode(Vector2 clickCoords){//todo: modify the selecter method and then this to allow it to move and eat.
+            updateSelectedCells(null);
+            eatingMode = false;
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent mouseEvent) {
+            //save the coords in a vector2
+            Vector2 clickCoords = new Vector2(mouseEvent.getX(), convertCoordsFromReal(mouseEvent.getY()));
+            //then convert it in a cell coord
+            clickCoords = getCellCoordsFromPixelCoords(clickCoords);
+            if(!eatingMode){
+                startEatingMode(clickCoords);
+            }else{//eatingMode = true
+                stopEatingMode(clickCoords);
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent mouseEvent) { }
+        @Override
+        public void mouseReleased(MouseEvent mouseEvent) { }
+        @Override
+        public void mouseEntered(MouseEvent mouseEvent) { }
+        @Override
+        public void mouseExited(MouseEvent mouseEvent) { }
     }
 }

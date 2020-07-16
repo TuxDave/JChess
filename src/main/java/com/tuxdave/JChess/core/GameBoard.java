@@ -11,7 +11,7 @@ public class GameBoard {
         players[0] = new Player("p1", 1);
         players[1] = new Player("p2", 2);
     }
-    private Pezzo[] getAllPieces(){
+    public Pezzo[] getAllPieces(){
         Pezzo[] ps = new Pezzo[32];
         short c = 0;
         for(short r = 0; r < 2; r++){
@@ -34,7 +34,7 @@ public class GameBoard {
             throw new IllegalArgumentException("_n parameter must be between 1 and 2");
         }
     }
-    private boolean isThereAPiece(Vector2 pos){
+    public boolean isThereAPiece(Vector2 pos){
         boolean b = false;
         Pezzo[] pieces = getAllPieces();
         for(Pezzo p : pieces){
@@ -46,10 +46,10 @@ public class GameBoard {
     }
 
     /**
-     * @param pos is the position where search the a piece
+     * @param pos is the position where search a piece
      * @return a piece if found, else returns null
      */
-    private Pezzo getPieceByPosition(Vector2 pos){
+    public Pezzo getPieceByPosition(Vector2 pos){
         Pezzo ps = null;
         for(Pezzo p : getAllPieces()){
             if(p.getPosition().equals(pos)){
