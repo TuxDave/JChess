@@ -8,10 +8,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 public class GraphicalBoard extends JComponent {
 
     private Vector2[] selectedCells = {};
+    private Vector2 hoveredCell = null;
     private GameBoard board = new GameBoard();
     private static final int CELL_SIZE = 64;
 
@@ -24,6 +26,7 @@ public class GraphicalBoard extends JComponent {
     {//adding some listeners
         GraphicalBoardListener l = new GraphicalBoardListener();
         addMouseListener(l);
+        addMouseMotionListener(l);
     }
 
     @Override
@@ -54,13 +57,13 @@ public class GraphicalBoard extends JComponent {
 
         //this hilight some cells
         highlightCell(g);
-        //todo: add the method that update the array containing the list of the selected cells
 
         //todo: add the method that paints the pieces on screen
     }
 
     /**
      * paints green color on the selected cells
+     * paints the blue rectangle around the hovered cell
      */
     private void highlightCell(Graphics g){
         Image img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Resources/Icons/selected_background.png"));
@@ -72,6 +75,11 @@ public class GraphicalBoard extends JComponent {
             } else {
                 throw new IllegalArgumentException("Cell not found!");
             }
+        }
+        //hovering
+        img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Resources/Icons/mouseHover_rectangle.png"));
+        if(hoveredCell != null){
+            g.drawImage(img, hoveredCell.x, hoveredCell.y, this);
         }
     }
 
@@ -147,7 +155,7 @@ public class GraphicalBoard extends JComponent {
     }
 
     //i preferred creating a dedicated class that implements the methods because is clearer
-    private class GraphicalBoardListener implements MouseListener {
+    private class GraphicalBoardListener implements MouseListener, MouseMotionListener {
         private boolean eatingMode = false;
 
         /**catch the mouse position on the click time, checks if is there a piece and in case there is, get the possible moves*/
@@ -165,6 +173,7 @@ public class GraphicalBoard extends JComponent {
             eatingMode = false;
         }
 
+        //mouseListener
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
             //save the coords in a vector2
@@ -185,6 +194,26 @@ public class GraphicalBoard extends JComponent {
         @Override
         public void mouseEntered(MouseEvent mouseEvent) { }
         @Override
-        public void mouseExited(MouseEvent mouseEvent) { }
+        public void mouseExited(MouseEvent mouseEvent) {
+            hoveredCell = null;
+            repaint();
+        }
+
+        //mouseMotionListener
+        @Override
+        public void mouseDragged(MouseEvent mouseEvent) { }
+
+        /**update HoveredCell in case the mouse changed cell position*/
+        @Override
+        public void mouseMoved(MouseEvent mouseEvent) {
+            Vector2 hoverCoord = new Vector2(mouseEvent.getX(), mouseEvent.getY());
+            hoverCoord = getCellCoordsFromPixelCoords(hoverCoord);
+            hoverCoord.x = --hoverCoord.x*64;
+            hoverCoord.y = --hoverCoord.y*64;
+            if(hoveredCell == null || (!hoverCoord.equals(hoveredCell))){
+                hoveredCell = hoverCoord;
+                repaint();
+            }
+        }
     }
 }

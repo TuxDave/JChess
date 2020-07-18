@@ -5,6 +5,7 @@ import com.tuxdave.JChess.extras.Vector2;
 public class Pedone extends Pezzo {
 
     private boolean alreadyMoved = false;
+    private boolean reverse = false;
 
     /**
      * @param _id         everything possible string to recognize the piece;
@@ -13,18 +14,22 @@ public class Pedone extends Pezzo {
      */
     public Pedone(String _id, char _color, Vector2 _inizialPos) {
         super(_id, _color, _inizialPos);
+        if(color == 'B'){
+            reverse = true;
+        }
     }
 
     @Override
     public Vector2[] getPossibleMoves() {
         Vector2[] v;
+        short upOrDown = (short) (reverse ? -1 : 1);
         if(alreadyMoved){
             v = new Vector2[1];
-            v[0] = new Vector2(position.x, position.y + 1);
+            v[0] = new Vector2(position.x, position.y + 1*upOrDown);
         }else{
             v = new Vector2[2];
-            v[0] = new Vector2(position.x, position.y + 1);
-            v[1] = new Vector2(position.x, position.y + 2);
+            v[0] = new Vector2(position.x, position.y + 1*upOrDown);
+            v[1] = new Vector2(position.x, position.y + 2*upOrDown);
         }
         return v;
     }
