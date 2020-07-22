@@ -2,8 +2,6 @@ package com.tuxdave.JChess.core.pieces;
 
 import com.tuxdave.JChess.extras.Vector2;
 
-import java.awt.*;
-
 public class Ensign extends Pezzo{
 
     /**

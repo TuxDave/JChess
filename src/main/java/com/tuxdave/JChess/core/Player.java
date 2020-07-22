@@ -3,8 +3,6 @@ package com.tuxdave.JChess.core;
 import com.tuxdave.JChess.core.pieces.*;
 import com.tuxdave.JChess.extras.Vector2;
 
-import java.text.ParseException;
-
 public class Player {
     private final String color;
     public String nick;

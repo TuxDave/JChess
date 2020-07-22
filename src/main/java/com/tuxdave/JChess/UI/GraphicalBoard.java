@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Arrays;
 
 public class GraphicalBoard extends JComponent {
 
@@ -105,21 +106,31 @@ public class GraphicalBoard extends JComponent {
      */
     private void updateSelectedCells(Pezzo p){ //todo: review this to calculate the routes
         if(p != null){
+            String pColor = p.getColor();
             Vector2[] tempSel = p.getPossibleMoves();
             int l = 0;
-            for(Vector2 _cell : tempSel){
+            for(Vector2 _cell : tempSel){//find the max length of the array with possible position
                 if(isAnAcceptableCell(_cell)){
                     l++;
                 }
             }
             selectedCells = new Vector2[l];
             l = 0;
+            //now i will leave a position if isn't there a friendly piece
             for(Vector2 _cell : tempSel){
                 if(isAnAcceptableCell(_cell)){
-                    selectedCells[l++] = _cell;
+                    if(!board.isThereAPiece(_cell)){
+                        selectedCells[l++] = _cell;
+                    }else {
+                        Pezzo p1 = board.getPieceByPosition(_cell);
+                        if(!p1.getColor().equals(p.getColor())){
+                            selectedCells[l++] = _cell;
+                        }
+                    }
                 }
             }
-        }else{
+            selectedCells = Arrays.copyOf(selectedCells, l-1);//resize: leaving the void position in the array
+        }else{//da qui è OK
             selectedCells = new Vector2[]{};
         }
         repaint();
