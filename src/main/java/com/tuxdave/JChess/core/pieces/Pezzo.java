@@ -76,7 +76,8 @@ public abstract class Pezzo implements Drawable {
     @Override
     public Image getGraphicalView() {
         String _color = getColor().toLowerCase();
+        _color = _color.substring(0,1).toUpperCase() + _color.substring(1);
         return Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Resources/Icons/pieces/" +
-                getType() + "_" + color + ".png"));
+                getType() + "_" + _color + ".png"));
     }
 }

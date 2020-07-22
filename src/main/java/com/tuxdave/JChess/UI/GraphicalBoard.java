@@ -58,7 +58,12 @@ public class GraphicalBoard extends JComponent {
         //this hilight some cells
         highlightCell(g);
 
-        //todo: add the method that paints the pieces on screen
+        //drawing pieces
+        Pezzo[] pieces = board.getAllPieces();
+        for(Pezzo p1 : pieces){
+            if(p1 != null)
+                drawPiece(p1,g);
+        }
     }
 
     /**
@@ -80,6 +85,18 @@ public class GraphicalBoard extends JComponent {
         img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Resources/Icons/mouseHover_rectangle.png"));
         if(hoveredCell != null){
             g.drawImage(img, hoveredCell.x, hoveredCell.y, this);
+        }
+    }
+
+    /**
+     * draw on this object a piece's graphical view
+     * @param _p piece to be drawed
+     * @param _g the graphics on which to draw the piece
+     */
+    private void drawPiece(Pezzo _p, Graphics _g){
+        if(_p != null){
+            Vector2 v = getPixelCoordsFromCellCoords(_p.getPosition());
+            _g.drawImage(_p.getGraphicalView(), v.x, convertCoordsFromReal(v.y), this);
         }
     }
 
@@ -133,7 +150,7 @@ public class GraphicalBoard extends JComponent {
      * @return a Vector2 containing the coords by pixel
      */
     private static Vector2 getPixelCoordsFromCellCoords(Vector2 _cellCoords){
-        return new Vector2((_cellCoords.x-1)*CELL_SIZE, _cellCoords.y*CELL_SIZE);
+        return new Vector2((_cellCoords.x-1)*CELL_SIZE, (_cellCoords.y)*CELL_SIZE);
     }
 
     /**
