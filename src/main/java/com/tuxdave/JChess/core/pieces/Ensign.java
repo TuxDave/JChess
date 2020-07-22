@@ -2,7 +2,10 @@ package com.tuxdave.JChess.core.pieces;
 
 import com.tuxdave.JChess.extras.Vector2;
 
+import java.awt.*;
+
 public class Ensign extends Pezzo{
+
     /**
      * @param _id         everything possible string to recognize the piece;
      * @param _color      Black(B) or White(W);
@@ -34,7 +37,6 @@ public class Ensign extends Pezzo{
         }
         return v;
     }
-
     @Override
     void setType() {
         type = "ensign";

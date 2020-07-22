@@ -1,9 +1,12 @@
 package com.tuxdave.JChess.core.pieces;
 
 import com.tuxdave.JChess.core.GameBoard;
+import com.tuxdave.JChess.extras.Drawable;
 import com.tuxdave.JChess.extras.Vector2;
 
-public abstract class Pezzo{
+import java.awt.*;
+
+public abstract class Pezzo implements Drawable {
     protected String type;
     protected String id;
     protected char color;
@@ -69,4 +72,11 @@ public abstract class Pezzo{
     }
     //sets the type of the piece in base how to be written this method
     abstract void setType();
+
+    @Override
+    public Image getGraphicalView() {
+        String _color = getColor().toLowerCase();
+        return Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Resources/Icons/pieces/" +
+                getType() + "_" + color + ".png"));
+    }
 }
