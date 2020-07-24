@@ -58,4 +58,16 @@ public class GameBoard {
         }
         return ps;
     }
+
+    /**
+     * @param _cell the cell to tests
+     * @return true if the cell is acceptable (between the board limits)
+     */
+    public static boolean isAnAcceptableCell(Vector2 _cell){
+        if(_cell.isBetweenLimits(0,0,GameBoard.limits, GameBoard.limits)){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

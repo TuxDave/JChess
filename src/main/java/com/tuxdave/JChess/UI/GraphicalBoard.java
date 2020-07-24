@@ -1,6 +1,7 @@
 package com.tuxdave.JChess.UI;
 
 import com.tuxdave.JChess.core.GameBoard;
+import com.tuxdave.JChess.core.RouteChecker;
 import com.tuxdave.JChess.core.pieces.Pezzo;
 import com.tuxdave.JChess.extras.Drawable;
 import com.tuxdave.JChess.extras.Vector2;
@@ -80,7 +81,7 @@ public class GraphicalBoard extends JComponent {
     private void highlightCell(Graphics g){
         Image img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Resources/Icons/selected_background.png"));
         for(Vector2 _cell : selectedCells){
-            if (isAnAcceptableCell(_cell)) {
+            if (GameBoard.isAnAcceptableCell(_cell)) {
                 _cell = getPixelCoordsFromCellCoords(_cell);
                 _cell.y = convertCoordsFromReal(_cell.y);
                 g.drawImage(img, _cell.x, _cell.y, this);
@@ -116,55 +117,8 @@ public class GraphicalBoard extends JComponent {
      * @param p - the piece from which to take the selected cells
      */
     private void updateSelectedCells(Pezzo p){ //todo: review this to calculate the routes
-        if(p != null){
-            String pColor = p.getColor();
-            Vector2[] tempSel = p.getPossibleMoves();
-            int l = 0;
-            for(Vector2 _cell : tempSel){//find the max length of the array with possible position
-                if(isAnAcceptableCell(_cell)){
-                    l++;
-                }
-            }
-            selectedCells = new Vector2[l];
-            l = 0;
-            //now i will leave a position if isn't there a friendly piece
-            for(Vector2 _cell : tempSel){
-                if(isAnAcceptableCell(_cell)){
-                    if(!board.isThereAPiece(_cell)){
-                        selectedCells[l++] = _cell;
-                    }else {
-                        Pezzo p1 = board.getPieceByPosition(_cell);
-                        if(!p1.getColor().equals(p.getColor())){
-                            selectedCells[l++] = _cell;
-                        }
-                    }
-                }
-            }
-            selectedCells = Arrays.copyOf(selectedCells, l-1);//resize: leaving the void position in the array
-        }else{//da qui è OK
-            selectedCells = new Vector2[]{};
-        }
+        selectedCells = RouteChecker.getPossibleMoves(p, board);
         repaint();
-    }
-
-    /**
-     * @param _cell the cell to tests
-     * @return true if the cell is acceptable (between the board limits)
-     */
-    private static boolean isAnAcceptableCell(Vector2 _cell){
-        if(_cell.isBetweenLimits(0,0,GameBoard.limits, GameBoard.limits)){
-            return true;
-        }else{
-            return false;
-        }
-    }
-    /**
-     * @param _x the cell's x to tests
-     * @param _y the cell's y to tests
-     * @return true if the cell is acceptable (between the board limits)
-     */
-    private static boolean isAnAcceptableCell(int _x, int _y){
-        return isAnAcceptableCell(new Vector2(_x, _y));
     }
 
     /**
