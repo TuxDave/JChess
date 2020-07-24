@@ -7,7 +7,6 @@ import com.tuxdave.JChess.extras.Vector2;
  * class that will check the pieces route on moving and stop it if a orute is occupied
  */
 public class RouteChecker {
-
     /**todo: implements this
      * @param p the piece from which calculate the possible moves in base of routes
      * @param board the game board used

@@ -2,6 +2,7 @@ package com.tuxdave.JChess.UI;
 
 import com.tuxdave.JChess.core.GameBoard;
 import com.tuxdave.JChess.core.pieces.Pezzo;
+import com.tuxdave.JChess.extras.Drawable;
 import com.tuxdave.JChess.extras.Vector2;
 
 import javax.swing.*;
@@ -62,8 +63,13 @@ public class GraphicalBoard extends JComponent {
         //drawing pieces
         Pezzo[] pieces = board.getAllPieces();
         for(Pezzo p1 : pieces){
-            if(p1 != null)
-                drawPiece(p1,g);
+            if(p1 != null) {
+                try {
+                    drawPiece(p1,g);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "There is some problems rendering a onScreen component");
+                }
+            }
         }
     }
 
@@ -94,10 +100,15 @@ public class GraphicalBoard extends JComponent {
      * @param _p piece to be drawed
      * @param _g the graphics on which to draw the piece
      */
-    private void drawPiece(Pezzo _p, Graphics _g){
+    private void drawPiece(Pezzo _p, Graphics _g) throws Exception {
+        if(!(_p instanceof Drawable)){
+            throw new Exception("The first argument must be a instance of Drawable interface");
+        }
         if(_p != null){
             Vector2 v = getPixelCoordsFromCellCoords(_p.getPosition());
             _g.drawImage(_p.getGraphicalView(), v.x, convertCoordsFromReal(v.y), this);
+        }else{
+            throw new NullPointerException("The piece passed is a null instance!");
         }
     }
 
