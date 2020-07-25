@@ -16,7 +16,7 @@ public class GraphicalBoard extends JComponent {
 
     private Vector2[] selectedCells = {};
     private Vector2 hoveredCell = null;
-    private GameBoard board = new GameBoard();
+    protected GameBoard board = new GameBoard();
     private static final int CELL_SIZE = 64;
 
     {//static properties
