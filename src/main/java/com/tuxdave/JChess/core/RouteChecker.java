@@ -63,40 +63,60 @@ public class RouteChecker{
             selectedCells = Arrays.copyOf(selectedCells, l);//resize: leaving the void position in the array
             //finish base selection (obviusly it will be deleted)
 
-            //start advanced selection (calculating routes)
-            Vector2[] myRays = null;
-            System.out.println(Pedone.class);
-            if(p instanceof Pedone){
-                myRays = new Vector2[1];
-                myRays[0] = rayCasts[NORTH];
-            }else if(p instanceof Ensign){
-                myRays = new Vector2[4];
-                myRays[0] = rayCasts[NORTH_EAST];
-                myRays[1] = rayCasts[NORTH_WEST];
-                myRays[2] = rayCasts[SOUTH_EAST];
-                myRays[3] = rayCasts[SOUTH_WEST];
-            }else if(p instanceof Tower){
-                myRays = new Vector2[4];
-                myRays[0] = rayCasts[NORTH];
-                myRays[1] = rayCasts[SOUTH];
-                myRays[2] = rayCasts[WEST];
-                myRays[3] = rayCasts[EAST];
-            }//todo:continue this the other pieces
-            Vector2[][] routes = new Vector2[myRays.length][];
-            for(short i = 0; i < myRays.length; i++){
-                routes[i] = getRouteByRay(p, myRays[i]);
-            }//now i have all the routes of the piece
+            if(!(p instanceof Horse)) {//all piece which aren't horse
+                //start advanced selection (calculating routes)
+                Vector2[] myRays = null;
+                switch (p.getType()) {
+                    case "pedone":
+                        myRays = new Vector2[1];
+                        myRays[0] = rayCasts[NORTH];
+                        break;
+                    case "ensign":
+                        myRays = new Vector2[4];
+                        myRays[0] = rayCasts[NORTH_EAST];
+                        myRays[1] = rayCasts[NORTH_WEST];
+                        myRays[2] = rayCasts[SOUTH_EAST];
+                        myRays[3] = rayCasts[SOUTH_WEST];
+                        break;
+                    case "tower":
+                        myRays = new Vector2[4];
+                        myRays[0] = rayCasts[NORTH];
+                        myRays[1] = rayCasts[SOUTH];
+                        myRays[2] = rayCasts[WEST];
+                        myRays[3] = rayCasts[EAST];
+                        break;
+                    case "king":
+                    case "queen":
+                        myRays = rayCasts; //all direction
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Type of piece (" + p.getType() + ")not expected!");
+                }
+                Vector2[][] routes = new Vector2[myRays.length][];
+                for (short i = 0; i < myRays.length; i++) {
+                    routes[i] = getRouteByRay(p, myRays[i]);
+                }//now i have all the routes of the piece
 
-            //copying the final routes in the returned variable
-            l = 0; //compute the lenght of "selectedCells"
-            selectedCells = new Vector2[l];
-            for(Vector2[] route : routes){
-                for(Vector2 cell : route){
-                    if(GameBoard.isAnAcceptableCell(cell)){
-                        selectedCells = Arrays.copyOf(selectedCells, ++l);
-                        selectedCells[l - 1] = cell;
+                //copying the final routes in the returned variable
+                l = 0; //compute the lenght of "selectedCells"
+                selectedCells = new Vector2[l];
+                for (Vector2[] route : routes) {
+                    for (Vector2 cell : route) {
+                        if (GameBoard.isAnAcceptableCell(cell)) {
+                            selectedCells = Arrays.copyOf(selectedCells, ++l);
+                            selectedCells[l - 1] = cell;
+                        }
                     }
                 }
+            }else{//about horse
+                selectedCells = new Vector2[8];
+                l = 0;
+                for(Vector2 cell : p.getPossibleMoves()){
+                    if(GameBoard.isAnAcceptableCell(cell)){
+                        selectedCells[l++] = cell;
+                    }
+                }
+                selectedCells = Arrays.copyOf(selectedCells, l);
             }
         }else{//da qui è OK
             selectedCells = new Vector2[]{};
@@ -127,11 +147,6 @@ public class RouteChecker{
                 pos1 = Vector2.add(pos1, ray);
             }
         }
-        rets = Arrays.copyOf(rets, l);
-        for(Vector2 ret : rets){
-            System.out.println(ret);
-        }
-        System.out.println(rets.length);
-        return rets;
+        return Arrays.copyOf(rets, l);
     }
 }
