@@ -155,8 +155,14 @@ public class RouteChecker{
             if(!board.isThereAPiece(route[index])){ //if isn't there a piece
                 finalRoute[l++] = route[index];
             }else{
-                finalRoute[l++] = route[index];
-                break;
+                if(board.getPieceByPosition(route[index]).getColor() == p.getColor()){
+                    //if the piece which collided with me is a friend, i will only stop the process
+                    break;
+                }else{
+                    //i will hilight its cell because i can eat it
+                    finalRoute[l++] = route[index];
+                    break;
+                }
             }
         }
         return Arrays.copyOf(finalRoute, l);
