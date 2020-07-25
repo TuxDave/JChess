@@ -1,7 +1,6 @@
 package com.tuxdave.JChess.core;
 
-import com.tuxdave.JChess.UI.GraphicalBoard;
-import com.tuxdave.JChess.core.pieces.Pezzo;
+import com.tuxdave.JChess.core.pieces.*;
 import com.tuxdave.JChess.extras.Vector2;
 
 import java.util.Arrays;
@@ -9,13 +8,32 @@ import java.util.Arrays;
 /**
  * class that will check the pieces route on moving and stop it if a orute is occupied
  */
-public class RouteChecker {
+public class RouteChecker{
+
+    private static Vector2[] rayCasts = new Vector2[8];
+
+    private static short NORTH_EAST = 0;
+    private static short SOUTH_EAST = 1;
+    private static short NORTH_WEST = 2;
+    private static short SOUTH_WEST = 3;
+    private static short NORTH = 4;
+    private static short SOUTH = 5;
+    private static short EAST = 6;
+    private static short WEST = 7;
+
+    private static void inizialize(){//inizializing
+        King k = new King("a", 'B', new Vector2(0,0));
+        rayCasts = k.getPossibleMoves();//i used a king on 0,0 to get the direction of the raycasts.
+    }
+
     /**
      * @param p the piece from which calculate the possible moves in base of routes
      * @param board the game board used
      * @return an array containing all the possible moves
      */
     public static Vector2[] getPossibleMoves(Pezzo p, GameBoard board){
+        inizialize();//creating the internal state of the class
+
         //start base selection
         Vector2[] selectedCells = new Vector2[]{};
         if(p != null){
@@ -42,13 +60,78 @@ public class RouteChecker {
                     }
                 }
             }
-            selectedCells = Arrays.copyOf(selectedCells, l-1);//resize: leaving the void position in the array
-            //finish base selection
+            selectedCells = Arrays.copyOf(selectedCells, l);//resize: leaving the void position in the array
+            //finish base selection (obviusly it will be deleted)
+
             //start advanced selection (calculating routes)
-            //todo: calcolare le rotte da qui
+            Vector2[] myRays = null;
+            System.out.println(Pedone.class);
+            if(p instanceof Pedone){
+                myRays = new Vector2[1];
+                myRays[0] = rayCasts[NORTH];
+            }else if(p instanceof Ensign){
+                myRays = new Vector2[4];
+                myRays[0] = rayCasts[NORTH_EAST];
+                myRays[1] = rayCasts[NORTH_WEST];
+                myRays[2] = rayCasts[SOUTH_EAST];
+                myRays[3] = rayCasts[SOUTH_WEST];
+            }else if(p instanceof Tower){
+                myRays = new Vector2[4];
+                myRays[0] = rayCasts[NORTH];
+                myRays[1] = rayCasts[SOUTH];
+                myRays[2] = rayCasts[WEST];
+                myRays[3] = rayCasts[EAST];
+            }//todo:continue this the other pieces
+            Vector2[][] routes = new Vector2[myRays.length][];
+            for(short i = 0; i < myRays.length; i++){
+                routes[i] = getRouteByRay(p, myRays[i]);
+            }//now i have all the routes of the piece
+
+            //copying the final routes in the returned variable
+            l = 0; //compute the lenght of "selectedCells"
+            selectedCells = new Vector2[l];
+            for(Vector2[] route : routes){
+                for(Vector2 cell : route){
+                    if(GameBoard.isAnAcceptableCell(cell)){
+                        selectedCells = Arrays.copyOf(selectedCells, ++l);
+                        selectedCells[l - 1] = cell;
+                    }
+                }
+            }
         }else{//da qui è OK
             selectedCells = new Vector2[]{};
         }
         return selectedCells;
+    }
+
+    private static void checkRoute(){
+
+    }
+
+    /**
+     * @param p piece which from calculate route
+     * @param ray the route direction
+     * @return the cells interested in route
+     */
+    private static Vector2[] getRouteByRay(Pezzo p, Vector2 ray){
+        Vector2[] rets = new Vector2[GameBoard.limits];
+        short l = 0;
+        Vector2 pos = p.getPosition();
+        for(Vector2 cell : p.getPossibleMoves()){
+            Vector2 pos1 = Vector2.add(pos, ray);
+            for(int i = 0; i < GameBoard.limits; i++){
+                if(cell.equals(pos1)){
+                    rets[l++] = cell;
+                    break;
+                }
+                pos1 = Vector2.add(pos1, ray);
+            }
+        }
+        rets = Arrays.copyOf(rets, l);
+        for(Vector2 ret : rets){
+            System.out.println(ret);
+        }
+        System.out.println(rets.length);
+        return rets;
     }
 }
