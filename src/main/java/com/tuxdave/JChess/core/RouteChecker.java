@@ -1,6 +1,7 @@
 package com.tuxdave.JChess.core;
 
-import com.tuxdave.JChess.core.pieces.*;
+import com.tuxdave.JChess.core.pieces.King;
+import com.tuxdave.JChess.core.pieces.Pezzo;
 import com.tuxdave.JChess.extras.Vector2;
 
 import java.util.Arrays;
@@ -12,14 +13,14 @@ public class RouteChecker{
 
     private static Vector2[] rayCasts = new Vector2[8];
 
-    private static short NORTH_EAST = 0;
-    private static short SOUTH_EAST = 1;
-    private static short NORTH_WEST = 2;
-    private static short SOUTH_WEST = 3;
-    private static short NORTH = 4;
-    private static short SOUTH = 5;
-    private static short EAST = 6;
-    private static short WEST = 7;
+    private final static short NORTH_EAST = 0;
+    private final static short SOUTH_EAST = 1;
+    private final static short NORTH_WEST = 2;
+    private final static short SOUTH_WEST = 3;
+    private final static short NORTH = 4;
+    private final static short SOUTH = 5;
+    private final static short EAST = 6;
+    private final static short WEST = 7;
 
     private static void inizialize(){//inizializing
         King k = new King("a", 'B', new Vector2(0,0));
@@ -34,9 +35,10 @@ public class RouteChecker{
     public static Vector2[] getPossibleMoves(Pezzo p, GameBoard board){
         inizialize();//creating the internal state of the class
 
-        //start base selection
         Vector2[] selectedCells = new Vector2[]{};
+        short l;
         if(p != null){
+            /*
             String pColor = p.getColor();
             Vector2[] tempSel = p.getPossibleMoves();
             int l = 0;
@@ -61,9 +63,9 @@ public class RouteChecker{
                 }
             }
             selectedCells = Arrays.copyOf(selectedCells, l);//resize: leaving the void position in the array
-            //finish base selection (obviusly it will be deleted)
+            //finish base selection (obviusly it will be deleted)*/
 
-            if(!(p instanceof Horse)) {//all piece which aren't horse
+            if(p.getType() != "horse" && p.getType() != "king") {//all piece which aren't horse and king
                 //start advanced selection (calculating routes)
                 Vector2[] myRays = null;
                 switch (p.getType()) {
@@ -97,6 +99,12 @@ public class RouteChecker{
                     routes[i] = getRouteByRay(p, myRays[i]);
                 }//now i have all the routes of the piece
 
+                //start the real routeChecker!
+                for(short i = 0; i < routes.length; i++){
+                    routes[i] = checkRoute(p, board, routes[i]);
+                }
+                //route checker finished
+
                 //copying the final routes in the returned variable
                 l = 0; //compute the lenght of "selectedCells"
                 selectedCells = new Vector2[l];
@@ -108,7 +116,7 @@ public class RouteChecker{
                         }
                     }
                 }
-            }else{//about horse
+            }else{//about horse and king
                 selectedCells = new Vector2[8];
                 l = 0;
                 for(Vector2 cell : p.getPossibleMoves()){
@@ -125,10 +133,33 @@ public class RouteChecker{
     }
 
     /**
-     *
+     * create a correct route using collision methods.
+     * @param p piece from which is generated the route
+     * @param board game board containing all other pieces
+     * @param route the route followed
+     * @return a correct route
      */
-    private static void checkRoute(){
-
+    private static Vector2[] checkRoute(Pezzo p, GameBoard board, Vector2[] route){
+        //setup
+        short index, direction, l = 0;
+        if(p.getPosition().getClosest(route[0], route[route.length-1]).equals(route[0])){
+            index = 0;
+            direction = 1;
+        }else{
+            index = (short) (route.length-1);
+            direction = -1;
+        }
+        //start routing
+        Vector2[] finalRoute = route;
+        for(; (index == route.length-1 ? index >= 0 : index < route.length); index = (short) (index + direction)){
+            if(!board.isThereAPiece(route[index])){ //if isn't there a piece
+                finalRoute[l++] = route[index];
+            }else{
+                finalRoute[l++] = route[index];
+                break;
+            }
+        }
+        return Arrays.copyOf(finalRoute, l);
     }
 
     /**
