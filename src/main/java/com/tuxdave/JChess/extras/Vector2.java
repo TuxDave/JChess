@@ -67,4 +67,28 @@ public class Vector2{
     public static Vector2 add(Vector2 v1, Vector2 v2){
         return new Vector2(v1.x + v2.x, v1.y + v2.y);
     }
+
+    /**
+     * compute the distance between the two arguments with itself and return the closest
+     * @param v1 first point
+     * @param v2 second point
+     * @return the closest point between the two before
+     */
+    public Vector2 getClosest(Vector2 v1, Vector2 v2){
+        if(computeDistance(this, v1) > computeDistance(this, v2)){
+            return v2;
+        }else{
+            return v1;
+        }
+    }
+
+    /**
+     * compute the distance between the two arguments on a cartesian plane
+     * @param c1 first "point"
+     * @param c2 second "point"
+     * @return the distance
+     */
+    private static float computeDistance(Vector2 c1, Vector2 c2){
+        return (float) Math.sqrt(Math.pow(c2.x-c1.x, 2)+Math.pow(c2.y-c1.y, 2));//cannot generate a double
+    }
 }
