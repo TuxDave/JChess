@@ -71,7 +71,10 @@ public class RouteChecker{
                 switch (p.getType()) {
                     case "pedone":
                         myRays = new Vector2[1];
-                        myRays[0] = rayCasts[NORTH];
+                        if(p.getColor() == "WHITE")
+                            myRays[0] = rayCasts[NORTH];
+                        else
+                            myRays[0] = rayCasts[SOUTH];
                         break;
                     case "ensign":
                         myRays = new Vector2[4];
