@@ -87,6 +87,6 @@ public abstract class Pezzo implements Drawable {
      * @return true if the two pieces are equals
      */
     public boolean equals(Pezzo p){
-        return p.getColor() == getColor() && p.getPosition().equals(getPosition()) && p.getType() == getType();
+        return p != null && p.getColor() == getColor() && p.getPosition().equals(getPosition()) && p.getType() == getType();
     }
 }

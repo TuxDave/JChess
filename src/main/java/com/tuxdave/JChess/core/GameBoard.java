@@ -38,7 +38,7 @@ public class GameBoard {
         boolean b = false;
         Pezzo[] pieces = getAllPieces();
         for(Pezzo p : pieces){
-            if(p.getPosition().equals(pos)){
+            if(p != null && p.getPosition().equals(pos)){
                 b = true;
             }
         }
@@ -52,7 +52,7 @@ public class GameBoard {
     public Pezzo getPieceByPosition(Vector2 pos){
         Pezzo ps = null;
         for(Pezzo p : getAllPieces()){
-            if(p.getPosition().equals(pos)){
+            if(p != null && p.getPosition().equals(pos)){
                 ps = p;
             }
         }
@@ -88,7 +88,6 @@ public class GameBoard {
             }
             l++;
         }
-        if(l != players[player].getPieces().length)
-            players[player].getPieces()[l] = null;
+        players[player].getPieces()[l] = null;
     }
 }

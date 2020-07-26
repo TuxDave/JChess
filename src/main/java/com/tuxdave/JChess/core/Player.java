@@ -48,6 +48,6 @@ public class Player {
         return color;
     }
     public Pezzo[] getPieces(){
-        return pieces.clone();
+        return pieces;
     }
 }
