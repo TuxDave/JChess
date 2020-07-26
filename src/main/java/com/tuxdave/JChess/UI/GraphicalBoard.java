@@ -172,7 +172,7 @@ public class GraphicalBoard extends JComponent {
         }
 
         /**eat a piece if is there one or simply move the piece*/
-        private void eat(Vector2 clickCoords){
+        private void eat(Vector2 clickCoords){//todo: why pieces isn't eat really?
             if(isASelectedCell(clickCoords)) {
                 //eat and then move
                 Pezzo p = board.getPieceByPosition(clickCoords);
@@ -181,10 +181,9 @@ public class GraphicalBoard extends JComponent {
                 }
                 piece.move(clickCoords);
                 //stop eating mode
-            }else{
                 eatingMode = false;
+                updateSelectedCells(null);//all cell now are unselected
             }
-            updateSelectedCells(null);//all cell now are unselected
         }
 
         //mouseListener

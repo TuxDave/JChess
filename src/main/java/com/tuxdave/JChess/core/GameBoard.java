@@ -78,7 +78,6 @@ public class GameBoard {
     public void eatPiece(Pezzo p){
         int player, l = 0;
         if(p == null){
-            System.out.println("nessun pezzo mangiato");
             return;
         }else{
             player = (p.getColor() == "WHITE" ? 0 : 1);
