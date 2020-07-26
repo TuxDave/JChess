@@ -38,33 +38,6 @@ public class RouteChecker{
         Vector2[] selectedCells = new Vector2[]{};
         short l;
         if(p != null){
-            /*
-            String pColor = p.getColor();
-            Vector2[] tempSel = p.getPossibleMoves();
-            int l = 0;
-            for(Vector2 _cell : tempSel){//find the max length of the array with possible position
-                if(GameBoard.isAnAcceptableCell(_cell)){
-                    l++;
-                }
-            }
-            selectedCells = new Vector2[l];
-            l = 0;
-            //now i will leave a position if isn't there a friendly piece
-            for(Vector2 _cell : tempSel){
-                if(GameBoard.isAnAcceptableCell(_cell)){
-                    if(!board.isThereAPiece(_cell)){
-                        selectedCells[l++] = _cell;
-                    }else {
-                        Pezzo p1 = board.getPieceByPosition(_cell);
-                        if(!p1.getColor().equals(p.getColor())){
-                            selectedCells[l++] = _cell;
-                        }
-                    }
-                }
-            }
-            selectedCells = Arrays.copyOf(selectedCells, l);//resize: leaving the void position in the array
-            //finish base selection (obviusly it will be deleted)*/
-
             if(p.getType() != "horse" && p.getType() != "king") {//all piece which aren't horse and king
                 //start advanced selection (calculating routes)
                 Vector2[] myRays = null;

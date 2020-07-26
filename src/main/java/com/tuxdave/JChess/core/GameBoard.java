@@ -8,8 +8,8 @@ public class GameBoard {
 
     private Player[] players = new Player[2];
     {
-        players[0] = new Player("p1", 1);
-        players[1] = new Player("p2", 2);
+        players[0] = new Player("p1", 1);//WHITE
+        players[1] = new Player("p2", 2);//BLACK
     }
     public Pezzo[] getAllPieces(){
         Pezzo[] ps = new Pezzo[32];
@@ -69,5 +69,27 @@ public class GameBoard {
         }else{
             return false;
         }
+    }
+
+    /**
+     * delete a piece from the game board if is there one
+     * @param p the piece which will be deleted
+     */
+    public void eatPiece(Pezzo p){
+        int player, l = 0;
+        if(p == null){
+            System.out.println("nessun pezzo mangiato");
+            return;
+        }else{
+            player = (p.getColor() == "WHITE" ? 0 : 1);
+        }
+        for(Pezzo p1 : players[player].getPieces()){
+            if(p.equals(p1)){
+                break;
+            }
+            l++;
+        }
+        if(l != players[player].getPieces().length)
+            players[player].getPieces()[l] = null;
     }
 }

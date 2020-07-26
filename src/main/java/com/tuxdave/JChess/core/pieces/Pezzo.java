@@ -80,4 +80,13 @@ public abstract class Pezzo implements Drawable {
         return Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Resources/Icons/pieces/" +
                 getType() + "_" + _color + ".png"));
     }
+
+    /**
+     * compare a piece with itself
+     * @param p the other piece
+     * @return true if the two pieces are equals
+     */
+    public boolean equals(Pezzo p){
+        return p.getColor() == getColor() && p.getPosition().equals(getPosition()) && p.getType() == getType();
+    }
 }

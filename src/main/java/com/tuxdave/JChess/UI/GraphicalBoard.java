@@ -115,9 +115,19 @@ public class GraphicalBoard extends JComponent {
     /**
      * @param p - the piece from which to take the selected cells
      */
-    private void updateSelectedCells(Pezzo p){ //todo: review this to calculate the routes
+    private void updateSelectedCells(Pezzo p){
         selectedCells = RouteChecker.getPossibleMoves(p, board);
         repaint();
+    }
+    private boolean isASelectedCell(Vector2 cell){
+        if(selectedCells != null){
+            for(Vector2 _cell : selectedCells){
+                if(_cell.equals(cell)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -149,6 +159,7 @@ public class GraphicalBoard extends JComponent {
     //i preferred creating a dedicated class that implements the methods because is clearer
     private class GraphicalBoardListener implements MouseListener, MouseMotionListener {
         private boolean eatingMode = false;
+        private Pezzo piece = null;
 
         /**catch the mouse position on the click time, checks if is there a piece and in case there is, get the possible moves*/
         private void startEatingMode(Vector2 clickCoords){
@@ -156,13 +167,24 @@ public class GraphicalBoard extends JComponent {
             //now check if is there a piece and if is there get the possible move and repaint all
             if(board.isThereAPiece(clickCoords)){
                 updateSelectedCells(board.getPieceByPosition(clickCoords));
+                piece = board.getPieceByPosition(clickCoords);
             }
         }
 
         /**eat a piece if is there one or simply move the piece*/
-        private void stopEatingMode(Vector2 clickCoords){//todo: modify the selecter method and then this to allow it to move and eat.
-            updateSelectedCells(null);
-            eatingMode = false;
+        private void eat(Vector2 clickCoords){
+            if(isASelectedCell(clickCoords)) {
+                //eat and then move
+                Pezzo p = board.getPieceByPosition(clickCoords);
+                if (p != null && !piece.getColor().equals(p.getColor())) {//if at the destination is there a piece:
+                    board.eatPiece(p);
+                }
+                piece.move(clickCoords);
+                //stop eating mode
+            }else{
+                eatingMode = false;
+            }
+            updateSelectedCells(null);//all cell now are unselected
         }
 
         //mouseListener
@@ -175,7 +197,7 @@ public class GraphicalBoard extends JComponent {
             if(!eatingMode){
                 startEatingMode(clickCoords);
             }else{//eatingMode = true
-                stopEatingMode(clickCoords);
+                eat(clickCoords);
             }
         }
 
