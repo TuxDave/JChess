@@ -5,6 +5,7 @@ import com.tuxdave.JChess.extras.Vector2;
 
 public class GameBoard {
     public static final short limits = 8;
+    private String turn = "WHITE";
 
     private Player[] players = new Player[2];
     {

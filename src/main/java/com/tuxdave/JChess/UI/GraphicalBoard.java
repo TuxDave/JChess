@@ -5,6 +5,7 @@ import com.tuxdave.JChess.core.RouteChecker;
 import com.tuxdave.JChess.core.pieces.Pedone;
 import com.tuxdave.JChess.core.pieces.Pezzo;
 import com.tuxdave.JChess.extras.Drawable;
+import com.tuxdave.JChess.extras.PieceListener;
 import com.tuxdave.JChess.extras.Vector2;
 
 import javax.swing.*;
@@ -158,7 +159,7 @@ public class GraphicalBoard extends JComponent {
     }
 
     //i preferred creating a dedicated class that implements the methods because is clearer
-    private class GraphicalBoardListener implements MouseListener, MouseMotionListener {
+    private class GraphicalBoardListener implements MouseListener, MouseMotionListener, PieceListener {
         private boolean eatingMode = false;
         private Pezzo piece = null;
 
@@ -173,7 +174,7 @@ public class GraphicalBoard extends JComponent {
         }
 
         /**eat a piece if is there one or simply move the piece*/
-        private void eat(Vector2 clickCoords){//todo: why pieces isn't eat really?
+        private void eat(Vector2 clickCoords){
             if(isASelectedCell(clickCoords)) {
                 //eat and then move
                 Pezzo p = board.getPieceByPosition(clickCoords);
@@ -181,9 +182,6 @@ public class GraphicalBoard extends JComponent {
                     board.eatPiece(p);
                 }
                 piece.move(clickCoords);
-                if(piece instanceof Pedone && (piece.getPosition().y == 8 || piece.getPosition().y == 1)){
-                    //todo: inserire qui il dialog per scegliere il morph
-                }
                 //stop eating mode
                 eatingMode = false;
                 updateSelectedCells(null);//all cell now are unselected
@@ -230,6 +228,17 @@ public class GraphicalBoard extends JComponent {
             if(hoveredCell == null || (!hoverCoord.equals(hoveredCell))){
                 hoveredCell = hoverCoord;
                 repaint();
+            }
+        }
+
+        /**
+         * do some action when a Pedone moves
+         * @param p the Pedone interested
+         */
+        @Override
+        public void onPedoneMove(Pedone p) {
+            if(piece.getPosition().y == 8 || piece.getPosition().y == 1){
+                //todo: inserire qui il dialog per scegliere il morph
             }
         }
     }
