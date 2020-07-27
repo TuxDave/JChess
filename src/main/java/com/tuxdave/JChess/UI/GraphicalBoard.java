@@ -2,6 +2,7 @@ package com.tuxdave.JChess.UI;
 
 import com.tuxdave.JChess.core.GameBoard;
 import com.tuxdave.JChess.core.RouteChecker;
+import com.tuxdave.JChess.core.pieces.Pedone;
 import com.tuxdave.JChess.core.pieces.Pezzo;
 import com.tuxdave.JChess.extras.Drawable;
 import com.tuxdave.JChess.extras.Vector2;
@@ -180,6 +181,9 @@ public class GraphicalBoard extends JComponent {
                     board.eatPiece(p);
                 }
                 piece.move(clickCoords);
+                if(piece instanceof Pedone && (piece.getPosition().y == 8 || piece.getPosition().y == 1)){
+                    //todo: inserire qui il dialog per scegliere il morph
+                }
                 //stop eating mode
                 eatingMode = false;
                 updateSelectedCells(null);//all cell now are unselected
