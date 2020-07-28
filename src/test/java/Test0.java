@@ -43,9 +43,6 @@ public class Test0 extends JFrame {
         add(panel1);
         //create a custom board to make a test
         GameBoard board = new GameBoard();
-        board.getPieceByPosition(new Vector2(4, 2)).move(new Vector2(4, 4));
-        board.getPieceByPosition(new Vector2(4, 1)).move(new Vector2(4, 3));
-        board.getPieceByPosition(new Vector2(7, 7)).move(new Vector2(7, 6));
         gboard.setBoard(board);
     }
 

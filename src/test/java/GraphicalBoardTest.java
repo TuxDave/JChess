@@ -9,6 +9,10 @@ class GraphicalBoardTest extends GraphicalBoard {
         board = b;
     }
 
+    public GraphicalBoardTest() {
+        super();
+    }
+
     {//static properties
         setBorder(BorderFactory.createLineBorder(Color.blue));
         setPreferredSize(new Dimension(512,512));

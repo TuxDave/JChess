@@ -1,13 +1,12 @@
 package com.tuxdave.JChess.core.pieces;
 
-import com.tuxdave.JChess.extras.PieceListener;
+import com.tuxdave.JChess.UI.GraphicalBoard;
 import com.tuxdave.JChess.extras.Vector2;
 
 public class Pedone extends Pezzo {
 
     private boolean alreadyMoved = false;
     private boolean reverse = false;
-    private PieceListener listener;
 
     /**
      * @param _id         everything possible string to recognize the piece;
@@ -18,12 +17,6 @@ public class Pedone extends Pezzo {
         super(_id, _color, _inizialPos);
         if(color == 'B'){
             reverse = true;
-        }
-    }
-
-    public void setPieceListener(PieceListener l){
-        if(l != null){
-            listener = l;
         }
     }
 
@@ -55,7 +48,6 @@ public class Pedone extends Pezzo {
             position = _destination;
             alreadyMoved = true;
         }
-        listener.onPedoneMove(this);
         return ok;
     }
 

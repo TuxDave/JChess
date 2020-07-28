@@ -12,6 +12,7 @@ public class GameBoard {
         players[0] = new Player("p1", 1);//WHITE
         players[1] = new Player("p2", 2);//BLACK
     }
+
     public Pezzo[] getAllPieces(){
         Pezzo[] ps = new Pezzo[32];
         short c = 0;
@@ -61,6 +62,22 @@ public class GameBoard {
     }
 
     /**
+     *
+     * @param _id id to search
+     * @param _color color "BLACK" or white to search
+     * @return null if the pieces isn't found
+     */
+    public Pezzo getPieceByIdAndColor(String _id, String _color){
+        Pezzo[] pieces = getAllPieces();
+        for(int i = 0; i < pieces.length; i++){
+            if(pieces[i] != null &&pieces[i].getId().equals(_id) && pieces[i].getColor().equals(_color)){
+                return getAllPieces()[i];
+            }
+        }
+        return null;
+    }
+
+    /**
      * @param _cell the cell to tests
      * @return true if the cell is acceptable (between the board limits)
      */
@@ -90,5 +107,17 @@ public class GameBoard {
             l++;
         }
         players[player].getPieces()[l] = null;
+    }
+
+    /**
+     * @param n player number 0 = white, 1 = black
+     * @return the selected player obj
+     */
+    public Player getPlayer(int n){
+        if(n >= 0 && n <= 1){
+            return players[n];
+        }else{
+            throw new IndexOutOfBoundsException("player number not found!");
+        }
     }
 }

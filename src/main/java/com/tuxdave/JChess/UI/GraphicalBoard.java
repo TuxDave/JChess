@@ -5,7 +5,6 @@ import com.tuxdave.JChess.core.RouteChecker;
 import com.tuxdave.JChess.core.pieces.Pedone;
 import com.tuxdave.JChess.core.pieces.Pezzo;
 import com.tuxdave.JChess.extras.Drawable;
-import com.tuxdave.JChess.extras.PieceListener;
 import com.tuxdave.JChess.extras.Vector2;
 
 import javax.swing.*;
@@ -20,6 +19,7 @@ public class GraphicalBoard extends JComponent {
     private Vector2 hoveredCell = null;
     protected GameBoard board = new GameBoard();
     private static final int CELL_SIZE = 64;
+    private final GraphicalBoardListener listener = new GraphicalBoardListener();
 
     {//static properties
         setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -27,10 +27,11 @@ public class GraphicalBoard extends JComponent {
         setMaximumSize(getPreferredSize());
         setMinimumSize(getPreferredSize());
     }
-    {//adding some listeners
-        GraphicalBoardListener l = new GraphicalBoardListener();
-        addMouseListener(l);
-        addMouseMotionListener(l);
+    public GraphicalBoard(){
+        super();
+        //adding some listeners
+        addMouseListener(listener);
+        addMouseMotionListener(listener);
     }
 
     @Override
@@ -159,15 +160,15 @@ public class GraphicalBoard extends JComponent {
     }
 
     //i preferred creating a dedicated class that implements the methods because is clearer
-    private class GraphicalBoardListener implements MouseListener, MouseMotionListener, PieceListener {
+    private class GraphicalBoardListener implements MouseListener, MouseMotionListener {
         private boolean eatingMode = false;
         private Pezzo piece = null;
 
         /**catch the mouse position on the click time, checks if is there a piece and in case there is, get the possible moves*/
         private void startEatingMode(Vector2 clickCoords){
-            eatingMode = true;
             //now check if is there a piece and if is there get the possible move and repaint all
             if(board.isThereAPiece(clickCoords)){
+                eatingMode = true;
                 updateSelectedCells(board.getPieceByPosition(clickCoords));
                 piece = board.getPieceByPosition(clickCoords);
             }
@@ -182,6 +183,19 @@ public class GraphicalBoard extends JComponent {
                     board.eatPiece(p);
                 }
                 piece.move(clickCoords);
+                //pedone...
+                if(piece instanceof Pedone && (piece.getPosition().y == 8 || piece.getPosition().y == 1)){
+                    String[] choises = {"Horse", "Tower", "Ensign", "Queen"};
+                    JComboBox<String> comboBox = new JComboBox<>(choises);
+                    JOptionPane.showMessageDialog(null, comboBox, "Pawn Morph...", JOptionPane.QUESTION_MESSAGE);
+                    piece = ((Pedone)(piece)).morph(comboBox.getSelectedItem().toString().toLowerCase());
+                    for(int i = 0; i < board.getAllPieces().length; i++){
+                        if(board.getAllPieces()[i] != null && board.getAllPieces()[i].getPosition().equals(piece.getPosition())){
+                            board.getPlayer((piece.getColor().equals("WHITE") ? 0 : 1)).re_AssignPiece(piece, ((piece.getColor().equals("WHITE") ? 0 : 1) == 0 ? i : i-16));
+                        }
+                    }
+                }
+                repaint();
                 //stop eating mode
                 eatingMode = false;
                 updateSelectedCells(null);//all cell now are unselected
@@ -228,17 +242,6 @@ public class GraphicalBoard extends JComponent {
             if(hoveredCell == null || (!hoverCoord.equals(hoveredCell))){
                 hoveredCell = hoverCoord;
                 repaint();
-            }
-        }
-
-        /**
-         * do some action when a Pedone moves
-         * @param p the Pedone interested
-         */
-        @Override
-        public void onPedoneMove(Pedone p) {
-            if(piece.getPosition().y == 8 || piece.getPosition().y == 1){
-                //todo: inserire qui il dialog per scegliere il morph
             }
         }
     }

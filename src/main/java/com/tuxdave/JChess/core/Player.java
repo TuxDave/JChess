@@ -3,7 +3,9 @@ package com.tuxdave.JChess.core;
 import com.tuxdave.JChess.core.pieces.*;
 import com.tuxdave.JChess.extras.Vector2;
 
-public class Player {
+import javax.swing.*;
+
+public class Player{
     private final String color;
     public String nick;
     private Pezzo[] pieces;
@@ -49,5 +51,13 @@ public class Player {
     }
     public Pezzo[] getPieces(){
         return pieces;
+    }
+
+    /**
+     * @param p the new instance
+     * @param i the index of pieces
+     */
+    public void re_AssignPiece(Pezzo p, int i){
+        pieces[i] = p;
     }
 }
