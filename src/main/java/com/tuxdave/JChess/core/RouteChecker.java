@@ -96,7 +96,7 @@ public class RouteChecker{
                 selectedCells = new Vector2[8];
                 l = 0;
                 for(Vector2 cell : p.getPossibleMoves()){
-                    if(GameBoard.isAnAcceptableCell(cell)){
+                    if(GameBoard.isAnAcceptableCell(cell) && !board.isThereAPiece(cell)){
                         selectedCells[l++] = cell;
                     }
                 }
