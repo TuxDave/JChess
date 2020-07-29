@@ -168,8 +168,10 @@ public class GraphicalBoard extends JComponent {
         private void startEatingMode(Vector2 clickCoords){
             //now check if is there a piece and if is there get the possible move and repaint all
             if(board.isThereAPiece(clickCoords)){
-                eatingMode = true;
                 updateSelectedCells(board.getPieceByPosition(clickCoords));
+                if(selectedCells.length != 0){
+                    eatingMode = true;
+                }
                 piece = board.getPieceByPosition(clickCoords);
             }
         }

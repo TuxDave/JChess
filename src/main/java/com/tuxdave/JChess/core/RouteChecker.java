@@ -96,8 +96,15 @@ public class RouteChecker{
                 selectedCells = new Vector2[8];
                 l = 0;
                 for(Vector2 cell : p.getPossibleMoves()){
-                    if(GameBoard.isAnAcceptableCell(cell) && !board.isThereAPiece(cell)){
-                        selectedCells[l++] = cell;
+                    if(GameBoard.isAnAcceptableCell(cell)){
+                        if(!board.isThereAPiece(cell)){
+                            selectedCells[l++] = cell;
+                        }else{
+                            Pezzo p1 = board.getPieceByPosition(cell);
+                            if(!p1.getColor().equals(p.getColor())){
+                                selectedCells[l++] = cell;
+                            }
+                        }
                     }
                 }
                 selectedCells = Arrays.copyOf(selectedCells, l);
@@ -131,7 +138,7 @@ public class RouteChecker{
             if(!board.isThereAPiece(route[index])){ //if isn't there a piece
                 finalRoute[l++] = route[index];
             }else{
-                if(board.getPieceByPosition(route[index]).getColor() == p.getColor()){
+                if(board.getPieceByPosition(route[index]).getColor().equals(p.getColor())){
                     //if the piece which collided with me is a friend, i will only stop the process
                     break;
                 }else{

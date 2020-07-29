@@ -82,7 +82,7 @@ public class GameBoard {
      * @return true if the cell is acceptable (between the board limits)
      */
     public static boolean isAnAcceptableCell(Vector2 _cell){
-        if(_cell.isBetweenLimits(0,0,GameBoard.limits, GameBoard.limits)){
+        if(_cell.isBetweenLimits(1,1,GameBoard.limits, GameBoard.limits)){
             return true;
         }else{
             return false;
