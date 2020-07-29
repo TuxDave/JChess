@@ -3,9 +3,13 @@ package com.tuxdave.JChess.core;
 import com.tuxdave.JChess.core.pieces.Pezzo;
 import com.tuxdave.JChess.extras.Vector2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameBoard {
     public static final short limits = 8;
     private String turn = "WHITE";
+    private final List<GameListener> listeners = new ArrayList<GameListener>();
 
     private Player[] players = new Player[2];
     {
@@ -119,5 +123,19 @@ public class GameBoard {
         }else{
             throw new IndexOutOfBoundsException("player number not found!");
         }
+    }
+
+    public void nextTurn(){
+        turn = turn.equals("WHITE") ? "BLACK" : "WHITE";
+        for(GameListener l : listeners){
+            l.turnPassed(turn);
+        }
+
+    }
+
+    //ListenerManagement
+
+    public void addGameListener(GameListener g){
+        listeners.add(g);
     }
 }

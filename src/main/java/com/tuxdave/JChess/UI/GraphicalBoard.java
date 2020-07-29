@@ -1,6 +1,7 @@
 package com.tuxdave.JChess.UI;
 
 import com.tuxdave.JChess.core.GameBoard;
+import com.tuxdave.JChess.core.GameListener;
 import com.tuxdave.JChess.core.RouteChecker;
 import com.tuxdave.JChess.core.pieces.Pedone;
 import com.tuxdave.JChess.core.pieces.Pezzo;
@@ -17,9 +18,9 @@ public class GraphicalBoard extends JComponent {
 
     private Vector2[] selectedCells = {};
     private Vector2 hoveredCell = null;
-    protected GameBoard board = new GameBoard();
+    protected GameBoard board;
     private static final int CELL_SIZE = 64;
-    private final GraphicalBoardListener listener = new GraphicalBoardListener();
+    private GraphicalBoardListener listener;
 
     {//static properties
         setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -29,9 +30,13 @@ public class GraphicalBoard extends JComponent {
     }
     public GraphicalBoard(){
         super();
+        //costructing some objs
+        board = new GameBoard();
+        listener = new GraphicalBoardListener();
         //adding some listeners
         addMouseListener(listener);
         addMouseMotionListener(listener);
+        board.addGameListener(listener);
     }
 
     @Override
@@ -160,7 +165,7 @@ public class GraphicalBoard extends JComponent {
     }
 
     //i preferred creating a dedicated class that implements the methods because is clearer
-    private class GraphicalBoardListener implements MouseListener, MouseMotionListener {
+    private class GraphicalBoardListener implements MouseListener, MouseMotionListener, GameListener {
         private boolean eatingMode = false;
         private Pezzo piece = null;
 
@@ -198,6 +203,7 @@ public class GraphicalBoard extends JComponent {
                     }
                 }
                 repaint();
+                board.nextTurn();
                 //stop eating mode
                 eatingMode = false;
                 updateSelectedCells(null);//all cell now are unselected
@@ -245,6 +251,15 @@ public class GraphicalBoard extends JComponent {
                 hoveredCell = hoverCoord;
                 repaint();
             }
+        }
+
+        /**todo: this will be moved in the frame, is just a test
+         * notify which is the current turn
+         * @param turn the turn incoming
+         */
+        @Override
+        public void turnPassed(String turn) {
+            System.out.println(turn);
         }
     }
 }
