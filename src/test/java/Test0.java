@@ -42,8 +42,8 @@ public class Test0 extends JFrame {
     {
         add(panel1);
         //create a custom board to make a test
-        GameBoard board = new GameBoard();
-        gboard.setBoard(board);
+        //GameBoard board = new GameBoard(); FUCK THIS LINEEEEEE
+        //gboard.setBoard(board);
     }
 
     public static void main(String[] args) {

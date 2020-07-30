@@ -21,6 +21,7 @@ public class GraphicalBoard extends JComponent {
     protected GameBoard board;
     private static final int CELL_SIZE = 64;
     private GraphicalBoardListener listener;
+    private String turn = "WHITE";
 
     {//static properties
         setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -28,7 +29,7 @@ public class GraphicalBoard extends JComponent {
         setMaximumSize(getPreferredSize());
         setMinimumSize(getPreferredSize());
     }
-    public GraphicalBoard(){
+    public GraphicalBoard() {
         super();
         //costructing some objs
         board = new GameBoard();
@@ -173,11 +174,14 @@ public class GraphicalBoard extends JComponent {
         private void startEatingMode(Vector2 clickCoords){
             //now check if is there a piece and if is there get the possible move and repaint all
             if(board.isThereAPiece(clickCoords)){
-                updateSelectedCells(board.getPieceByPosition(clickCoords));
-                if(selectedCells.length != 0){
-                    eatingMode = true;
+                Pezzo _piece = board.getPieceByPosition(clickCoords);
+                if(_piece.getColor().equals(turn)){
+                    updateSelectedCells(_piece);
+                    if(selectedCells.length != 0){
+                        piece = _piece;
+                        eatingMode = true;
+                    }
                 }
-                piece = board.getPieceByPosition(clickCoords);
             }
         }
 
@@ -253,13 +257,13 @@ public class GraphicalBoard extends JComponent {
             }
         }
 
-        /**todo: this will be moved in the frame, is just a test
+        /**
          * notify which is the current turn
-         * @param turn the turn incoming
+         * @param _turn the turn incoming
          */
         @Override
-        public void turnPassed(String turn) {
-            System.out.println(turn);
+        public void turnPassed(String _turn) {
+            turn = _turn;
         }
     }
 }
