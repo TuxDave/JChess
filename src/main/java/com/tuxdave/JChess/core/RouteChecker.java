@@ -151,9 +151,9 @@ public class RouteChecker{
         }
         finalRoute = Arrays.copyOf(finalRoute, l);
         if(p instanceof Pedone){
+            direction = (short) (p.getColor().equals("WHITE") ? 1 : -1);
+            int orientation = 1;
             {//diagonal check
-                direction = (short) (p.getColor().equals("WHITE") ? 1 : -1);
-                int orientation = 1;
                 for (int i = 0; i < 2; i++) {
                     Vector2 pos = Vector2.add(p.getPosition(), new Vector2(orientation, direction));
                     if (board.isThereAPiece(pos)) {
@@ -166,7 +166,15 @@ public class RouteChecker{
                     orientation = -1;
                 }
             }{//en passant
-
+                Vector2 pos = new Vector2(p.getPosition().x-1 ,p.getPosition().y);
+                for(int i = 0; i < 2; i++){
+                    Pezzo pTemp = board.getPieceByPosition(pos);
+                    if(pTemp instanceof Pedone && !pTemp.getColor().equals(p.getColor()) && ((Pedone) pTemp).justDoubleCase){
+                        finalRoute = Arrays.copyOf(finalRoute, ++l);
+                        finalRoute[l-1] = pos;
+                    }
+                    pos.x = p.getPosition().x+1;
+                }
             }
         }
         return finalRoute;

@@ -7,7 +7,7 @@ import com.tuxdave.JChess.extras.Vector2;
 public class Pedone extends Pezzo implements GameListener {
 
     private boolean alreadyMoved = false;
-    private boolean justDoubleCase = false;
+    public boolean justDoubleCase = false;
     private boolean reverse = false;
 
     /**
