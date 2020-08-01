@@ -49,9 +49,12 @@ public class Pedone extends Pezzo implements GameListener {
         if(position.y+2 == _destination.y || position.y-2 == _destination.y){
             justDoubleCase = true;
         }
+        boolean enPassant = position.x+1 == _destination.x || position.x -1 == _destination.x;
         position = _destination;
-        System.out.println(justDoubleCase);
         alreadyMoved = true;
+        if(enPassant){//after en passant adjustament position
+            move(new Vector2(_destination.x, _destination.y+1));
+        }
         return ok;
     }
 
