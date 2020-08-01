@@ -6,6 +6,4 @@ public interface GameListener {
      * @param turn the turn incoming
      */
     public void turnPassed(String turn);
-
-    //public void onPedoneMove()
 }

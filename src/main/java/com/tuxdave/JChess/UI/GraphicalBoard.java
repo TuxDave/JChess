@@ -38,6 +38,11 @@ public class GraphicalBoard extends JComponent {
         addMouseListener(listener);
         addMouseMotionListener(listener);
         board.addGameListener(listener);
+        for(Pezzo p : board.getAllPieces()){
+            if(p instanceof Pedone){
+                board.addGameListener((Pedone)p);
+            }
+        }
     }
 
     @Override
@@ -195,16 +200,19 @@ public class GraphicalBoard extends JComponent {
                 }
                 piece.move(clickCoords);
                 //pedone...
-                if(piece instanceof Pedone && (piece.getPosition().y == 8 || piece.getPosition().y == 1)){
-                    String[] choises = {"Horse", "Tower", "Ensign", "Queen"};
-                    JComboBox<String> comboBox = new JComboBox<>(choises);
-                    JOptionPane.showMessageDialog(null, comboBox, "Pawn Morph...", JOptionPane.QUESTION_MESSAGE);
-                    piece = ((Pedone)(piece)).morph(comboBox.getSelectedItem().toString().toLowerCase());
-                    for(int i = 0; i < board.getAllPieces().length; i++){
-                        if(board.getAllPieces()[i] != null && board.getAllPieces()[i].getPosition().equals(piece.getPosition())){
-                            board.getPlayer((piece.getColor().equals("WHITE") ? 0 : 1)).re_AssignPiece(piece, ((piece.getColor().equals("WHITE") ? 0 : 1) == 0 ? i : i-16));
+                if(piece instanceof Pedone){
+                    if(piece.getPosition().y == 8 || piece.getPosition().y == 1){
+                        String[] choises = {"Horse", "Tower", "Ensign", "Queen"};
+                        JComboBox<String> comboBox = new JComboBox<>(choises);
+                        JOptionPane.showMessageDialog(null, comboBox, "Pawn Morph...", JOptionPane.QUESTION_MESSAGE);
+                        piece = ((Pedone)(piece)).morph(comboBox.getSelectedItem().toString().toLowerCase());
+                        for(int i = 0; i < board.getAllPieces().length; i++){
+                            if(board.getAllPieces()[i] != null && board.getAllPieces()[i].getPosition().equals(piece.getPosition())){
+                                board.getPlayer((piece.getColor().equals("WHITE") ? 0 : 1)).re_AssignPiece(piece, ((piece.getColor().equals("WHITE") ? 0 : 1) == 0 ? i : i-16));
+                            }
                         }
                     }
+
                 }
                 repaint();
                 board.nextTurn();

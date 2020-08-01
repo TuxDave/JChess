@@ -1,6 +1,7 @@
 package com.tuxdave.JChess.core;
 
 import com.tuxdave.JChess.core.pieces.King;
+import com.tuxdave.JChess.core.pieces.Pedone;
 import com.tuxdave.JChess.core.pieces.Pezzo;
 import com.tuxdave.JChess.extras.Vector2;
 
@@ -148,7 +149,27 @@ public class RouteChecker{
                 }
             }
         }
-        return Arrays.copyOf(finalRoute, l);
+        finalRoute = Arrays.copyOf(finalRoute, l);
+        if(p instanceof Pedone){
+            {//diagonal check
+                direction = (short) (p.getColor().equals("WHITE") ? 1 : -1);
+                int orientation = 1;
+                for (int i = 0; i < 2; i++) {
+                    Vector2 pos = Vector2.add(p.getPosition(), new Vector2(orientation, direction));
+                    if (board.isThereAPiece(pos)) {
+                        Pezzo pTemp = board.getPieceByPosition(pos);
+                        if (!pTemp.getColor().equals(p.getColor())) {
+                            finalRoute = Arrays.copyOf(finalRoute, ++l);
+                            finalRoute[l - 1] = pos;
+                        }
+                    }
+                    orientation = -1;
+                }
+            }{//en passant
+
+            }
+        }
+        return finalRoute;
     }
 
     /**

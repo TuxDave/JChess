@@ -1,11 +1,13 @@
 package com.tuxdave.JChess.core.pieces;
 
 import com.tuxdave.JChess.UI.GraphicalBoard;
+import com.tuxdave.JChess.core.GameListener;
 import com.tuxdave.JChess.extras.Vector2;
 
-public class Pedone extends Pezzo {
+public class Pedone extends Pezzo implements GameListener {
 
     private boolean alreadyMoved = false;
+    private boolean justDoubleCase = false;
     private boolean reverse = false;
 
     /**
@@ -35,19 +37,21 @@ public class Pedone extends Pezzo {
         return v;
     }
 
+    /**
+     * the pawn has more movement liberty, to make easier its strange eating policies
+     * @param _destination
+     * @return
+     */
     @Override
     public boolean move(Vector2 _destination) {
         Vector2[] moves = getPossibleMoves();
-        boolean ok = false;
-        for (Vector2 move : moves) {
-            if (move.equals(_destination)) {
-                ok = true;
-            }
+        boolean ok = true;
+        if(position.y+2 == _destination.y || position.y-2 == _destination.y){
+            justDoubleCase = true;
         }
-        if(ok){
-            position = _destination;
-            alreadyMoved = true;
-        }
+        position = _destination;
+        System.out.println(justDoubleCase);
+        alreadyMoved = true;
         return ok;
     }
 
@@ -56,7 +60,7 @@ public class Pedone extends Pezzo {
         type = "pedone";
     }
 
-    /*morph itself in another Piece
+    /**morph itself in another Piece
         possible parameters:
             horse | ensign | tower | queen
          */
@@ -71,6 +75,17 @@ public class Pedone extends Pezzo {
             case "queen":
             default:
                 return new Queen(id, color,position);
+        }
+    }
+
+    /**
+     * notify which is the current turn
+     * @param turn the turn incoming
+     */
+    @Override
+    public void turnPassed(String turn) {
+        if(justDoubleCase && turn.equals(getColor())){
+            justDoubleCase = false;
         }
     }
 }

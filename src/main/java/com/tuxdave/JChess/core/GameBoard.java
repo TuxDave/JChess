@@ -128,7 +128,9 @@ public class GameBoard {
     public void nextTurn(){
         turn = turn.equals("WHITE") ? "BLACK" : "WHITE";
         for(GameListener l : listeners){
-            l.turnPassed(turn);
+            if(l != null){
+                l.turnPassed(turn);
+            }
         }
 
     }
