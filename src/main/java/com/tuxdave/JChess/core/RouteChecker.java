@@ -173,7 +173,7 @@ public class RouteChecker{
                         finalRoute = Arrays.copyOf(finalRoute, ++l);
                         finalRoute[l-1] = pos;
                     }
-                    pos.x = p.getPosition().x+1;
+                    pos = new Vector2(p.getPosition().x+1, p.getPosition().y);
                 }
             }
         }
