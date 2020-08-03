@@ -139,8 +139,8 @@ public class RouteChecker{
             if(!board.isThereAPiece(route[index])){ //if isn't there a piece
                 finalRoute[l++] = route[index];
             }else{
-                if(board.getPieceByPosition(route[index]).getColor().equals(p.getColor())){
-                    //if the piece which collided with me is a friend, i will only stop the process
+                if(p instanceof Pedone || board.getPieceByPosition(route[index]).getColor().equals(p.getColor())){
+                    //if the piece which collided with me is a friend of i'm a pawn, i will only stop the process
                     break;
                 }else{
                     //i will hilight its cell because i can eat it
