@@ -3,6 +3,7 @@ package com.tuxdave.JChess.core;
 import com.tuxdave.JChess.core.pieces.King;
 import com.tuxdave.JChess.core.pieces.Pedone;
 import com.tuxdave.JChess.core.pieces.Pezzo;
+import com.tuxdave.JChess.core.pieces.Tower;
 import com.tuxdave.JChess.extras.Vector2;
 
 import java.util.Arrays;
@@ -109,6 +110,27 @@ public class RouteChecker{
                     }
                 }
                 selectedCells = Arrays.copyOf(selectedCells, l);
+
+                //to allow king to move arrocco:
+                if(p instanceof King && !((King)p).alreadyMoved){//if is a King and not moved yet
+                    short n = 8;
+                    for(int i = 0; i < 2; i++){
+                        boolean doIt = true;
+                        Pezzo t = board.getPieceByPosition(new Vector2(n, p.getPosition().y));
+                        if (t instanceof Tower && t.getColor().equals(p.getColor())) {
+                            for(int j = p.getPosition().x+(i == 0 ? 1 : -1); (i == 0 ? j < t.getPosition().x : j > t.getPosition().x); j += (i == 0 ? 1 : -1)){//for each piece till the tower
+                                if(board.isThereAPiece(new Vector2(j, p.getPosition().y))){
+                                    doIt = false;
+                                }
+                            }
+                            if(doIt){//if isn't there any piece till the tower we can do the Arrocco
+                                selectedCells = Arrays.copyOf(selectedCells, ++l);
+                                selectedCells[l - 1] = t.getPosition();
+                            }
+                        }
+                        n = 1;
+                    }
+                }
             }
         }else{//da qui è OK
             selectedCells = new Vector2[]{};

@@ -1,12 +1,14 @@
 package com.tuxdave.JChess.core;
 
+import com.tuxdave.JChess.core.pieces.King;
 import com.tuxdave.JChess.core.pieces.Pezzo;
+import com.tuxdave.JChess.core.pieces.Tower;
 import com.tuxdave.JChess.extras.Vector2;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameBoard {
+public class GameBoard implements GameListener{
     public static final short limits = 8;
     private String turn = "WHITE";
     private final List<GameListener> listeners = new ArrayList<GameListener>();
@@ -15,6 +17,9 @@ public class GameBoard {
     {
         players[0] = new Player("p1", 1);//WHITE
         players[1] = new Player("p2", 2);//BLACK
+        //add listener refert to kins
+        ((King)players[0].getPieces()[12]).addGameListener(this);
+        ((King)players[1].getPieces()[12]).addGameListener(this);
     }
 
     public Pezzo[] getAllPieces(){
@@ -139,5 +144,34 @@ public class GameBoard {
 
     public void addGameListener(GameListener g){
         listeners.add(g);
+    }
+
+    /**
+     * notify which is the current turn
+     * @param turn the turn incoming
+     */
+    @Override
+    public void turnPassed(String turn){/*ignored*/}
+
+    /**
+     * the king calls this method when it want to make an "Arrocco"
+     * @param k    the king is moving
+     * @param type short or long
+     */
+    @Override
+    public void arrocco(King k, String type) {
+        try{
+            if (type.toLowerCase().equals("short")) {
+                Tower t = (Tower) getPieceByPosition(new Vector2(8, k.getPosition().y));
+                t.move(new Vector2(6, t.getPosition().y));
+                k.move(new Vector2(7, k.getPosition().y));
+            } else {
+                Tower t = (Tower) getPieceByPosition(new Vector2(1, k.getPosition().y));
+                t.move(new Vector2(4, t.getPosition().y));
+                k.move(new Vector2(3, k.getPosition().y));
+            }
+        }catch(NullPointerException e){
+            System.err.println("Unable to find a Tower in the target cell!");
+        }
     }
 }

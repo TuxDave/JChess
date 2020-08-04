@@ -1,6 +1,5 @@
 package com.tuxdave.JChess.core.pieces;
 
-import com.tuxdave.JChess.UI.GraphicalBoard;
 import com.tuxdave.JChess.core.GameListener;
 import com.tuxdave.JChess.extras.Vector2;
 
@@ -40,10 +39,9 @@ public class Pedone extends Pezzo implements GameListener {
     /**
      * the pawn has more movement liberty, to make easier its strange eating policies
      * @param _destination
-     * @return
      */
     @Override
-    public boolean move(Vector2 _destination) {
+    public void move(Vector2 _destination) {
         Vector2[] moves = getPossibleMoves();
         boolean ok = true;
         if(position.y+2 == _destination.y || position.y-2 == _destination.y){
@@ -55,7 +53,6 @@ public class Pedone extends Pezzo implements GameListener {
         if(enPassant){//after en passant adjustament position
             move(new Vector2(_destination.x, _destination.y+(getColor().equals("WHITE") ? 1 : -1)));
         }
-        return ok;
     }
 
     @Override
@@ -91,4 +88,6 @@ public class Pedone extends Pezzo implements GameListener {
             justDoubleCase = false;
         }
     }
+    @Override
+    public void arrocco(King k, String type) {/*ignored*/}
 }

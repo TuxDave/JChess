@@ -3,6 +3,7 @@ package com.tuxdave.JChess.UI;
 import com.tuxdave.JChess.core.GameBoard;
 import com.tuxdave.JChess.core.GameListener;
 import com.tuxdave.JChess.core.RouteChecker;
+import com.tuxdave.JChess.core.pieces.King;
 import com.tuxdave.JChess.core.pieces.Pedone;
 import com.tuxdave.JChess.core.pieces.Pezzo;
 import com.tuxdave.JChess.extras.Drawable;
@@ -273,5 +274,14 @@ public class GraphicalBoard extends JComponent {
         public void turnPassed(String _turn) {
             turn = _turn;
         }
+
+        /**
+         * the king calls this method when it want to make an "Arrocco"
+         *
+         * @param k    the king is moving
+         * @param type short or long
+         */
+        @Override
+        public void arrocco(King k, String type) {/*ignored*/}
     }
 }

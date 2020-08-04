@@ -39,19 +39,14 @@ public abstract class Pezzo implements Drawable {
     can generate also position that are out of game board, but in this case, the boardClass will exclude that possibility
      */
     public abstract Vector2[] getPossibleMoves();
+
     //returns true if the destination indicated is a possible target, and then move itself
-    public boolean move(Vector2 _destination){
-        Vector2[] moves = getPossibleMoves();
-        boolean ok = false;
-        for (Vector2 move : moves) {
-            if (move.equals(_destination)) {
-                ok = true;
-            }
-        }
-        if(ok){
+    public void move(Vector2 _destination){
+        if(_destination.isBetweenLimits(1,1,8,8)){
             position = _destination;
+        }else{
+            throw new IllegalArgumentException("Invalid target cell to move!");
         }
-        return ok;
     }
 
     public String getId() {

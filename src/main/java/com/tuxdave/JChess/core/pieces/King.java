@@ -1,8 +1,15 @@
 package com.tuxdave.JChess.core.pieces;
 
+import com.tuxdave.JChess.core.GameListener;
 import com.tuxdave.JChess.extras.Vector2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class King extends Pezzo{
+
+    public boolean alreadyMoved = false;
+    private List<GameListener> listeners = new ArrayList<GameListener>();
 
     /**
      * @param _id         everything possible string to recognize the piece;
@@ -28,7 +35,24 @@ public class King extends Pezzo{
     }
 
     @Override
+    public void move(Vector2 _destination) {
+        if(position.x+3 != _destination.x && position.x-4 != _destination.x){
+            position = _destination;
+        }else{//on arrocco move
+            String type = (position.x+3 == _destination.x ? "short" : "long");
+            for(GameListener l : listeners){
+                if(l != null)
+                    l.arrocco(this, type);
+            }
+        }
+        alreadyMoved = true;
+    }
+    @Override
     void setType() {
         type = "king";
+    }
+
+    public void addGameListener(GameListener l){
+        listeners.add(l);
     }
 }
