@@ -131,7 +131,7 @@ public class RouteChecker{
                         n = 1;
                     }
                 }
-            }
+            }//todo: calcolare il sistema di attacco per il re con tutti i vari listener per decidere tra le altre cose se sia possibile eseguire l'arrocco
         }else{//da qui è OK
             selectedCells = new Vector2[]{};
         }
