@@ -123,7 +123,23 @@ public class RouteChecker{
                                     doIt = false;
                                 }
                             }
-                            if(doIt){//if isn't there any piece till the tower we can do the Arrocco
+
+                            //decide if the arrocco is possible
+                            boolean canDo = true;
+                            Vector2 position = p.getPosition();
+                            int direction = (((String)(t.getPosition().y == 8 ? "short" : "long")).equals("short") ? 1 : -1);//set the direction of arrocco
+                            Vector2 dest = new Vector2(position.x + direction*2, position.y),
+                                    street = new Vector2(position.x + direction, position.y);
+                            Pezzo[] pieces = board.getPlayer((p.getColor().toLowerCase().equals("black") ? 0 : 1)).getPieces();
+                            for(Pezzo piece : pieces){
+                                if(piece.canIGoHere(dest, board) || piece.canIGoHere(street, board)){
+                                    canDo = false;
+                                    //todo prevent the StackOverflowError
+                                }
+                            }
+
+                            //apply
+                            if(doIt && canDo){//if isn't there any piece till the tower we can do the Arrocco and isn't there dangerous route
                                 selectedCells = Arrays.copyOf(selectedCells, ++l);
                                 selectedCells[l - 1] = t.getPosition();
                             }

@@ -3,6 +3,7 @@ package com.tuxdave.JChess.core.listener;
 import com.tuxdave.JChess.core.GameBoard;
 import com.tuxdave.JChess.extras.Vector2;
 
+//this is not a real listener, but only an interface
 public interface CheckListener {
 
     /**

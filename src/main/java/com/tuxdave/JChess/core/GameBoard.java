@@ -152,7 +152,8 @@ public class GameBoard implements GameListener {
      * @param turn the turn incoming
      */
     @Override
-    public void turnPassed(String turn){/*ignored*/}
+    public void turnPassed(String turn){/*todo: add here the check if a king is under attack
+                                          and prevent the kamikaze moves*/}
 
     /**
      * the king calls this method when it want to make an "Arrocco"
