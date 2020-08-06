@@ -1,12 +1,14 @@
 package com.tuxdave.JChess.core.pieces;
 
+import com.tuxdave.JChess.core.CheckListener;
 import com.tuxdave.JChess.core.GameBoard;
+import com.tuxdave.JChess.core.RouteChecker;
 import com.tuxdave.JChess.extras.Drawable;
 import com.tuxdave.JChess.extras.Vector2;
 
 import java.awt.*;
 
-public abstract class Pezzo implements Drawable {
+public abstract class Pezzo implements Drawable, CheckListener {
     protected String type;
     protected String id;
     protected char color;
@@ -68,6 +70,17 @@ public abstract class Pezzo implements Drawable {
     //sets the type of the piece in base how to be written this method
     abstract void setType();
 
+    /**
+     * compare a piece with itself
+     * @param p the other piece
+     * @return true if the two pieces are equals
+     */
+    public boolean equals(Pezzo p){
+        return p != null && p.getColor() == getColor() && p.getPosition().equals(getPosition()) && p.getType() == getType();
+    }
+
+    //implementing interfaces
+
     @Override
     public Image getGraphicalView() {
         String _color = getColor().toLowerCase();
@@ -77,11 +90,34 @@ public abstract class Pezzo implements Drawable {
     }
 
     /**
-     * compare a piece with itself
-     * @param p the other piece
-     * @return true if the two pieces are equals
+     * check if the oposite king is under attack by me
+     * @return true if am i checking king
      */
-    public boolean equals(Pezzo p){
-        return p != null && p.getColor() == getColor() && p.getPosition().equals(getPosition()) && p.getType() == getType();
+    @Override
+    public boolean amICheckingKing(GameBoard board) {
+        Vector2 kingPos = board.getPlayer((getColor().toLowerCase().equals("black") ? 0 : 1)).getPieces()[12].getPosition();//get the king of the else color position
+        Vector2[] moves = RouteChecker.getPossibleMoves(this, board);
+        for(Vector2 move : moves){
+            if(move.equals(kingPos)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * check if is actually a possible target of a move
+     * @param _pos the destination
+     * @return true if i can go there
+     */
+    @Override
+    public boolean canIGoHere(Vector2 _pos, GameBoard board) {
+        Vector2[] moves = RouteChecker.getPossibleMoves(this, board);
+        for(Vector2 move : moves){
+            if(move.equals(_pos)){
+                return true;
+            }
+        }
+        return false;
     }
 }
