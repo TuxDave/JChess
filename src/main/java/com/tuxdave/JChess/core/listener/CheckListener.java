@@ -1,5 +1,6 @@
-package com.tuxdave.JChess.core;
+package com.tuxdave.JChess.core.listener;
 
+import com.tuxdave.JChess.core.GameBoard;
 import com.tuxdave.JChess.extras.Vector2;
 
 public interface CheckListener {

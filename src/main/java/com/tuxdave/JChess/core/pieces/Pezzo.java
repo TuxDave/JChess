@@ -1,6 +1,6 @@
 package com.tuxdave.JChess.core.pieces;
 
-import com.tuxdave.JChess.core.CheckListener;
+import com.tuxdave.JChess.core.listener.CheckListener;
 import com.tuxdave.JChess.core.GameBoard;
 import com.tuxdave.JChess.core.RouteChecker;
 import com.tuxdave.JChess.extras.Drawable;

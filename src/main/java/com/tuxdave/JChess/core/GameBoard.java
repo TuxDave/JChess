@@ -1,5 +1,6 @@
 package com.tuxdave.JChess.core;
 
+import com.tuxdave.JChess.core.listener.GameListener;
 import com.tuxdave.JChess.core.pieces.King;
 import com.tuxdave.JChess.core.pieces.Pezzo;
 import com.tuxdave.JChess.core.pieces.Tower;
@@ -8,7 +9,7 @@ import com.tuxdave.JChess.extras.Vector2;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameBoard implements GameListener{
+public class GameBoard implements GameListener {
     public static final short limits = 8;
     private String turn = "WHITE";
     private final List<GameListener> listeners = new ArrayList<GameListener>();

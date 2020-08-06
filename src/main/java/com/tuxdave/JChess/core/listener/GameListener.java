@@ -1,4 +1,4 @@
-package com.tuxdave.JChess.core;
+package com.tuxdave.JChess.core.listener;
 
 import com.tuxdave.JChess.core.pieces.King;
 
