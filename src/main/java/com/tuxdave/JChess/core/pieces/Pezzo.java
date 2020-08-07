@@ -1,6 +1,6 @@
 package com.tuxdave.JChess.core.pieces;
 
-import com.tuxdave.JChess.core.listener.CheckListener;
+import com.tuxdave.JChess.core.AttackSystem;
 import com.tuxdave.JChess.core.GameBoard;
 import com.tuxdave.JChess.core.RouteChecker;
 import com.tuxdave.JChess.extras.Drawable;
@@ -8,7 +8,7 @@ import com.tuxdave.JChess.extras.Vector2;
 
 import java.awt.*;
 
-public abstract class Pezzo implements Drawable, CheckListener {
+public abstract class Pezzo implements Drawable, AttackSystem {
     protected String type;
     protected String id;
     protected char color;

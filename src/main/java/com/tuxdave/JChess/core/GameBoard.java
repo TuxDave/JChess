@@ -1,18 +1,21 @@
 package com.tuxdave.JChess.core;
 
+import com.tuxdave.JChess.core.listener.ActionNotifier;
 import com.tuxdave.JChess.core.listener.GameListener;
 import com.tuxdave.JChess.core.pieces.King;
 import com.tuxdave.JChess.core.pieces.Pezzo;
 import com.tuxdave.JChess.core.pieces.Tower;
 import com.tuxdave.JChess.extras.Vector2;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameBoard implements GameListener {
     public static final short limits = 8;
     private String turn = "WHITE";
-    private final List<GameListener> listeners = new ArrayList<GameListener>();
+    private final List<GameListener> gameListeners = new ArrayList<GameListener>();
+    private final List<ActionNotifier> actionNotifiers = new ArrayList<ActionNotifier>();
 
     private Player[] players = new Player[2];
     {
@@ -133,7 +136,7 @@ public class GameBoard implements GameListener {
 
     public void nextTurn(){
         turn = turn.equals("WHITE") ? "BLACK" : "WHITE";
-        for(GameListener l : listeners){
+        for(GameListener l : gameListeners){
             if(l != null){
                 l.turnPassed(turn);
             }
@@ -144,16 +147,31 @@ public class GameBoard implements GameListener {
     //ListenerManagement
 
     public void addGameListener(GameListener g){
-        listeners.add(g);
+        gameListeners.add(g);
     }
+    public void addActionNorifiers(ActionNotifier a) { actionNotifiers.add(a); }
 
     /**
      * notify which is the current turn
-     * @param turn the turn incoming
+     * @param turn the turn incoming (BLACK/WHITE)
      */
     @Override
-    public void turnPassed(String turn){/*todo: add here the check if a king is under attack
-                                          and prevent the kamikaze moves*/}
+    public void turnPassed(String turn){//todo: add here the check if a king is under attack and prevent the kamikaze moves
+        Pezzo[] pieces = getPlayer((turn.toLowerCase().equals("white") ? 1 : 0)).getPieces();//get the opposite pieces in base the current turn
+        boolean check = false;
+        for(Pezzo piece : pieces){
+            if(piece.amICheckingKing(this)){
+                check = true;
+            }
+        }
+        if(check){
+            for(ActionNotifier a : actionNotifiers){//notify the attack to the UI
+                if(a != null){
+                    a.notifyKingUnderAttack("WARNING " + getPlayer(turn.toLowerCase().equals("white") ? 0 : 1).nick + ": Your king is under attack!");
+                }
+            }
+        }
+    }
 
     /**
      * the king calls this method when it want to make an "Arrocco"

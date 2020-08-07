@@ -1,10 +1,10 @@
-package com.tuxdave.JChess.core.listener;
+package com.tuxdave.JChess.core;
 
 import com.tuxdave.JChess.core.GameBoard;
 import com.tuxdave.JChess.extras.Vector2;
 
 //this is not a real listener, but only an interface
-public interface CheckListener {
+public interface AttackSystem {
 
     /**
      * check if the oposite king is under attack by me

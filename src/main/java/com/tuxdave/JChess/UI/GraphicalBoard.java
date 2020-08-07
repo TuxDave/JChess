@@ -277,7 +277,6 @@ public class GraphicalBoard extends JComponent {
 
         /**
          * the king calls this method when it want to make an "Arrocco"
-         *
          * @param k    the king is moving
          * @param type short or long
          */
