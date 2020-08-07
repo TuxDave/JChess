@@ -1,9 +1,6 @@
 package com.tuxdave.JChess.core;
 
-import com.tuxdave.JChess.core.pieces.King;
-import com.tuxdave.JChess.core.pieces.Pedone;
-import com.tuxdave.JChess.core.pieces.Pezzo;
-import com.tuxdave.JChess.core.pieces.Tower;
+import com.tuxdave.JChess.core.pieces.*;
 import com.tuxdave.JChess.extras.Vector2;
 
 import java.util.Arrays;
@@ -100,7 +97,11 @@ public class RouteChecker{
                 for(Vector2 cell : p.getPossibleMoves()){
                     if(GameBoard.isAnAcceptableCell(cell)){
                         if(!board.isThereAPiece(cell)){
-                            selectedCells[l++] = cell;
+                            if(p instanceof Horse)
+                                selectedCells[l++] = cell;
+                            else //added kamikaze move prevent
+                                if(canKingMoveHere(p.getColor(), board, cell))
+                                    selectedCells[l++] = cell;
                         }else{
                             Pezzo p1 = board.getPieceByPosition(cell);
                             if(!p1.getColor().equals(p.getColor())){
@@ -238,5 +239,22 @@ public class RouteChecker{
             }
         }
         return Arrays.copyOf(rets, l);
+    }
+
+    /**
+     * returns if is possible the move by king
+     * @param _color "WHITE/BLACK" color of the king
+     * @param board the game board
+     * @param destination the destination cell
+     * @return true if the king can move here
+     */
+    public static boolean canKingMoveHere(String _color, GameBoard board, Vector2 destination){
+        Pezzo[] pieces = board.getPlayer(_color.equals("WHITE") ? 1 : 0).getPieces();
+        for(Pezzo p : pieces){
+            if(!(p instanceof King)&& p != null && p.canIGoHere(destination, board)){
+                return false;
+            }
+        }
+        return true;
     }
 }
