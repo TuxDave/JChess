@@ -194,4 +194,26 @@ public class GameBoard implements GameListener {
             System.err.println("Unable to find a Tower in the target cell!");
         }
     }
+
+    /**
+     * create a snapshot of the current position of the game
+     * @return a new board: the snapshot
+     */
+    public GameBoard createSnapShot(){
+        GameBoard b = new GameBoard();
+        for(int n = 0; n < 2;n++){
+            for(int i = 0; i < 16; i++){
+                b.getPlayer(n).re_AssignPiece(players[n].getPieces()[i].clone(), i);
+            }
+        }
+        return b;
+    }
+
+    public void applySnapShot(GameBoard b){
+        for(int n = 0; n < 2;n++){
+            for(int i = 0; i < 16; i++){
+                players[n].re_AssignPiece(b.getPlayer(n).getPieces()[i].clone(), i);
+            }
+        }
+    }
 }

@@ -14,7 +14,7 @@ class GraphicalBoardTest extends GraphicalBoard implements MouseListener {
         board = b;
     }
 
-    public Pezzo p = null;
+    public GameBoard p = null;
 
     public GraphicalBoardTest() {
         super();
@@ -31,10 +31,10 @@ class GraphicalBoardTest extends GraphicalBoard implements MouseListener {
     public void mouseClicked(MouseEvent mouseEvent) {//test clone a piece
         if(mouseEvent.getButton() == 2){
             System.out.println("C");
-            p = board.getPlayer(0).getPieces()[0].clone();
+            p = board.createSnapShot();
         }else if(mouseEvent.getButton() == 3){
             System.out.println("V");
-            board.getPlayer(0).re_AssignPiece(p, 0);
+            board.applySnapShot(p);
         }
     }
 
