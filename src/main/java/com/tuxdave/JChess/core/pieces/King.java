@@ -1,5 +1,6 @@
 package com.tuxdave.JChess.core.pieces;
 
+import com.tuxdave.JChess.core.GameBoard;
 import com.tuxdave.JChess.core.listener.GameListener;
 import com.tuxdave.JChess.extras.Vector2;
 
@@ -54,5 +55,15 @@ public class King extends Pezzo{
 
     public void addGameListener(GameListener l){
         listeners.add(l);
+    }
+
+    public boolean amIUnderAttack(GameBoard board){
+        Pezzo[] pieces = board.getPlayer(getColor().equals("WHITE") ? 1 : 0).getPieces();
+        for(Pezzo p : pieces){
+            if(p != null && p.canIGoHere(position, board)){
+                return true;
+            }
+        }
+        return false;
     }
 }

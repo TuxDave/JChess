@@ -249,12 +249,21 @@ public class RouteChecker{
      * @return true if the king can move here
      */
     public static boolean canKingMoveHere(String _color, GameBoard board, Vector2 destination){
-        Pezzo[] pieces = board.getPlayer(_color.equals("WHITE") ? 1 : 0).getPieces();
+        /*Pezzo[] pieces = board.getPlayer(_color.equals("WHITE") ? 1 : 0).getPieces();
         for(Pezzo p : pieces){
-            if(!(p instanceof King)&& p != null && p.canIGoHere(destination, board)){
+            if(!(p instanceof King) && p != null && p.canIGoHere(destination, board)){
                 return false;
             }
+        }*/
+
+        //check the other moves
+        GameBoard snapShot = board.createSnapShot();
+        snapShot.getPieceByIdAndColor("king", _color).move(destination);
+        King king = (King)snapShot.getPieceByIdAndColor("king", _color);
+        if(king.amIUnderAttack(snapShot)){
+            return false;
         }
+
         return true;
     }
 }

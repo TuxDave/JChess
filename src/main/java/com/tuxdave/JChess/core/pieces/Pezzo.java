@@ -60,6 +60,10 @@ public abstract class Pezzo implements Drawable, AttackSystem {
     public String getType(){
         return type;
     }
+
+    /**
+     * @return BLACK or WHITE
+     */
     public String getColor(){
         if(color == 'B'){
             return "BLACK";
