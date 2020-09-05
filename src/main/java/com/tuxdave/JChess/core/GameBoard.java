@@ -206,6 +206,13 @@ public class GameBoard implements GameListener {
                 b.getPlayer(n).re_AssignPiece(players[n].getPieces()[i].clone(), i);
             }
         }
+        for(ActionNotifier a : actionNotifiers){
+            b.addActionNorifiers(a);
+        }
+        for(GameListener g : gameListeners){
+            b.addGameListener(g);
+        }
+        b.turn = turn;
         return b;
     }
 
@@ -215,5 +222,12 @@ public class GameBoard implements GameListener {
                 players[n].re_AssignPiece(b.getPlayer(n).getPieces()[i].clone(), i);
             }
         }
+        for(ActionNotifier a : b.actionNotifiers){
+            addActionNorifiers(a);
+        }
+        for(GameListener g : b.gameListeners){
+            addGameListener(g);
+        }
+        turn = b.turn;
     }
 }
