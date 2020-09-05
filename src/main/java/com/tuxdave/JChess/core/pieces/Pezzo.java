@@ -120,4 +120,29 @@ public abstract class Pezzo implements Drawable, AttackSystem {
         }
         return false;
     }
+
+    /**
+     * Create a clone
+     * @return a clone not refered at the original Piece
+     */
+    public Pezzo clone(){
+        Pezzo p;
+        if(this instanceof Pedone){
+            p = new Pedone(this.getId(), this.color, new Vector2(this.getPosition().x, this.getPosition().y));
+        }else if(this instanceof King){
+            p = new King(this.getId(), this.color, new Vector2(this.getPosition().x, this.getPosition().y));
+        }else if(this instanceof Queen){
+            p = new Queen(this.getId(), this.color, new Vector2(this.getPosition().x, this.getPosition().y));
+        }else if(this instanceof Horse){
+            p = new Horse(this.getId(), this.color, new Vector2(this.getPosition().x, this.getPosition().y));
+        }else if(this instanceof Ensign){
+            p = new Ensign(this.getId(), this.color, new Vector2(this.getPosition().x, this.getPosition().y));
+        }else if(this instanceof Tower){
+            p = new Tower(this.getId(), this.color, new Vector2(this.getPosition().x, this.getPosition().y));
+        }else{
+            p = null;
+            System.err.println("null");
+        }
+        return p;
+    }
 }
