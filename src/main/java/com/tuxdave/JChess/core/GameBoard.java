@@ -204,7 +204,10 @@ public class GameBoard implements GameListener {
         for(int n = 0; n < 2;n++){
             for(int i = 0; i < 16; i++){
                 if(getAllPieces()[(n+1)*i] != null)
-                    b.getPlayer(n).re_AssignPiece(players[n].getPieces()[i].clone(), i);
+                    if(players[n].getPieces()[i] != null)
+                        b.getPlayer(n).re_AssignPiece(players[n].getPieces()[i].clone(), i);
+                    else
+                        b.getPlayer(n).re_AssignPiece(null, i);
             }
         }
         for(ActionNotifier a : actionNotifiers){

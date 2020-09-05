@@ -60,7 +60,7 @@ public class King extends Pezzo{
     public boolean amIUnderAttack(GameBoard board){
         Pezzo[] pieces = board.getPlayer(getColor().equals("WHITE") ? 1 : 0).getPieces();
         for(Pezzo p : pieces){
-            if(p != null && p.canIGoHere(position, board)){
+            if(!(p instanceof King) && p != null && p.canIGoHere(position, board)){
                 return true;
             }
         }
