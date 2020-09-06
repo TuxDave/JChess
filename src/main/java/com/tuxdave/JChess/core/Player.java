@@ -59,5 +59,8 @@ public class Player{
      */
     public void re_AssignPiece(Pezzo p, int i){
         pieces[i] = p;
+        if(p instanceof Pedone){
+            ((Pedone)pieces[i]).setAlreadyMoved(((Pedone) p).getAlreadyMoved());
+        }
     }
 }

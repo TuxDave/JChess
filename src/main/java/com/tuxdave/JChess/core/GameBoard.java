@@ -17,6 +17,8 @@ public class GameBoard implements GameListener {
     private final List<GameListener> gameListeners = new ArrayList<GameListener>();
     private final List<ActionNotifier> actionNotifiers = new ArrayList<ActionNotifier>();
 
+    public GameBoard saveBeforeMove;
+
     private Player[] players = new Player[2];
     {
         players[0] = new Player("p1", 1);//WHITE
@@ -135,6 +137,15 @@ public class GameBoard implements GameListener {
     }
 
     public void nextTurn(){
+        King king = (King)getPieceByIdAndColor("king", turn);
+        if(king.amIUnderAttack(this)){
+            for(ActionNotifier a : actionNotifiers){
+                a.notifyKingUnderAttack("After this move your king is again checked, change move...");
+            }
+            applySnapShot(saveBeforeMove);
+            return;
+        }
+
         turn = turn.equals("WHITE") ? "BLACK" : "WHITE";
         for(GameListener l : gameListeners){
             if(l != null){
@@ -156,7 +167,7 @@ public class GameBoard implements GameListener {
      * @param turn the turn incoming (BLACK/WHITE)
      */
     @Override
-    public void turnPassed(String turn){//todo: add here the check if a king is under attack and prevent the kamikaze moves
+    public void turnPassed(String turn){
         Pezzo[] pieces = getPlayer((turn.toLowerCase().equals("white") ? 1 : 0)).getPieces();//get the opposite pieces in base the current turn
         boolean check = false;
         for(Pezzo piece : pieces){

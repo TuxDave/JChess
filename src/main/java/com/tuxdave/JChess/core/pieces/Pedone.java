@@ -60,6 +60,13 @@ public class Pedone extends Pezzo implements GameListener {
         type = "pedone";
     }
 
+    public void setAlreadyMoved(boolean _alreadyMoved) {
+        alreadyMoved = _alreadyMoved;
+    }
+    public boolean getAlreadyMoved(){
+        return alreadyMoved;
+    }
+
     /**morph itself in another Piece
         possible parameters:
             horse | ensign | tower | queen

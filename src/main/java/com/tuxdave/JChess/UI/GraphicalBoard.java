@@ -1,6 +1,7 @@
 package com.tuxdave.JChess.UI;
 
 import com.tuxdave.JChess.core.GameBoard;
+import com.tuxdave.JChess.core.listener.ActionNotifier;
 import com.tuxdave.JChess.core.listener.GameListener;
 import com.tuxdave.JChess.core.RouteChecker;
 import com.tuxdave.JChess.core.pieces.King;
@@ -39,6 +40,7 @@ public class GraphicalBoard extends JComponent {
         addMouseListener(listener);
         addMouseMotionListener(listener);
         board.addGameListener(listener);
+        board.addActionNorifiers(listener);
         for(Pezzo p : board.getAllPieces()){
             if(p instanceof Pedone){
                 board.addGameListener((Pedone)p);
@@ -172,7 +174,7 @@ public class GraphicalBoard extends JComponent {
     }
 
     //i preferred creating a dedicated class that implements the methods because is clearer
-    private class GraphicalBoardListener implements MouseListener, MouseMotionListener, GameListener {
+    private class GraphicalBoardListener implements MouseListener, MouseMotionListener, GameListener, ActionNotifier {
         private boolean eatingMode = false;
         private Pezzo piece = null;
 
@@ -193,6 +195,7 @@ public class GraphicalBoard extends JComponent {
 
         /**eat a piece if is there one or simply move the piece*/
         private void eat(Vector2 clickCoords){
+            board.saveBeforeMove = board.createSnapShot();
             if(isASelectedCell(clickCoords)) {
                 //eat and then move
                 Pezzo p = board.getPieceByPosition(clickCoords);
@@ -285,5 +288,15 @@ public class GraphicalBoard extends JComponent {
          */
         @Override
         public void arrocco(King k, String type) {/*ignored*/}
+
+        /**
+         * called when the king is under attack at the end of turn
+         * @param message
+         */
+        @Override
+        public void notifyKingUnderAttack(String message) {
+            JOptionPane.showMessageDialog(null, message);
+            repaint();
+        }
     }
 }
