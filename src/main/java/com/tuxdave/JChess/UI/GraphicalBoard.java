@@ -213,13 +213,16 @@ public class GraphicalBoard extends JComponent {
                             }
                         }
                     }
-
                 }
                 repaint();
                 board.nextTurn();
                 //stop eating mode
                 eatingMode = false;
                 updateSelectedCells(null);//all cell now are unselected
+            }else{
+                eatingMode = false;
+                updateSelectedCells(null);
+                repaint();
             }
         }
 
