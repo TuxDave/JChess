@@ -7,7 +7,6 @@ import com.tuxdave.JChess.core.pieces.Pezzo;
 import com.tuxdave.JChess.core.pieces.Tower;
 import com.tuxdave.JChess.extras.Vector2;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +38,9 @@ public class GameBoard implements GameListener {
         return ps;
     }
 
-    public GameBoard(){}
+    public GameBoard(){
+        addGameListener(this);
+    }
 
     /**
     * @param _n [1/2] select which player renames
@@ -140,7 +141,7 @@ public class GameBoard implements GameListener {
         King king = (King)getPieceByIdAndColor("king", turn);
         if(king.amIUnderAttack(this)){
             for(ActionNotifier a : actionNotifiers){
-                a.notifyKingUnderAttack("After this move your king is again checked, change move...");
+                a.notifyKingUnderAttackOnTurnEnds("After this move your king is again checked, change move...");
             }
             applySnapShot(saveBeforeMove);
             return;
@@ -153,57 +154,6 @@ public class GameBoard implements GameListener {
             }
         }
 
-    }
-
-    //ListenerManagement
-
-    public void addGameListener(GameListener g){
-        gameListeners.add(g);
-    }
-    public void addActionNorifiers(ActionNotifier a) { actionNotifiers.add(a); }
-
-    /**
-     * notify which is the current turn
-     * @param turn the turn incoming (BLACK/WHITE)
-     */
-    @Override
-    public void turnPassed(String turn){
-        Pezzo[] pieces = getPlayer((turn.toLowerCase().equals("white") ? 1 : 0)).getPieces();//get the opposite pieces in base the current turn
-        boolean check = false;
-        for(Pezzo piece : pieces){
-            if(piece.amICheckingKing(this)){
-                check = true;
-            }
-        }
-        if(check){
-            for(ActionNotifier a : actionNotifiers){//notify the attack to the UI
-                if(a != null){
-                    a.notifyKingUnderAttack("WARNING " + getPlayer(turn.toLowerCase().equals("white") ? 0 : 1).nick + ": Your king is under attack!");
-                }
-            }
-        }
-    }
-
-    /**
-     * the king calls this method when it want to make an "Arrocco"
-     * @param k    the king is moving
-     * @param type short or long
-     */
-    @Override
-    public void arrocco(King k, String type) {
-        try{
-            if (type.toLowerCase().equals("short")) {
-                Tower t = (Tower) getPieceByPosition(new Vector2(8, k.getPosition().y));
-                t.move(new Vector2(6, t.getPosition().y));
-                k.move(new Vector2(7, k.getPosition().y));
-            } else {
-                Tower t = (Tower) getPieceByPosition(new Vector2(1, k.getPosition().y));
-                t.move(new Vector2(4, t.getPosition().y));
-                k.move(new Vector2(3, k.getPosition().y));
-            }
-        }catch(NullPointerException e){
-            System.err.println("Unable to find a Tower in the target cell!");
-        }
     }
 
     /**
@@ -244,5 +194,56 @@ public class GameBoard implements GameListener {
             addGameListener(g);
         }
         turn = b.turn;
+    }
+
+    //ListenerManagement
+
+    public void addGameListener(GameListener g){
+        gameListeners.add(g);
+    }
+    public void addActionNorifiers(ActionNotifier a) { actionNotifiers.add(a); }
+
+    /**
+     * notify which is the current turn
+     * @param turn the turn incoming (BLACK/WHITE)
+     */
+    @Override
+    public void turnPassed(String turn){
+        Pezzo[] pieces = getPlayer((turn.toLowerCase().equals("white") ? 1 : 0)).getPieces();//get the opposite pieces in base the current turn
+        boolean check = false;
+        for(Pezzo piece : pieces){
+            if(piece != null && piece.amICheckingKing(this)){
+                check = true;
+            }
+        }
+        if(check){
+            for(ActionNotifier a : actionNotifiers){//notify the attack to the UI
+                if(a != null){
+                    a.kingChecked(getPlayer((turn.equals("WHITE") ? 0 : 1)).nick);//notify which player has the king under attack
+                }
+            }
+        }
+    }
+
+    /**
+     * the king calls this method when it want to make an "Arrocco"
+     * @param k    the king is moving
+     * @param type short or long
+     */
+    @Override
+    public void arrocco(King k, String type) {
+        try{
+            if (type.toLowerCase().equals("short")) {
+                Tower t = (Tower) getPieceByPosition(new Vector2(8, k.getPosition().y));
+                t.move(new Vector2(6, t.getPosition().y));
+                k.move(new Vector2(7, k.getPosition().y));
+            } else {
+                Tower t = (Tower) getPieceByPosition(new Vector2(1, k.getPosition().y));
+                t.move(new Vector2(4, t.getPosition().y));
+                k.move(new Vector2(3, k.getPosition().y));
+            }
+        }catch(NullPointerException e){
+            System.err.println("Unable to find a Tower in the target cell!");
+        }
     }
 }

@@ -290,11 +290,18 @@ public class GraphicalBoard extends JComponent {
         public void arrocco(King k, String type) {/*ignored*/}
 
         /**
+         * active when the king is under attack, and says which one
+         * @param playerNick
+         */
+        @Override
+        public void kingChecked(String playerNick) {/*ignored*/}
+
+        /**
          * called when the king is under attack at the end of turn
          * @param message
          */
         @Override
-        public void notifyKingUnderAttack(String message) {
+        public void notifyKingUnderAttackOnTurnEnds(String message) {
             JOptionPane.showMessageDialog(null, message);
             repaint();
         }
