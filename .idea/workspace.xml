@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5830c998-a451-4205-99d8-55b321899c82" name="Default Changelist" comment="pedone movement after snapshot fixed" />
+    <list default="true" id="5830c998-a451-4205-99d8-55b321899c82" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,7 +23,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="GraphicalBoard_Branch" />
+        <entry key="$PROJECT_DIR$" value="devel" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -69,11 +71,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Test0" />
-        <item itemvalue="Application.Test1" />
         <item itemvalue="Application.Test1" />
         <item itemvalue="Application.Test0" />
         <item itemvalue="Application.Test0" />
+        <item itemvalue="Application.Test1" />
+        <item itemvalue="Application.Test1" />
       </list>
     </recent_temporary>
   </component>
@@ -88,13 +90,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1595409619845</updated>
-    </task>
-    <task id="LOCAL-00002" summary="added getGraphicalView implementation on pieces">
-      <created>1595411153583</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1595411153583</updated>
     </task>
     <task id="LOCAL-00003" summary="GraphicalBoard: now draws all pieces">
       <created>1595412463895</created>
@@ -432,7 +427,14 @@
       <option name="project" value="LOCAL" />
       <updated>1599559502266</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="pedone movement after snapshot fixed">
+      <created>1599559881696</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1599559881697</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -505,12 +507,12 @@
     </state>
     <state x="466" y="139" width="428" height="454" key="#com.intellij.uiDesigner.palette.ComponentItemDialog/0.0.1366.731@0.0.1366.731" timestamp="1595409783556" />
     <state x="655" y="198" width="428" height="454" key="#com.intellij.uiDesigner.palette.ComponentItemDialog/0.0.1920.1043/1920.28.1280.1024@0.0.1920.1043" timestamp="1595700004178" />
-    <state x="373" y="128" width="1018" height="731" key="CommitChangelistDialog2" timestamp="1599559516443">
+    <state x="373" y="128" width="1018" height="731" key="CommitChangelistDialog2" timestamp="1599559881570">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
     <state x="318" y="0" width="1018" height="731" key="CommitChangelistDialog2/0.0.1366.731/1366.0.1280.1024@0.0.1366.731" timestamp="1599410710631" />
     <state x="318" y="0" width="724" height="731" key="CommitChangelistDialog2/0.0.1366.731@0.0.1366.731" timestamp="1596449164084" />
-    <state x="373" y="128" width="1018" height="754" key="CommitChangelistDialog2/0.0.1920.1043/1920.28.1280.1024@0.0.1920.1043" timestamp="1599559516443" />
+    <state x="373" y="128" width="1018" height="754" key="CommitChangelistDialog2/0.0.1920.1043/1920.28.1280.1024@0.0.1920.1043" timestamp="1599559881570" />
     <state width="525" height="506" key="DebuggerActiveHint" timestamp="1599556032202">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
@@ -520,34 +522,34 @@
       <screen x="0" y="0" width="1366" height="731" />
     </state>
     <state x="457" y="109" width="439" height="513" key="FileChooserDialogImpl/0.0.1366.731@0.0.1366.731" timestamp="1595410615947" />
-    <state width="1874" height="326" key="GridCell.Tab.0.bottom" timestamp="1599559759661">
+    <state width="1874" height="132" key="GridCell.Tab.0.bottom" timestamp="1599560253844">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
     <state width="1320" height="153" key="GridCell.Tab.0.bottom/0.0.1366.731/1366.0.1280.1024@0.0.1366.731" timestamp="1599411955224" />
     <state width="1234" height="110" key="GridCell.Tab.0.bottom/0.0.1366.731/1366.0.1280.1024@1366.0.1280.1024" timestamp="1597773992092" />
     <state width="1320" height="104" key="GridCell.Tab.0.bottom/0.0.1366.731@0.0.1366.731" timestamp="1596457375972" />
-    <state width="1874" height="326" key="GridCell.Tab.0.bottom/0.0.1920.1043/1920.28.1280.1024@0.0.1920.1043" timestamp="1599559759661" />
-    <state width="1874" height="326" key="GridCell.Tab.0.center" timestamp="1599559759661">
+    <state width="1874" height="132" key="GridCell.Tab.0.bottom/0.0.1920.1043/1920.28.1280.1024@0.0.1920.1043" timestamp="1599560253844" />
+    <state width="1874" height="132" key="GridCell.Tab.0.center" timestamp="1599560253844">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
     <state width="1320" height="153" key="GridCell.Tab.0.center/0.0.1366.731/1366.0.1280.1024@0.0.1366.731" timestamp="1599411955223" />
     <state width="1234" height="110" key="GridCell.Tab.0.center/0.0.1366.731/1366.0.1280.1024@1366.0.1280.1024" timestamp="1597773992092" />
     <state width="1320" height="104" key="GridCell.Tab.0.center/0.0.1366.731@0.0.1366.731" timestamp="1596457375972" />
-    <state width="1874" height="326" key="GridCell.Tab.0.center/0.0.1920.1043/1920.28.1280.1024@0.0.1920.1043" timestamp="1599559759661" />
-    <state width="1874" height="326" key="GridCell.Tab.0.left" timestamp="1599559759661">
+    <state width="1874" height="132" key="GridCell.Tab.0.center/0.0.1920.1043/1920.28.1280.1024@0.0.1920.1043" timestamp="1599560253844" />
+    <state width="1874" height="132" key="GridCell.Tab.0.left" timestamp="1599560253843">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
     <state width="1320" height="153" key="GridCell.Tab.0.left/0.0.1366.731/1366.0.1280.1024@0.0.1366.731" timestamp="1599411955223" />
     <state width="1234" height="110" key="GridCell.Tab.0.left/0.0.1366.731/1366.0.1280.1024@1366.0.1280.1024" timestamp="1597773992091" />
     <state width="1320" height="104" key="GridCell.Tab.0.left/0.0.1366.731@0.0.1366.731" timestamp="1596457375972" />
-    <state width="1874" height="326" key="GridCell.Tab.0.left/0.0.1920.1043/1920.28.1280.1024@0.0.1920.1043" timestamp="1599559759661" />
-    <state width="1874" height="326" key="GridCell.Tab.0.right" timestamp="1599559759661">
+    <state width="1874" height="132" key="GridCell.Tab.0.left/0.0.1920.1043/1920.28.1280.1024@0.0.1920.1043" timestamp="1599560253843" />
+    <state width="1874" height="132" key="GridCell.Tab.0.right" timestamp="1599560253844">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
     <state width="1320" height="153" key="GridCell.Tab.0.right/0.0.1366.731/1366.0.1280.1024@0.0.1366.731" timestamp="1599411955224" />
     <state width="1234" height="110" key="GridCell.Tab.0.right/0.0.1366.731/1366.0.1280.1024@1366.0.1280.1024" timestamp="1597773992092" />
     <state width="1320" height="104" key="GridCell.Tab.0.right/0.0.1366.731@0.0.1366.731" timestamp="1596457375972" />
-    <state width="1874" height="326" key="GridCell.Tab.0.right/0.0.1920.1043/1920.28.1280.1024@0.0.1920.1043" timestamp="1599559759661" />
+    <state width="1874" height="132" key="GridCell.Tab.0.right/0.0.1920.1043/1920.28.1280.1024@0.0.1920.1043" timestamp="1599560253844" />
     <state width="1874" height="326" key="GridCell.Tab.1.bottom" timestamp="1599559759661">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
@@ -580,12 +582,12 @@
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.1920.1043/1920.28.1280.1024@0.0.1920.1043" timestamp="1595865430518" />
-    <state x="391" y="126" width="804" height="528" key="Vcs.Push.Dialog.v2" timestamp="1599559594430">
+    <state x="391" y="126" width="939" height="670" key="Vcs.Push.Dialog.v2" timestamp="1599560099302">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
     <state x="278" y="88" width="804" height="528" key="Vcs.Push.Dialog.v2/0.0.1366.731/1366.0.1280.1024@0.0.1366.731" timestamp="1599323101084" />
     <state x="278" y="88" width="804" height="556" key="Vcs.Push.Dialog.v2/0.0.1366.731@0.0.1366.731" timestamp="1596449170936" />
-    <state x="391" y="126" width="804" height="528" key="Vcs.Push.Dialog.v2/0.0.1920.1043/1920.28.1280.1024@0.0.1920.1043" timestamp="1599559594430" />
+    <state x="391" y="126" width="939" height="670" key="Vcs.Push.Dialog.v2/0.0.1920.1043/1920.28.1280.1024@0.0.1920.1043" timestamp="1599560099302" />
     <state x="754" y="437" width="406" height="170" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1595865430495">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
@@ -646,26 +648,6 @@
           <url>file://$PROJECT_DIR$/src/test/java/GraphicalBoardTest.java</url>
           <line>33</line>
           <option name="timeStamp" value="29" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/tuxdave/JChess/core/GameBoard.java</url>
-          <line>192</line>
-          <option name="timeStamp" value="61" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/tuxdave/JChess/core/GameBoard.java</url>
-          <line>183</line>
-          <option name="timeStamp" value="64" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/tuxdave/JChess/core/GameBoard.java</url>
-          <line>163</line>
-          <option name="timeStamp" value="65" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/tuxdave/JChess/core/GameBoard.java</url>
-          <line>172</line>
-          <option name="timeStamp" value="66" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
