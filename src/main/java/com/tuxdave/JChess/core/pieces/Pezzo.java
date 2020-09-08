@@ -133,6 +133,7 @@ public abstract class Pezzo implements Drawable, AttackSystem {
         Pezzo p;
         if(this instanceof Pedone){
             p = new Pedone(this.getId(), this.color, new Vector2(this.getPosition().x, this.getPosition().y));
+            ((Pedone)p).setAlreadyMoved(((Pedone) this).getAlreadyMoved());
         }else if(this instanceof King){
             p = new King(this.getId(), this.color, new Vector2(this.getPosition().x, this.getPosition().y));
         }else if(this instanceof Queen){
