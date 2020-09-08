@@ -164,11 +164,10 @@ public class GameBoard implements GameListener {
         GameBoard b = new GameBoard();
         for(int n = 0; n < 2;n++){
             for(int i = 0; i < 16; i++){
-                if(getAllPieces()[(n+1)*i] != null)
-                    if(players[n].getPieces()[i] != null)
-                        b.getPlayer(n).re_AssignPiece(players[n].getPieces()[i].clone(), i);
-                    else
-                        b.getPlayer(n).re_AssignPiece(null, i);
+                if(players[n].getPieces()[i] != null)
+                    b.getPlayer(n).re_AssignPiece(players[n].getPieces()[i].clone(), i);
+                else
+                    b.getPlayer(n).re_AssignPiece(null, i);
             }
         }
         for(ActionNotifier a : actionNotifiers){
@@ -184,9 +183,16 @@ public class GameBoard implements GameListener {
     public void applySnapShot(GameBoard b){
         for(int n = 0; n < 2;n++){
             for(int i = 0; i < 16; i++){
-                players[n].re_AssignPiece(b.getPlayer(n).getPieces()[i].clone(), i);
+                if(b.getPlayer(n).getPieces()[i] != null)
+                    players[n].re_AssignPiece(b.getPlayer(n).getPieces()[i].clone(), i);
+                else
+                    players[n].re_AssignPiece(null, i);
             }
         }
+        //remove the listener duplication:
+        removeAllActionNotifier();
+        removeAllGameListener();
+
         for(ActionNotifier a : b.actionNotifiers){
             addActionNorifiers(a);
         }
@@ -201,7 +207,17 @@ public class GameBoard implements GameListener {
     public void addGameListener(GameListener g){
         gameListeners.add(g);
     }
+    public void removeAllGameListener(){
+        for(int i = 0; i < gameListeners.size(); i++){
+            gameListeners.remove(i);
+        }
+    }
     public void addActionNorifiers(ActionNotifier a) { actionNotifiers.add(a); }
+    public void removeAllActionNotifier(){
+        for(int i = 0; i < actionNotifiers.size(); i++){
+            actionNotifiers.remove(i);
+        }
+    }
 
     /**
      * notify which is the current turn
