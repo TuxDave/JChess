@@ -26,6 +26,9 @@ public class GraphicalBoard extends JComponent {
     private String turn = "WHITE";
 
     {//static properties
+        //background
+        setBackground(Color.RED);
+
         setBorder(BorderFactory.createLineBorder(Color.blue));
         setPreferredSize(new Dimension(512,512));
         setMaximumSize(getPreferredSize());
@@ -48,9 +51,14 @@ public class GraphicalBoard extends JComponent {
         }
     }
 
+    private final Image greyCell = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Resources/Icons/grey_background.png"));
+    private final Image background = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Resources/Icons/background.png"));
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        g.drawImage(background, 0,0,this);
 
         //draws table's lines
         for(int i = 0; i < 8; i++){
@@ -59,12 +67,11 @@ public class GraphicalBoard extends JComponent {
         }
 
         //paints to grey some cells
-        Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Resources/Icons/grey_background.png"));
         short p = 0;
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
                 if(j % 2 == p){
-                    g.drawImage(image, j * CELL_SIZE, convertCoordsFromReal((i + 1) * CELL_SIZE), this);
+                    g.drawImage(greyCell, j * CELL_SIZE, convertCoordsFromReal((i + 1) * CELL_SIZE), this);
                 }
             }
             if(p == 0){
@@ -90,25 +97,26 @@ public class GraphicalBoard extends JComponent {
         }
     }
 
+    private final Image selectedTile = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Resources/Icons/selected_background.png"));
+    private final Image hoveredTile = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Resources/Icons/mouseHover_rectangle.png"));
+
     /**
      * paints green color on the selected cells
      * paints the blue rectangle around the hovered cell
      */
     private void highlightCell(Graphics g){
-        Image img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Resources/Icons/selected_background.png"));
         for(Vector2 _cell : selectedCells){
             if (GameBoard.isAnAcceptableCell(_cell)) {
                 _cell = getPixelCoordsFromCellCoords(_cell);
                 _cell.y = convertCoordsFromReal(_cell.y);
-                g.drawImage(img, _cell.x, _cell.y, this);
+                g.drawImage(selectedTile, _cell.x, _cell.y, this);
             } else {
                 throw new IllegalArgumentException("Cell not found!");
             }
         }
         //hovering
-        img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Resources/Icons/mouseHover_rectangle.png"));
         if(hoveredCell != null){
-            g.drawImage(img, hoveredCell.x, hoveredCell.y, this);
+            g.drawImage(hoveredTile, hoveredCell.x, hoveredCell.y, this);
         }
     }
 
