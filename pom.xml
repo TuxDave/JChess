@@ -6,7 +6,7 @@
 
     <groupId>com.tuxdave</groupId>
     <artifactId>JChess</artifactId>
-    <version>0.1</version>
+    <version>0.1-ALPHA</version>
 
     <!--
     <distributionManagement>
@@ -54,7 +54,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass></mainClass><!--Todo: INserire la main class qui-->
+                            <mainClass>com.tuxdave.JChess.UI.JChess</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
