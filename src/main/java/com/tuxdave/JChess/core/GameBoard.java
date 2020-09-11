@@ -1,13 +1,16 @@
 package com.tuxdave.JChess.core;
 
+import com.tuxdave.JChess.UI.GraphicalBoard;
 import com.tuxdave.JChess.core.listener.ActionNotifier;
 import com.tuxdave.JChess.core.listener.GameListener;
 import com.tuxdave.JChess.core.pieces.King;
+import com.tuxdave.JChess.core.pieces.Pedone;
 import com.tuxdave.JChess.core.pieces.Pezzo;
 import com.tuxdave.JChess.core.pieces.Tower;
 import com.tuxdave.JChess.extras.Vector2;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class GameBoard implements GameListener {
@@ -15,8 +18,14 @@ public class GameBoard implements GameListener {
     private String turn = "WHITE";
     private final List<GameListener> gameListeners = new ArrayList<GameListener>();
     private final List<ActionNotifier> actionNotifiers = new ArrayList<ActionNotifier>();
-
     public GameBoard saveBeforeMove;
+
+    public int currentTurn = 0;
+    private final List<String>[] notations = new ArrayList[2];
+    {//inizializing
+        notations[0] = new ArrayList<String>();
+        notations[1] = new ArrayList<String>();
+    }
 
     private Player[] players = new Player[2];
     {
@@ -170,13 +179,27 @@ public class GameBoard implements GameListener {
                     b.getPlayer(n).re_AssignPiece(null, i);
             }
         }
+
+        //remove all existent listener (all scraps)
+        b.removeAllActionNotifier();
+        b.removeAllGameListener();
+
+        for(Pezzo p : b.getAllPieces()){
+            if(p instanceof Pedone){
+                b.addGameListener((Pedone)p);
+            }
+        }
+
         for(ActionNotifier a : actionNotifiers){
             b.addActionNorifiers(a);
         }
         for(GameListener g : gameListeners){
-            b.addGameListener(g);
+            if(!(g instanceof Pedone)){
+                b.addGameListener(g);
+            }
         }
         b.turn = turn;
+        b.currentTurn = currentTurn;
         return b;
     }
 
@@ -193,13 +216,22 @@ public class GameBoard implements GameListener {
         removeAllActionNotifier();
         removeAllGameListener();
 
+        for(Pezzo p : getAllPieces()){
+            if(p instanceof Pedone){
+                addGameListener((Pedone)p);
+            }
+        }
+
         for(ActionNotifier a : b.actionNotifiers){
             addActionNorifiers(a);
         }
         for(GameListener g : b.gameListeners){
-            addGameListener(g);
+            if(!(g instanceof Pedone)) {
+                addGameListener(g);
+            }
         }
         turn = b.turn;
+        currentTurn = b.currentTurn;
     }
 
     //ListenerManagement
@@ -208,14 +240,18 @@ public class GameBoard implements GameListener {
         gameListeners.add(g);
     }
     public void removeAllGameListener(){
-        for(int i = 0; i < gameListeners.size(); i++){
-            gameListeners.remove(i);
+        int n = gameListeners.size();
+        for(int i = 0; i < n; i++){
+            gameListeners.remove(0);
         }
     }
-    public void addActionNorifiers(ActionNotifier a) { actionNotifiers.add(a); }
+    public void addActionNorifiers(ActionNotifier a) {
+        actionNotifiers.add(a);
+    }
     public void removeAllActionNotifier(){
-        for(int i = 0; i < actionNotifiers.size(); i++){
-            actionNotifiers.remove(i);
+        int n = actionNotifiers.size();
+        for(int i = 0; i < n; i++){
+            actionNotifiers.remove(0);
         }
     }
 
@@ -239,6 +275,8 @@ public class GameBoard implements GameListener {
                 }
             }
         }
+        currentTurn++;
+        System.out.println(currentTurn);
     }
 
     /**
