@@ -12,20 +12,17 @@ import com.tuxdave.JChess.extras.Vector2;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimeZone;
 
 public class GameBoard implements GameListener {
     public static final short limits = 8;
     private String turn = "WHITE";
-    private final List<GameListener> gameListeners = new ArrayList<GameListener>();
+    public final List<GameListener> gameListeners = new ArrayList<GameListener>();
     private final List<ActionNotifier> actionNotifiers = new ArrayList<ActionNotifier>();
     public GameBoard saveBeforeMove;
 
     public int currentTurn = 0;
-    private final List<String>[] notations = new ArrayList[2];
-    {//inizializing
-        notations[0] = new ArrayList<String>();
-        notations[1] = new ArrayList<String>();
-    }
+    private final List<String> notation = new ArrayList<String>();
 
     private Player[] players = new Player[2];
     {
@@ -275,8 +272,34 @@ public class GameBoard implements GameListener {
                 }
             }
         }
+
         currentTurn++;
-        System.out.println(currentTurn);
+        System.out.println("LOG: current turn ==> " + currentTurn);
+
+
+    }
+
+    @Override
+    public void logMove() {
+        //todo: add here the implementation
+    }
+
+    /**
+     * called when a piece moves
+     * @param p the piece moved
+     */
+    @Override
+    public void onMove(Pezzo p) {
+        //todo: add here implementation
+    }
+
+    /**
+     * called when play arrocco
+     * @param type
+     */
+    @Override
+    public void onMove(String type) {
+        //todo: add here implementation
     }
 
     /**
@@ -291,10 +314,18 @@ public class GameBoard implements GameListener {
                 Tower t = (Tower) getPieceByPosition(new Vector2(8, k.getPosition().y));
                 t.move(new Vector2(6, t.getPosition().y));
                 k.move(new Vector2(7, k.getPosition().y));
+                //listener call
+                for(GameListener g : gameListeners){
+                    g.onMove(k.getColor().toLowerCase() + "-short");
+                }
             } else {
                 Tower t = (Tower) getPieceByPosition(new Vector2(1, k.getPosition().y));
                 t.move(new Vector2(4, t.getPosition().y));
                 k.move(new Vector2(3, k.getPosition().y));
+                //listener call
+                for(GameListener g : gameListeners){
+                    g.onMove(k.getColor().toLowerCase() + "-long");
+                }
             }
         }catch(NullPointerException e){
             System.err.println("Unable to find a Tower in the target cell!");

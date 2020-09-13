@@ -211,6 +211,10 @@ public class GraphicalBoard extends JComponent {
                     board.eatPiece(p);
                 }
                 piece.move(clickCoords);
+                for(GameListener g : board.gameListeners){
+                    g.onMove(piece);
+                }
+
                 //pedone...
                 if(piece instanceof Pedone){
                     if(piece.getPosition().y == 8 || piece.getPosition().y == 1){
@@ -288,6 +292,15 @@ public class GraphicalBoard extends JComponent {
         public void turnPassed(String _turn) {
             turn = _turn;
         }
+
+        @Override
+        public void logMove() {/*ignored*/}
+
+        @Override
+        public void onMove(Pezzo p) {/*ignored*/}
+
+        @Override
+        public void onMove(String type){/*ignored*/}
 
         /**
          * the king calls this method when it want to make an "Arrocco"

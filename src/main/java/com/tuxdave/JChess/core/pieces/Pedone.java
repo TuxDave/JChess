@@ -4,7 +4,6 @@ import com.tuxdave.JChess.core.listener.GameListener;
 import com.tuxdave.JChess.extras.Vector2;
 
 public class Pedone extends Pezzo implements GameListener {
-
     private boolean alreadyMoved = false;
     public boolean justDoubleCase = false;
     private boolean reverse = false;
@@ -97,4 +96,25 @@ public class Pedone extends Pezzo implements GameListener {
     }
     @Override
     public void arrocco(King k, String type) {/*ignored*/}
+
+    /**
+     * called after every finished move
+     * todo: add parameters
+     */
+    @Override
+    public void logMove() {/*ignored*/}
+
+    /**
+     * called when a piece moves
+     * @param p the piece moved
+     */
+    @Override
+    public void onMove(Pezzo p){/*ignored*/}
+
+    /**
+     * called when play arrocco
+     * @param type
+     */
+    @Override
+    public void onMove(String type){/*ignored*/}
 }
