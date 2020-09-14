@@ -1,9 +1,9 @@
 package com.tuxdave.JChess.UI;
 
 import com.tuxdave.JChess.core.GameBoard;
+import com.tuxdave.JChess.core.RouteChecker;
 import com.tuxdave.JChess.core.listener.ActionNotifier;
 import com.tuxdave.JChess.core.listener.GameListener;
-import com.tuxdave.JChess.core.RouteChecker;
 import com.tuxdave.JChess.core.pieces.King;
 import com.tuxdave.JChess.core.pieces.Pedone;
 import com.tuxdave.JChess.core.pieces.Pezzo;

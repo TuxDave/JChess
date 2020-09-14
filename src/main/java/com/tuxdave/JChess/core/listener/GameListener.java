@@ -1,8 +1,8 @@
 package com.tuxdave.JChess.core.listener;
 
+import com.tuxdave.JChess.core.GameBoard;
 import com.tuxdave.JChess.core.pieces.King;
 import com.tuxdave.JChess.core.pieces.Pezzo;
-import com.tuxdave.JChess.extras.Vector2;
 
 public interface GameListener {
     /**
@@ -29,9 +29,10 @@ public interface GameListener {
      * @param p the piece moved
      */
     public void onMove(Pezzo p);
+
     /**
      * called when play arrocco
-     * @param p white/black - long/short (es: "white-long")
+     * @param p white/black lowerCase
      */
     public void onMove(String type);
 }

@@ -1,6 +1,5 @@
 package com.tuxdave.JChess.core;
 
-import com.tuxdave.JChess.UI.GraphicalBoard;
 import com.tuxdave.JChess.core.listener.ActionNotifier;
 import com.tuxdave.JChess.core.listener.GameListener;
 import com.tuxdave.JChess.core.pieces.King;
@@ -10,19 +9,17 @@ import com.tuxdave.JChess.core.pieces.Tower;
 import com.tuxdave.JChess.extras.Vector2;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.TimeZone;
 
 public class GameBoard implements GameListener {
     public static final short limits = 8;
-    private String turn = "WHITE";
+    private String turn;
     public final List<GameListener> gameListeners = new ArrayList<GameListener>();
     private final List<ActionNotifier> actionNotifiers = new ArrayList<ActionNotifier>();
     public GameBoard saveBeforeMove;
 
-    public int currentTurn = 0;
-    private final List<String> notation = new ArrayList<String>();
+    public int currentTurn;
+    public GameLogger logger;
 
     private Player[] players = new Player[2];
     {
@@ -46,6 +43,9 @@ public class GameBoard implements GameListener {
 
     public GameBoard(){
         addGameListener(this);
+        logger = new GameLogger();
+        turn = "WHITE";
+        currentTurn = 0;
     }
 
     /**
@@ -231,6 +231,21 @@ public class GameBoard implements GameListener {
         currentTurn = b.currentTurn;
     }
 
+    /**
+     * get the number of the pieces not null
+     * @return the living pieces number
+     */
+    public int getPieceNumber(){
+        int c = 0;
+        Pezzo[] pieces = getAllPieces();
+        for(int i = 0; i < 32; i++){
+            if(pieces[i] != null){
+                c++;
+            }
+        }
+        return c;
+    }
+
     //ListenerManagement
 
     public void addGameListener(GameListener g){
@@ -274,8 +289,7 @@ public class GameBoard implements GameListener {
         }
 
         currentTurn++;
-        System.out.println("LOG: current turn ==> " + currentTurn);
-
+        logger.confirmLastMove();
 
     }
 
@@ -290,7 +304,8 @@ public class GameBoard implements GameListener {
      */
     @Override
     public void onMove(Pezzo p) {
-        //todo: add here implementation
+        //i will pass the snapshot to have the previus status of board
+        logger.makeLastMove(p, saveBeforeMove, getPieceNumber(),((King)(getPieceByIdAndColor("king", (p.getColor().equals("WHITE") ? "BLACK" : "WHITE")))).amIUnderAttack(this) );
     }
 
     /**
@@ -316,7 +331,7 @@ public class GameBoard implements GameListener {
                 k.move(new Vector2(7, k.getPosition().y));
                 //listener call
                 for(GameListener g : gameListeners){
-                    g.onMove(k.getColor().toLowerCase() + "-short");
+                    g.onMove("short");
                 }
             } else {
                 Tower t = (Tower) getPieceByPosition(new Vector2(1, k.getPosition().y));
@@ -324,7 +339,7 @@ public class GameBoard implements GameListener {
                 k.move(new Vector2(3, k.getPosition().y));
                 //listener call
                 for(GameListener g : gameListeners){
-                    g.onMove(k.getColor().toLowerCase() + "-long");
+                    g.onMove("long");
                 }
             }
         }catch(NullPointerException e){
