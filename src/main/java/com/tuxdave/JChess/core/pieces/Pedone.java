@@ -1,5 +1,7 @@
 package com.tuxdave.JChess.core.pieces;
 
+import com.tuxdave.JChess.core.GameBoard;
+import com.tuxdave.JChess.core.GameLogger;
 import com.tuxdave.JChess.core.listener.GameListener;
 import com.tuxdave.JChess.extras.Vector2;
 
@@ -7,6 +9,8 @@ public class Pedone extends Pezzo implements GameListener {
     private boolean alreadyMoved = false;
     public boolean justDoubleCase = false;
     private boolean reverse = false;
+
+    public GameListener gameListener;
 
     /**
      * @param _id         everything possible string to recognize the piece;
@@ -18,6 +22,20 @@ public class Pedone extends Pezzo implements GameListener {
         if(color == 'B'){
             reverse = true;
         }
+    }
+
+    /**
+     * says if the pawn can go on a diagonal position using the eat feature
+     * @param destination the destination
+     * @param b game board to catch the dates
+     * @return true if it can.
+     */
+    public boolean canIGoHereByEat(Vector2 destination, GameBoard b){
+        Pezzo p = b.getPieceByPosition(destination);
+        if(p != null && !p.getColor().equals(getColor())){
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -71,16 +89,17 @@ public class Pedone extends Pezzo implements GameListener {
             horse | ensign | tower | queen
          */
     public Pezzo morph(String _newType) {
+        gameListener.onMorph(_newType);
         switch (_newType){
             case "horse":
-                return new Horse(id, color,position);
+                return new Horse(new String(_newType + Integer.toString(Integer.parseInt(id.substring(id.length()-1)) + 2)), color,position);
             case "ensign":
-                return new Ensign(id, color,position);
+                return new Ensign(new String(_newType + Integer.toString(Integer.parseInt(id.substring(id.length()-1)) + 2)), color,position);
             case "tower":
-                return new Tower(id, color,position);
+                return new Tower(new String(_newType + Integer.toString(Integer.parseInt(id.substring(id.length()-1)) + 2)), color,position);
             case "queen":
             default:
-                return new Queen(id, color,position);
+                return new Queen(new String(_newType + Integer.toString(Integer.parseInt(id.substring(id.length()-1)) + 2)), color,position);
         }
     }
 
@@ -97,24 +116,15 @@ public class Pedone extends Pezzo implements GameListener {
     @Override
     public void arrocco(King k, String type) {/*ignored*/}
 
-    /**
-     * called after every finished move
-     * todo: add parameters
-     */
     @Override
     public void logMove() {/*ignored*/}
 
-    /**
-     * called when a piece moves
-     * @param p the piece moved
-     */
     @Override
     public void onMove(Pezzo p){/*ignored*/}
 
-    /**
-     * called when play arrocco
-     * @param type
-     */
     @Override
     public void onMove(String type){/*ignored*/}
+
+    @Override
+    public void onMorph(String newType) {/*ignored*/}
 }

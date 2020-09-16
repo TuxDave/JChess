@@ -35,4 +35,10 @@ public interface GameListener {
      * @param p white/black lowerCase
      */
     public void onMove(String type);
+
+    /**
+     * called when a Pedone make morph
+     * @param newType the new type of Pedone
+     */
+    public void onMorph(String newType);
 }

@@ -19,7 +19,7 @@ public class GameBoard implements GameListener {
     public GameBoard saveBeforeMove;
 
     public int currentTurn;
-    public GameLogger logger;
+    public GameLogger logger;//also the listener of pawns
 
     private Player[] players = new Player[2];
     {
@@ -46,6 +46,24 @@ public class GameBoard implements GameListener {
         logger = new GameLogger();
         turn = "WHITE";
         currentTurn = 0;
+
+        players = new Player[2];//player inizializing
+        {
+            players[0] = new Player("p1", 1);//WHITE
+            players[1] = new Player("p2", 2);//BLACK
+            //add listener refert to kins
+            ((King)players[0].getPieces()[12]).addGameListener(this);
+            ((King)players[1].getPieces()[12]).addGameListener(this);
+        }
+
+        {//add logger to pawns as listener implementer
+            Pezzo[] ps = getAllPieces();
+            for(int i = 0; i < 32; i++){
+                if(ps[i] instanceof Pedone){
+                    ((Pedone) ps[i]).gameListener = logger;
+                }
+            }
+        }
     }
 
     /**
@@ -297,6 +315,9 @@ public class GameBoard implements GameListener {
     public void logMove() {
         //todo: add here the implementation
     }
+
+    @Override
+    public void onMorph(String newType) {/*ignored*/}
 
     /**
      * called when a piece moves

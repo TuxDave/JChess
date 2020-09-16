@@ -302,6 +302,9 @@ public class GraphicalBoard extends JComponent {
         @Override
         public void onMove(String type){/*ignored*/}
 
+        @Override
+        public void onMorph(String newType) {/*ignored*/}
+
         /**
          * the king calls this method when it want to make an "Arrocco"
          * @param k    the king is moving

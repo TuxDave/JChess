@@ -1,12 +1,10 @@
 package com.tuxdave.JChess.core;
 
-import com.tuxdave.JChess.core.pieces.Horse;
-import com.tuxdave.JChess.core.pieces.Pedone;
-import com.tuxdave.JChess.core.pieces.Pezzo;
-import com.tuxdave.JChess.core.pieces.Tower;
+import com.tuxdave.JChess.core.listener.GameListener;
+import com.tuxdave.JChess.core.pieces.*;
 import com.tuxdave.JChess.extras.Vector2;
 
-public class GameLogger {
+public class GameLogger implements GameListener{
     public String history;
     public String lastMove;
 
@@ -23,26 +21,89 @@ public class GameLogger {
     }
 
     /**
+     * small interface to create a local method in the below method
+     */
+    private interface makeLastMoveInterface{
+        String createMove(String mod);
+    }
+    /**
      * create and set the lastMove if is a simply move (not captures ecc)
      * @param p the source piece
      * @param snapshot the board after the move
      * @param isCheck true if now the king is checked
      * @param n the number of the living pieces
      */
-    public void makeLastMove(Pezzo p, GameBoard snapshot, int n, boolean isCheck){
-        String log;
-        if(!(p instanceof Tower) && !(p instanceof Horse) && !(p instanceof Pedone)){
-            String piece = fromPieceToFirstLetter(p.getType());
-            String move = fromCoordsToString(p.getPosition());
-            if(snapshot.getPieceNumber() == n) //if no piece was ate now
-                log = piece + move + (isCheck ? "+" : "");
-            else{
-                log = piece + "x" + fromPieceToFirstLetter(snapshot.getPieceByPosition(p.getPosition()).getType()) + move + (isCheck ? "+" : "");//i find the eaten piece.
+    public void makeLastMove(final Pezzo p, final GameBoard snapshot, final int n, final boolean isCheck){
+
+        makeLastMoveInterface i = new makeLastMoveInterface() {
+
+            /**
+             * create the log string
+             * @param mod the modifier (when there are collisions) "" if there isn't
+             * @return the move like notation
+             */
+            @Override
+            public String createMove(String mod) {
+                String log;
+                String piece = fromPieceToFirstLetter(p.getType());
+                String move = fromCoordsToString(p.getPosition());
+                if(snapshot.getPieceNumber() == n) { //if no piece was ate now
+                    if (p instanceof Pedone) {//if p is a pawn and no piece was ate now, modifier = ""
+                        mod = "";
+                    }
+                    log = piece + mod + move + (isCheck ? "+" : "");
+                }else{
+                    log = piece + mod + "x" /*+ fromPieceToFirstLetter(snapshot.getPieceByPosition(p.getPosition()).getType())*/ + move + (isCheck ? "+" : "");//i find the eaten piece.
+                    //the commented part of the line over is unnecessary...
+                }
+                return log;
             }
-            lastMove = log;
-        }else if(p instanceof Tower || p instanceof Horse){
-            //todo: add here the check if two pieces can do the same move...
+        };
+
+        String log;
+        if(!(p instanceof Pedone)){ //----------TOWER and HORSE and ENSIGN and QUEEN----------
+            //are there two pieces that can go to the same destination?
+            Pezzo p1, p2;
+            String id = p.getId(), id2 = p.getId();
+
+            if(id2.toCharArray()[id2.length()-1] == '1'){
+                id2 = id2.substring(0, id2.length()-1);
+                id2 += '2';
+            }else if(id2.toCharArray()[id2.length()-1] == '2'){
+                id2 = id2.substring(0, id2.length()-1);
+                id2 += '1';
+            }/*else{ todo: finish this: the anti-collision method multiple: with the fake pieces (from pawn morph) and with, for ex: 3 ensigns
+                for(Pezzo piece : snapshot.getAllPieces()){
+                    if(piece != null && piece.getType().equals(p.getType()) && piece.getColor().equals(p.getColor()) && piece.canIGoHere(p.getPosition(), snapshot)){
+                        //if one piece (and one only for now) can collide with the other one
+                        id2 = id2.substring(0, id2.length()-1);
+                        id2 += piece.getId().toCharArray()[piece.getId().length()-1];
+                    }
+                }
+            }*/
+
+            p1 = snapshot.getPieceByIdAndColor(id, p.getColor());
+            p2 = snapshot.getPieceByIdAndColor(id2, p.getColor());
+            if(p2 != null && p2.canIGoHere(p.getPosition(), snapshot)){//if the other same piece can go to the position of p
+                char modifier;//contains the char of the row or column to identify which piece correctly
+                if(p1.getPosition().x == p2.getPosition().x){//on the same column
+                    modifier = Integer.toString(p1.getPosition().y).toCharArray()[0];
+                }else if(p1.getPosition().y == p2.getPosition().y){ //on the same row
+                    modifier = (char)(p1.getPosition().x+96);
+                }else{ //on different row and column
+                    modifier = (char)(p1.getPosition().x+96);
+                }
+                //modifier defined, let's create the move notation
+                log = i.createMove(Character.toString(modifier));
+            }else{//if isn't there the notation "collision" problem
+                log = i.createMove("");
+            }
+        }else{//----------PEDONE----------
+            Pezzo p1 = snapshot.getPieceByIdAndColor(p.getId(), p.getColor());
+            char modifier = (char)(p1.getPosition().x+96);
+            log = i.createMove(Character.toString(modifier));
         }
+        lastMove = log;
     }
 
     /**
@@ -83,5 +144,28 @@ public class GameLogger {
                 break;
         }
         return ret;
+    }
+
+    //GameLogger Listener Manager Segment Below
+
+
+    @Override
+    public void turnPassed(String turn) {/*ignored*/}
+
+    @Override
+    public void arrocco(King k, String type) {/*ignored*/}
+
+    @Override
+    public void logMove()  {/*ignored*/}
+
+    @Override
+    public void onMove(Pezzo p) {/*ignored*/}
+
+    @Override
+    public void onMove(String type)  {/*ignored*/}
+
+    @Override
+    public void onMorph(String newType) {
+        lastMove += '=' + fromPieceToFirstLetter(newType);
     }
 }
