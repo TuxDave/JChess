@@ -4,6 +4,9 @@ import com.tuxdave.JChess.core.listener.GameListener;
 import com.tuxdave.JChess.core.pieces.*;
 import com.tuxdave.JChess.extras.Vector2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameLogger implements GameListener{
     public String history;
     public String lastMove;
@@ -25,6 +28,7 @@ public class GameLogger implements GameListener{
      */
     private interface makeLastMoveInterface{
         String createMove(String mod);
+        String createModifierFrom2Pieces(Pezzo p1, Pezzo p2);
     }
     /**
      * create and set the lastMove if is a simply move (not captures ecc)
@@ -58,46 +62,71 @@ public class GameLogger implements GameListener{
                 }
                 return log;
             }
+
+            @Override
+            public String createModifierFrom2Pieces(Pezzo p1, Pezzo p2) {
+                String m;
+                if (p1.getPosition().x == p2.getPosition().x) {//on the same column
+                    m = Integer.toString(p1.getPosition().y);
+                } else if (p1.getPosition().y == p2.getPosition().y) { //on the same row
+                    m = Character.toString(((char) (p1.getPosition().x + 96)));
+                } else { //on different row and column
+                    m = Character.toString((char) (p1.getPosition().x + 96));
+                }
+                return m;
+            }
         };
 
         String log;
         if(!(p instanceof Pedone)){ //----------TOWER and HORSE and ENSIGN and QUEEN----------
             //are there two pieces that can go to the same destination?
-            Pezzo p1, p2;
-            String id = p.getId(), id2 = p.getId();
+            Pezzo[] ps = snapshot.getAllPieces();
 
-            if(id2.toCharArray()[id2.length()-1] == '1'){
-                id2 = id2.substring(0, id2.length()-1);
-                id2 += '2';
-            }else if(id2.toCharArray()[id2.length()-1] == '2'){
-                id2 = id2.substring(0, id2.length()-1);
-                id2 += '1';
-            }/*else{ todo: finish this: the anti-collision method multiple: with the fake pieces (from pawn morph) and with, for ex: 3 ensigns
-                for(Pezzo piece : snapshot.getAllPieces()){
-                    if(piece != null && piece.getType().equals(p.getType()) && piece.getColor().equals(p.getColor()) && piece.canIGoHere(p.getPosition(), snapshot)){
-                        //if one piece (and one only for now) can collide with the other one
-                        id2 = id2.substring(0, id2.length()-1);
-                        id2 += piece.getId().toCharArray()[piece.getId().length()-1];
+            Pezzo p1 = null, p2 = null, p3 = null;
+            String id = p.getId();
+            List<String> ids = new ArrayList<String>();
+
+            for(Pezzo piece : ps){
+                if(piece != null && piece.getId() != p.getId() && piece.getType().equals(p.getType()) && piece.getColor().equals(p.getColor()) && piece.canIGoHere(p.getPosition(), snapshot)){
+                    //if piece isn't p, is a his friend and can go to him
+                    ids.add(piece.getId());
+                }
+            }
+
+            String modifier = "";   //if ids.size() == 0
+            switch(ids.size()) {
+                case 1:{
+                    //creating modifier
+                    p1 = snapshot.getPieceByIdAndColor(id, p.getColor());
+                    p2 = snapshot.getPieceByIdAndColor(ids.get(0), p.getColor());
+                    modifier = i.createModifierFrom2Pieces(p1,p2);
+                    /*
+                     * 1 = the two pieces are on the same row
+                     * 2 = the two pieces are on the same colum
+                     * 3 = the three pieces are on the s
+                     * */
+                }
+                break;
+                case 2:{
+                    p1 = snapshot.getPieceByIdAndColor(id, p.getColor());
+                    p2 = snapshot.getPieceByIdAndColor(ids.get(0), p.getColor());
+                    p3 = snapshot.getPieceByIdAndColor(ids.get(1), p.getColor());
+                    //if((p1.getPosition().x == p2.getPosition().x || p1.getPosition().y == p2.getPosition().y) && (p1.getPosition().x == p3.getPosition().x || p1.getPosition().y == p3.getPosition().y))
+                    boolean p2Alligned = p1.getPosition().x == p2.getPosition().x || p1.getPosition().y == p2.getPosition().y;
+                    boolean p3Alligned = p1.getPosition().x == p3.getPosition().x || p1.getPosition().y == p3.getPosition().y;
+                    if(p2Alligned && p3Alligned){
+                        modifier = fromCoordsToString(p1.getPosition());
+                    }else if(p2Alligned){
+                        modifier = i.createModifierFrom2Pieces(p1, p2);
+                    }else if(p3Alligned){
+                        modifier = i.createModifierFrom2Pieces(p1, p3);
+                    }else{
+                        modifier = Character.toString((char) (p1.getPosition().x + 96));
                     }
                 }
-            }*/
-
-            p1 = snapshot.getPieceByIdAndColor(id, p.getColor());
-            p2 = snapshot.getPieceByIdAndColor(id2, p.getColor());
-            if(p2 != null && p2.canIGoHere(p.getPosition(), snapshot)){//if the other same piece can go to the position of p
-                char modifier;//contains the char of the row or column to identify which piece correctly
-                if(p1.getPosition().x == p2.getPosition().x){//on the same column
-                    modifier = Integer.toString(p1.getPosition().y).toCharArray()[0];
-                }else if(p1.getPosition().y == p2.getPosition().y){ //on the same row
-                    modifier = (char)(p1.getPosition().x+96);
-                }else{ //on different row and column
-                    modifier = (char)(p1.getPosition().x+96);
-                }
-                //modifier defined, let's create the move notation
-                log = i.createMove(Character.toString(modifier));
-            }else{//if isn't there the notation "collision" problem
-                log = i.createMove("");
             }
+                //modifier defined, let's create the move notation
+            log = i.createMove(modifier);
         }else{//----------PEDONE----------
             Pezzo p1 = snapshot.getPieceByIdAndColor(p.getId(), p.getColor());
             char modifier = (char)(p1.getPosition().x+96);
