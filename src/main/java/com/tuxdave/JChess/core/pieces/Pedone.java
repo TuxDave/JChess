@@ -117,9 +117,6 @@ public class Pedone extends Pezzo implements GameListener {
     public void arrocco(King k, String type) {/*ignored*/}
 
     @Override
-    public void logMove() {/*ignored*/}
-
-    @Override
     public void onMove(Pezzo p){/*ignored*/}
 
     @Override

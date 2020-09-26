@@ -294,9 +294,6 @@ public class GraphicalBoard extends JComponent {
         }
 
         @Override
-        public void logMove() {/*ignored*/}
-
-        @Override
         public void onMove(Pezzo p) {/*ignored*/}
 
         @Override

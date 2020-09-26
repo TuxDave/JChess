@@ -135,7 +135,6 @@ public class RouteChecker{
                             for(Pezzo piece : pieces){
                                 if( (!(piece instanceof King)) && piece != null && (piece.canIGoHere(dest, board) || piece.canIGoHere(street, board))){
                                     canDo = false;
-                                    //todo prevent the StackOverflowError
                                 }
                             }
 
@@ -148,7 +147,7 @@ public class RouteChecker{
                         n = 1;
                     }
                 }
-            }//todo: calcolare il sistema di attacco per il re con tutti i vari listener per decidere tra le altre cose se sia possibile eseguire l'arrocco
+            }
         }else{//da qui è OK
             selectedCells = new Vector2[]{};
         }

@@ -9,7 +9,9 @@ import java.util.List;
 
 public class GameLogger implements GameListener{
     public String history;
-    public String lastMove;
+    private String lastMove;
+    private String possibleArrocco;
+    private boolean arroccoDone = false;
 
     public GameLogger(){
         history = "";
@@ -19,8 +21,24 @@ public class GameLogger implements GameListener{
      * add to the history the last move made
      */
     public void confirmLastMove(){
+        if(arroccoDone){
+            arroccoDone = false;
+            lastMove = possibleArrocco;
+        }
         history += lastMove + " ";
         System.out.println("history: " + history);
+    }
+
+    /**
+     * @param type the arrocco type
+     */
+    public void createArroccoSignature(String type){
+        if(type.equals("short")){
+            possibleArrocco = "0-0";
+        }else{
+            possibleArrocco = "0-0-0";
+        }
+        arroccoDone = true;
     }
 
     /**
@@ -39,8 +57,7 @@ public class GameLogger implements GameListener{
      */
     public void makeLastMove(final Pezzo p, final GameBoard snapshot, final int n, final boolean isCheck){
 
-        makeLastMoveInterface i = new makeLastMoveInterface() {
-
+        makeLastMoveInterface i1 = new makeLastMoveInterface() {
             /**
              * create the log string
              * @param mod the modifier (when there are collisions) "" if there isn't
@@ -82,7 +99,7 @@ public class GameLogger implements GameListener{
             //are there two pieces that can go to the same destination?
             Pezzo[] ps = snapshot.getAllPieces();
 
-            Pezzo p1 = null, p2 = null, p3 = null;
+            Pezzo p1 = null, p2 = null, p3 = null, p4 = null;
             String id = p.getId();
             List<String> ids = new ArrayList<String>();
 
@@ -93,18 +110,16 @@ public class GameLogger implements GameListener{
                 }
             }
 
-            String modifier = "";   //if ids.size() == 0
+            String modifier;   //if ids.size() == 0
             switch(ids.size()) {
+                case 0:
+                    modifier = "";
+                    break;
                 case 1:{
                     //creating modifier
                     p1 = snapshot.getPieceByIdAndColor(id, p.getColor());
                     p2 = snapshot.getPieceByIdAndColor(ids.get(0), p.getColor());
-                    modifier = i.createModifierFrom2Pieces(p1,p2);
-                    /*
-                     * 1 = the two pieces are on the same row
-                     * 2 = the two pieces are on the same colum
-                     * 3 = the three pieces are on the s
-                     * */
+                    modifier = i1.createModifierFrom2Pieces(p1,p2);
                 }
                 break;
                 case 2:{
@@ -117,20 +132,53 @@ public class GameLogger implements GameListener{
                     if(p2Alligned && p3Alligned){
                         modifier = fromCoordsToString(p1.getPosition());
                     }else if(p2Alligned){
-                        modifier = i.createModifierFrom2Pieces(p1, p2);
+                        modifier = i1.createModifierFrom2Pieces(p1, p2);
                     }else if(p3Alligned){
-                        modifier = i.createModifierFrom2Pieces(p1, p3);
+                        modifier = i1.createModifierFrom2Pieces(p1, p3);
                     }else{
                         modifier = Character.toString((char) (p1.getPosition().x + 96));
                     }
                 }
+                break;
+                case 3:
+                default:{
+                    Pezzo[] pezzi = new Pezzo[ids.size()+1];
+                    pezzi[0] = snapshot.getPieceByIdAndColor(id, p.getColor());
+                    //now the modifier is null
+                    boolean orizontalAlligned = false, verticalAlligned = false;
+                    //let's make true if needed
+                    for(int i = 1; i < ids.size()+1; i++){//from second to fourth element
+
+                        pezzi[i] = snapshot.getPieceByIdAndColor(ids.get(i-1), p.getColor());//assign all pieces
+
+                        if(pezzi[0].getPosition().x == pezzi[i].getPosition().x){
+                            orizontalAlligned = true;
+                        }
+                        if(pezzi[0].getPosition().y == pezzi[i].getPosition().y){
+                            verticalAlligned = true;
+                        }
+                    }
+
+                    //now intersecate the result
+                    //if a boolean is true, the opposite dimension must be present, if all two are true, both the dimension have to be present
+                    if(orizontalAlligned && verticalAlligned){
+                        modifier = fromCoordsToString(pezzi[0].getPosition());
+                    }else if(orizontalAlligned){
+                        modifier = Integer.toString(pezzi[0].getPosition().y);
+                    }else if(verticalAlligned){
+                        modifier = Character.toString((char) (pezzi[0].getPosition().x + 96));
+                    }else{
+                        modifier = "";
+                    }
+                }
+                break;
             }
                 //modifier defined, let's create the move notation
-            log = i.createMove(modifier);
+            log = i1.createMove(modifier);
         }else{//----------PEDONE----------
             Pezzo p1 = snapshot.getPieceByIdAndColor(p.getId(), p.getColor());
             char modifier = (char)(p1.getPosition().x+96);
-            log = i.createMove(Character.toString(modifier));
+            log = i1.createMove(Character.toString(modifier));
         }
         lastMove = log;
     }
@@ -185,13 +233,10 @@ public class GameLogger implements GameListener{
     public void arrocco(King k, String type) {/*ignored*/}
 
     @Override
-    public void logMove()  {/*ignored*/}
-
-    @Override
     public void onMove(Pezzo p) {/*ignored*/}
 
     @Override
-    public void onMove(String type)  {/*ignored*/}
+    public void onMove(String type){/*ignored*/}
 
     @Override
     public void onMorph(String newType) {

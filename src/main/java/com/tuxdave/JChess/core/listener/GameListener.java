@@ -19,12 +19,6 @@ public interface GameListener {
     public void arrocco(King k, String type);
 
     /**
-     * called after every finished move
-     * todo: add parameters
-     */
-    public void logMove();
-
-    /**
      * called when a piece moves
      * @param p the piece moved
      */
@@ -32,7 +26,7 @@ public interface GameListener {
 
     /**
      * called when play arrocco
-     * @param p white/black lowerCase
+     * @param type long/short lowerCase
      */
     public void onMove(String type);
 

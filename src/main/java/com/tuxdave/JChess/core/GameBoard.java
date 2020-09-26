@@ -312,11 +312,6 @@ public class GameBoard implements GameListener {
     }
 
     @Override
-    public void logMove() {
-        //todo: add here the implementation
-    }
-
-    @Override
     public void onMorph(String newType) {/*ignored*/}
 
     /**
@@ -335,7 +330,7 @@ public class GameBoard implements GameListener {
      */
     @Override
     public void onMove(String type) {
-        //todo: add here implementation
+        logger.createArroccoSignature(type);
     }
 
     /**
