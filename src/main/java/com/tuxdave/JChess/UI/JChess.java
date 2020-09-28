@@ -9,7 +9,7 @@ import java.awt.*;
 public class JChess extends JFrame {
     private JPanel panel1;
     private JLabel label1;
-    private GraphicalBoard graphicalBoard1;
+    private GBoard gBoard1;
 
     //START AUTO-GENERATED CODE
 
@@ -30,8 +30,8 @@ public class JChess extends JFrame {
     private void $$$setupUI$$$() {
         panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
-        graphicalBoard1 = new GraphicalBoard();
-        panel1.add(graphicalBoard1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        gBoard1 = new GBoard();
+        panel1.add(gBoard1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         label1 = new JLabel();
         Font label1Font = this.$$$getFont$$$("Ubuntu Mono", Font.BOLD, 66, label1.getFont());
         if (label1Font != null) label1.setFont(label1Font);

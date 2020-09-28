@@ -16,7 +16,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-public class GraphicalBoard extends JComponent {
+public class GBoard extends JComponent {
 
     private Vector2[] selectedCells = {};
     private Vector2 hoveredCell = null;
@@ -34,7 +34,7 @@ public class GraphicalBoard extends JComponent {
         setMaximumSize(getPreferredSize());
         setMinimumSize(getPreferredSize());
     }
-    public GraphicalBoard() {
+    public GBoard() {
         super();
         //costructing some objs
         board = new GameBoard();

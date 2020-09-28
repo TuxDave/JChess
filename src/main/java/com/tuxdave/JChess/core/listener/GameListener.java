@@ -1,6 +1,5 @@
 package com.tuxdave.JChess.core.listener;
 
-import com.tuxdave.JChess.core.GameBoard;
 import com.tuxdave.JChess.core.pieces.King;
 import com.tuxdave.JChess.core.pieces.Pezzo;
 

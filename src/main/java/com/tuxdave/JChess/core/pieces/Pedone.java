@@ -1,7 +1,6 @@
 package com.tuxdave.JChess.core.pieces;
 
 import com.tuxdave.JChess.core.GameBoard;
-import com.tuxdave.JChess.core.GameLogger;
 import com.tuxdave.JChess.core.listener.GameListener;
 import com.tuxdave.JChess.extras.Vector2;
 

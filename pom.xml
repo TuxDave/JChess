@@ -30,10 +30,11 @@
             <version>7.0.3</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>com.googlecode.efficient-java-matrix-library</groupId>
-            <artifactId>ejml</artifactId>
-            <version>0.25</version>
+        <dependency><!--Importing JTuxObjects-->
+            <groupId>com.TuxDave</groupId>
+            <artifactId>JTuxObjects</artifactId>
+            <version>4.1.4</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
