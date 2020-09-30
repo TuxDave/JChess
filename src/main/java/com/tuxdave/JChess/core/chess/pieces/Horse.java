@@ -1,4 +1,4 @@
-package com.tuxdave.JChess.core.pieces;
+package com.tuxdave.JChess.core.chess.pieces;
 
 import com.tuxdave.JChess.extras.Vector2;
 

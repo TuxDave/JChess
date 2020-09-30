@@ -1,8 +1,8 @@
-package com.tuxdave.JChess.core.pieces;
+package com.tuxdave.JChess.core.chess.pieces;
 
-import com.tuxdave.JChess.core.AttackSystem;
-import com.tuxdave.JChess.core.GameBoard;
-import com.tuxdave.JChess.core.RouteChecker;
+import com.tuxdave.JChess.core.chess.AttackSystem;
+import com.tuxdave.JChess.core.chess.GameBoard;
+import com.tuxdave.JChess.core.chess.RouteChecker;
 import com.tuxdave.JChess.extras.Drawable;
 import com.tuxdave.JChess.extras.Vector2;
 

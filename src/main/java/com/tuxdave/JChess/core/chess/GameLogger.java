@@ -1,9 +1,9 @@
-package com.tuxdave.JChess.core;
+package com.tuxdave.JChess.core.chess;
 
-import com.tuxdave.JChess.core.listener.GameListener;
-import com.tuxdave.JChess.core.pieces.King;
-import com.tuxdave.JChess.core.pieces.Pedone;
-import com.tuxdave.JChess.core.pieces.Pezzo;
+import com.tuxdave.JChess.core.chess.listener.GameListener;
+import com.tuxdave.JChess.core.chess.pieces.King;
+import com.tuxdave.JChess.core.chess.pieces.Pedone;
+import com.tuxdave.JChess.core.chess.pieces.Pezzo;
 import com.tuxdave.JChess.extras.Vector2;
 
 import java.util.ArrayList;

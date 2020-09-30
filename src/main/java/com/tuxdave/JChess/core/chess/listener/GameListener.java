@@ -1,7 +1,7 @@
-package com.tuxdave.JChess.core.listener;
+package com.tuxdave.JChess.core.chess.listener;
 
-import com.tuxdave.JChess.core.pieces.King;
-import com.tuxdave.JChess.core.pieces.Pezzo;
+import com.tuxdave.JChess.core.chess.pieces.King;
+import com.tuxdave.JChess.core.chess.pieces.Pezzo;
 
 public interface GameListener {
     /**

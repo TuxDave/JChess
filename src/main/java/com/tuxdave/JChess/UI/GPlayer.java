@@ -6,7 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GPlayer extends JPanel {
-    private JPlaceHolderTextField nickNameTextField;
+    JPlaceHolderTextField nickNameTextField;
+    JButton readyButton;
 
     private final int WIDTH = 200;
     private final int HEIGHT = 200;
@@ -23,17 +24,27 @@ public class GPlayer extends JPanel {
 
     public GPlayer() {
         super();
-        //create components
+
+        //construct components
         nickNameTextField = new JPlaceHolderTextField();
-        nickNameTextField.setBounds(20,HEIGHT-40,WIDTH-40,20);
-        nickNameTextField.setPlaceHolder("NickName...");
-        nickNameTextField.setFont(new Font("ubuntu", Font.BOLD, 16));
-        //add components
+        nickNameTextField.setPlaceHolder("Username...");
+        nickNameTextField.setFont(new Font("Ubuntu", Font.BOLD, 16));
+        nickNameTextField.setBounds(20, HEIGHT-60, WIDTH-40, 20);
+
+        readyButton = new JButton(new ImageIcon(getClass().getResource("/Resources/Icons/spunta.png")));
+        readyButton.setText("Ready!");
+        readyButton.setFont(new Font("Ubuntu", Font.BOLD, 16));
+        readyButton.setBounds(20, HEIGHT-35, WIDTH-40, 20);
+
+        //then add components
         add(nickNameTextField);
-        //todo: finire di creare la UI e poi nell'altro progetto creare il fotoChanger
+        add(readyButton);
+
+        //todo: finire di creare la UI, login and register
+        //todo:nell'altro progetto creare il fotoChanger
     }
 
-    private Image profileImage = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Resources/Avatars/profile0.png"));
+    private Image profileImage = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Resources/Icons/Avatars/profile0.png"));
     private final int PROFILE_BODY = 96;
 
     @Override

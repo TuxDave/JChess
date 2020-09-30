@@ -1,6 +1,6 @@
-package com.tuxdave.JChess.core;
+package com.tuxdave.JChess.core.chess;
 
-import com.tuxdave.JChess.core.pieces.*;
+import com.tuxdave.JChess.core.chess.pieces.*;
 import com.tuxdave.JChess.extras.Vector2;
 
 public class Player{

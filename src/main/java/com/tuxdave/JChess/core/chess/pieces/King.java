@@ -1,7 +1,7 @@
-package com.tuxdave.JChess.core.pieces;
+package com.tuxdave.JChess.core.chess.pieces;
 
-import com.tuxdave.JChess.core.GameBoard;
-import com.tuxdave.JChess.core.listener.GameListener;
+import com.tuxdave.JChess.core.chess.GameBoard;
+import com.tuxdave.JChess.core.chess.listener.GameListener;
 import com.tuxdave.JChess.extras.Vector2;
 
 import java.util.ArrayList;

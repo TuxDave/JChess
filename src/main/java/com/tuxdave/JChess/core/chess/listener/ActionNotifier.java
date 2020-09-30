@@ -1,4 +1,4 @@
-package com.tuxdave.JChess.core.listener;
+package com.tuxdave.JChess.core.chess.listener;
 
 public interface ActionNotifier {
 
