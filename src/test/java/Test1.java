@@ -1,5 +1,4 @@
 import com.tuxdave.JChess.UI.GPlayer;
-import com.tuxdave.JChess.extras.Vector2;
 
 import javax.swing.*;
 

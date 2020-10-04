@@ -1,0 +1,6 @@
+unnamed package
+com.tuxdave.JChess.core.chess
+com.tuxdave.JChess.core.chess.listener
+com.tuxdave.JChess.core.chess.pieces
+com.tuxdave.JChess.extras
+com.tuxdave.JChess.UI

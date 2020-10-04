@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.tuxdave.JChess.core.chess"},{"l":"com.tuxdave.JChess.core.chess.listener"},{"l":"com.tuxdave.JChess.core.chess.pieces"},{"l":"com.tuxdave.JChess.extras"},{"l":"com.tuxdave.JChess.UI"}]
