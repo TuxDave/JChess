@@ -22,7 +22,6 @@ public class GPlayer extends JPanel implements MouseListener, MouseMotionListene
 
     {//setup static properties
         //aspect
-        setBorder(BorderFactory.createLineBorder(Color.blue));
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setMaximumSize(getPreferredSize());
         setMinimumSize(getPreferredSize());
