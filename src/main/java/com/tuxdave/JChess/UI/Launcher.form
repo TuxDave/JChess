@@ -8,13 +8,13 @@
     <properties/>
     <border type="none"/>
     <children>
-      <component id="12f14" class="com.tuxdave.JChess.UI.GPlayer" binding="gPlayer1" custom-create="true">
+      <component id="12f14" class="com.tuxdave.JChess.UI.GPlayerCreator" binding="gPlayerCreator1" custom-create="true">
         <constraints>
           <grid row="0" column="0" row-span="3" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
       </component>
-      <component id="62868" class="com.tuxdave.JChess.UI.GPlayer" binding="gPlayer2" custom-create="true">
+      <component id="62868" class="com.tuxdave.JChess.UI.GPlayerCreator" binding="gPlayerCreator2" custom-create="true">
         <constraints>
           <grid row="0" column="2" row-span="3" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>

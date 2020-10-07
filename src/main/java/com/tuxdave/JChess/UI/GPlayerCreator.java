@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class GPlayer extends JPanel implements MouseListener, MouseMotionListener {
+public class GPlayerCreator extends JPanel implements MouseListener, MouseMotionListener {
     private JPlaceHolderTextField nickNameTextField;
     private JButton readyButton;
 
@@ -30,7 +30,7 @@ public class GPlayer extends JPanel implements MouseListener, MouseMotionListene
         setLayout(null);
     }
 
-    public GPlayer(ReadyListener l) {
+    public GPlayerCreator(ReadyListener l) {
         super();
         //listener
         addMouseListener(this);

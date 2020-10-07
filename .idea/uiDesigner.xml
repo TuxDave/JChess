@@ -125,7 +125,7 @@
       <item class="com.tuxdave.JComponents.JPlaceHolderTextField" icon="/com/intellij/uiDesigner/icons/textField.png" removable="true" auto-create-binding="false" can-attach-label="false">
         <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="0" />
       </item>
-      <item class="com.tuxdave.JChess.UI.GPlayer" icon="/com/intellij/uiDesigner/icons/panel.png" removable="true" auto-create-binding="false" can-attach-label="false">
+      <item class="com.tuxdave.JChess.UI.GPlayerCreator" icon="/com/intellij/uiDesigner/icons/panel.png" removable="true" auto-create-binding="false" can-attach-label="false">
         <default-constraints vsize-policy="7" hsize-policy="7" anchor="0" fill="3" />
       </item>
     </group>
