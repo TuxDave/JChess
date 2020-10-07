@@ -1,24 +1,25 @@
 package com.tuxdave.JChess.UI;
 
-import com.tuxdave.JChess.core.chess.listener.GameListener;
+import com.tuxdave.JChess.UI.listener.ReadyListener;
 import com.tuxdave.JChess.extras.GImagePicker;
 import com.tuxdave.JChess.extras.Vector2;
 import com.tuxdave.JComponents.JPlaceHolderTextField;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.event.*;
 
 public class GPlayer extends JPanel implements MouseListener, MouseMotionListener {
-    JPlaceHolderTextField nickNameTextField;
-    JButton readyButton;
+    private JPlaceHolderTextField nickNameTextField;
+    private JButton readyButton;
+
+    private static int created = 0;
 
     private final int WIDTH = 200;
     private final int HEIGHT = 200;
+    private final ReadyListener listener;
+    private boolean readyState;
+    private int number;
 
     {//setup static properties
         //aspect
@@ -29,11 +30,14 @@ public class GPlayer extends JPanel implements MouseListener, MouseMotionListene
         setLayout(null);
     }
 
-    public GPlayer() {
+    public GPlayer(ReadyListener l) {
         super();
         //listener
         addMouseListener(this);
         addMouseMotionListener(this);
+        listener = l;
+        readyState = false;
+        number = created++;
 
         //construct components
         nickNameTextField = new JPlaceHolderTextField();
@@ -45,10 +49,42 @@ public class GPlayer extends JPanel implements MouseListener, MouseMotionListene
         readyButton.setText("Ready!");
         readyButton.setFont(new Font("Ubuntu", Font.BOLD, 16));
         readyButton.setBounds(20, HEIGHT-35, WIDTH-40, 20);
+        readyButton.setEnabled(false);
 
         //then add components
         add(nickNameTextField);
         add(readyButton);
+        //add the function to readyButton
+        readyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                readyState = !readyState;
+                if(readyState){
+                    readyButton.setText("Unready!");
+                    nickNameTextField.setEnabled(false);
+                }else{
+                    readyButton.setText("Ready!");
+                    nickNameTextField.setEnabled(true);
+                }
+                listener.onReady(number, nickNameTextField.getText(), profileImgName, readyState);
+            }
+        });
+        nickNameTextField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent keyEvent){/*ingored*/}
+
+            @Override
+            public void keyPressed(KeyEvent keyEvent){/*ingored*/}
+
+            @Override
+            public void keyReleased(KeyEvent keyEvent){
+                if(nickNameTextField.getText().equals("") || nickNameTextField.getText().contains(" ")){
+                    readyButton.setEnabled(false);
+                }else{
+                    readyButton.setEnabled(true);
+                }
+            }
+        });
     }
 
     private Image profileImage = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Resources/Icons/Avatars/profile0.png"));
@@ -64,6 +100,7 @@ public class GPlayer extends JPanel implements MouseListener, MouseMotionListene
 
     //LISTENER MANAGEMENT
 
+    private String profileImgName = "profile0.png";
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
         Vector2 coords = new Vector2(mouseEvent.getX(), mouseEvent.getY());
@@ -73,6 +110,7 @@ public class GPlayer extends JPanel implements MouseListener, MouseMotionListene
             dialog1.pack();
             if(dialog1.getImgName() != null){
                 profileImage = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Resources/Icons/Avatars/" + dialog1.getImgName()));
+                profileImgName = dialog1.getImgName();
                 repaint();
             }
         }
@@ -89,7 +127,7 @@ public class GPlayer extends JPanel implements MouseListener, MouseMotionListene
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {/*ignored*/}
 
-    private boolean alreadyPainted = false;
+    private boolean allreadyPainted = false;
 
     /**
      * paints a canvas along the profile image to say to the user that he can change it.
@@ -100,8 +138,8 @@ public class GPlayer extends JPanel implements MouseListener, MouseMotionListene
         Vector2 coords = new Vector2(mouseEvent.getX(), mouseEvent.getY());
         if(coords.isBetweenLimits((HEIGHT-PROFILE_BODY)/2, 20, (HEIGHT-PROFILE_BODY)/2+PROFILE_BODY, 20+PROFILE_BODY)){
             getGraphics().drawImage(canvas, (WIDTH-CANVAS_BODY)/2, 8, this);
-            alreadyPainted = true;
-        }else if(alreadyPainted){
+            allreadyPainted = true;
+        }else if(allreadyPainted){
             repaint();
         }
     }

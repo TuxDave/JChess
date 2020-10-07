@@ -1,4 +1,3 @@
-import com.tuxdave.JChess.UI.GPlayer;
 import com.tuxdave.JChess.UI.Launcher;
 
 import javax.swing.*;
