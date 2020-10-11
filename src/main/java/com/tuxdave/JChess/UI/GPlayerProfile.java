@@ -6,6 +6,9 @@ import com.intellij.uiDesigner.core.Spacer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.font.TextAttribute;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GPlayerProfile extends JPanel {
     private JPanel panel1;
@@ -35,14 +38,20 @@ public class GPlayerProfile extends JPanel {
         imageLabel.setText("");
         panel1.add(imageLabel, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, 1, 1, null, null, null, 0, false));
         nameLabel = new JLabel();
+        Font nameLabelFont = this.$$$getFont$$$("Ubuntu", Font.BOLD, -1, nameLabel.getFont());
+        if (nameLabelFont != null) nameLabel.setFont(nameLabelFont);
+        nameLabel.setForeground(new Color(-15192645));
         nameLabel.setText("Label");
         panel1.add(nameLabel, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JLabel label1 = new JLabel();
+        Font label1Font = this.$$$getFont$$$("Ubuntu", -1, -1, label1.getFont());
+        if (label1Font != null) label1.setFont(label1Font);
         label1.setText("Eaten pieces:");
         panel1.add(label1, new GridConstraints(2, 2, 1, 2, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, 1, 1, null, null, null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
         panel1.add(scrollPane1, new GridConstraints(3, 2, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         textArea1 = new JTextArea();
+        textArea1.setEditable(false);
         scrollPane1.setViewportView(textArea1);
         final Spacer spacer1 = new Spacer();
         panel1.add(spacer1, new GridConstraints(0, 1, 1, 4, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, 1, GridConstraints.SIZEPOLICY_FIXED, new Dimension(-1, 10), new Dimension(-1, 10), new Dimension(-1, 10), 0, false));
@@ -57,11 +66,30 @@ public class GPlayerProfile extends JPanel {
     /**
      * @noinspection ALL
      */
+    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
+        if (currentFont == null) return null;
+        String resultName;
+        if (fontName == null) {
+            resultName = currentFont.getName();
+        } else {
+            Font testFont = new Font(fontName, Font.PLAIN, 10);
+            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
+                resultName = fontName;
+            } else {
+                resultName = currentFont.getName();
+            }
+        }
+        return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
+    }
+
+    /**
+     * @noinspection ALL
+     */
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
 
-    private final int WIDTH = 200;
+    private final int WIDTH = 220;
     private final int HEIGHT = 512;
 
     public GPlayerProfile(String _nick, String _imageName) {
@@ -78,5 +106,11 @@ public class GPlayerProfile extends JPanel {
 
         imageLabel.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Resources/Icons/Avatars/" + _imageName))));
         nameLabel.setText(_nick);
+        {
+            Map<TextAttribute, Object> attributes = new HashMap<>(nameLabel.getFont().getAttributes());
+            attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+            nameLabel.setFont(nameLabel.getFont().deriveFont(attributes));
+            //todo: instance my new html class (using beautifulsoup4) that manages the stats
+        }
     }
 }

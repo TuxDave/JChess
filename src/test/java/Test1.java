@@ -6,7 +6,7 @@ import javax.swing.*;
 public class Test1 {
     public static void main(String[] args) {
         JFrame f = new JFrame();
-        f.add(new GPlayerProfile("TuxDave","profile1.png"));
+        f.add(new GPlayerProfile("SurrealPower","profile1.png"));
         f.pack();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setResizable(false);
