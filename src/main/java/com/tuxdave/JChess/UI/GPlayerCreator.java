@@ -101,6 +101,10 @@ public class GPlayerCreator extends JPanel implements MouseListener, MouseMotion
     //LISTENER MANAGEMENT
 
     private String profileImgName = "profile0.png";
+    public String getProfileImgName(){
+        return profileImgName;
+    }
+
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
         Vector2 coords = new Vector2(mouseEvent.getX(), mouseEvent.getY());

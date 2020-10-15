@@ -55,7 +55,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.tuxdave.JChess.UI.JChess</mainClass>
+                            <mainClass>com.tuxdave.JChess.UI.Launcher</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
