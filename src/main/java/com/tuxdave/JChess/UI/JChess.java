@@ -2,6 +2,7 @@ package com.tuxdave.JChess.UI;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +12,8 @@ public class JChess extends JPanel {
     private GBoard gBoard1;
     private GPlayerProfile gPlayerProfile1;
     private GPlayerProfile gPlayerProfile2;
-    private JMenuBar menuBar;
+    private JMenu gameMenu;
+    private JMenuItem exportItem;
 
     //START AUTO-GENERATED CODE
 
@@ -30,9 +32,18 @@ public class JChess extends JPanel {
         panel1.add(gBoard1, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel1.add(gPlayerProfile2.$$$getRootComponent$$$(), new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTHEAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel1.add(gPlayerProfile1.$$$getRootComponent$$$(), new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        menuBar = new JMenuBar();
-        menuBar.setBorderPainted(true);
-        panel1.add(menuBar, new GridConstraints(0, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JMenuBar menuBar1 = new JMenuBar();
+        menuBar1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel1.add(menuBar1, new GridConstraints(0, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        gameMenu = new JMenu();
+        gameMenu.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        gameMenu.setText("Game");
+        menuBar1.add(gameMenu, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        exportItem = new JMenuItem();
+        exportItem.setText("Export Moves");
+        gameMenu.add(exportItem);
+        final Spacer spacer1 = new Spacer();
+        menuBar1.add(spacer1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
     }
 
     /**
@@ -53,7 +64,11 @@ public class JChess extends JPanel {
         $$$setupUI$$$();
 
         //configure ui
+        gBoard1.getBoardsGameLogger().addMoveInformed(gPlayerProfile2);
+        gBoard1.getBoardsGameLogger().addMoveInformed(gPlayerProfile1);//todo: why null pointer exception
         add(panel1);
+
+        //todo: add the exportItem's listener to export the history and save it somewhere
     }
 
     private final GPlayerProfile gpp1, gpp2;

@@ -4,6 +4,7 @@ import com.tuxdave.JChess.core.chess.listener.GameListener;
 import com.tuxdave.JChess.core.chess.pieces.King;
 import com.tuxdave.JChess.core.chess.pieces.Pedone;
 import com.tuxdave.JChess.core.chess.pieces.Pezzo;
+import com.tuxdave.JChess.extras.MoveInformed;
 import com.tuxdave.JChess.extras.Vector2;
 
 import java.util.ArrayList;
@@ -15,8 +16,12 @@ public class GameLogger implements GameListener{
     private String possibleArrocco;
     private boolean arroccoDone = false;
 
+    private ArrayList<MoveInformed> moveInformed = null;
+    private static int numberInformed = 0;
+
     public GameLogger(){
         history = "";
+        moveInformed = new ArrayList<MoveInformed>();
     }
 
     /**
@@ -28,7 +33,13 @@ public class GameLogger implements GameListener{
             lastMove = possibleArrocco;
         }
         history += lastMove + " ";
-        System.out.println("history: " + history);
+
+        moveInformed.get(numberInformed++).addMove(lastMove);
+        if(numberInformed > moveInformed.size()-1){
+            numberInformed %= moveInformed.size();
+        }
+
+        //System.out.println("history: " + history);
     }
 
     /**
@@ -223,6 +234,16 @@ public class GameLogger implements GameListener{
                 break;
         }
         return ret;
+    }
+
+    public void addMoveInformed(MoveInformed m){
+        if(m != null){
+            moveInformed.add(m);
+        }
+    }
+
+    public String getHistory(){
+        return history;
     }
 
     //GameLogger Listener Manager Segment Below

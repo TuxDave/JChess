@@ -126,7 +126,7 @@ public abstract class Launcher extends JPanel implements ReadyListener {
         Launcher launcher = new Launcher() {
             @Override
             public void clickButton() {
-                GPlayerProfile g1, g2;
+                GPlayerProfile g1 = null, g2 = null;
                 g2 = new GPlayerProfile(players[0].nick, gPlayerCreator1.getProfileImgName());
                 g1 = new GPlayerProfile(players[1].nick, gPlayerCreator2.getProfileImgName());
                 JChess game = new JChess(g1, g2);

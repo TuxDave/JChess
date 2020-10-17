@@ -1,6 +1,7 @@
 package com.tuxdave.JChess.UI;
 
 import com.tuxdave.JChess.core.chess.GameBoard;
+import com.tuxdave.JChess.core.chess.GameLogger;
 import com.tuxdave.JChess.core.chess.RouteChecker;
 import com.tuxdave.JChess.core.chess.listener.ActionNotifier;
 import com.tuxdave.JChess.core.chess.listener.GameListener;
@@ -179,6 +180,14 @@ public class GBoard extends JComponent {
      */
     private int convertCoordsFromReal(int _y){
         return getPreferredSize().height - _y;
+    }
+
+    /**
+     * get the logger of board
+     * @return
+     */
+    public GameLogger getBoardsGameLogger(){
+        return board.logger;
     }
 
     //i preferred creating a dedicated class that implements the methods because is clearer
