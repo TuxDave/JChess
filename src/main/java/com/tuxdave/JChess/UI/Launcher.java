@@ -7,8 +7,11 @@ import com.tuxdave.JChess.UI.listener.ReadyListener;
 import com.tuxdave.JChess.core.chess.Player;
 
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class Launcher extends JPanel implements ReadyListener {
@@ -47,9 +50,7 @@ public abstract class Launcher extends JPanel implements ReadyListener {
         panel1.add(spacer3, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_FIXED, new Dimension(-1, 40), new Dimension(-1, 40), new Dimension(-1, 40), 0, false));
     }
 
-    /**
-     * @noinspection ALL
-     */
+    /** @noinspection ALL */
     private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
         if (currentFont == null) return null;
         String resultName;
@@ -63,12 +64,13 @@ public abstract class Launcher extends JPanel implements ReadyListener {
                 resultName = currentFont.getName();
             }
         }
-        return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
+        Font font = new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
+        boolean isMac = System.getProperty("os.name", "").toLowerCase(Locale.ENGLISH).startsWith("mac");
+        Font fontWithFallback = isMac ? new Font(font.getFamily(), font.getStyle(), font.getSize()) : new StyleContext().getFont(font.getFamily(), font.getStyle(), font.getSize());
+        return fontWithFallback instanceof FontUIResource ? fontWithFallback : new FontUIResource(fontWithFallback);
     }
 
-    /**
-     * @noinspection ALL
-     */
+    /** @noinspection ALL */
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
@@ -100,19 +102,6 @@ public abstract class Launcher extends JPanel implements ReadyListener {
         startButton.setBorderPainted(false);
         startButton.addActionListener(actionEvent -> {
             clickButton();
-            /*GPlayerProfile g1, g2;
-            g2 = new GPlayerProfile(players[0].nick, gPlayerCreator1.getProfileImgName());
-            g1 = new GPlayerProfile(players[1].nick, gPlayerCreator2.getProfileImgName());
-            JChess game = new JChess(g1, g2);
-
-            //setup new windows todo: chiedere come cambiare il contenuto di un jframe
-            setContentPane(game);
-            d.set(new Dimension(game.getWidth(), game.getHeight()));
-            setMaximumSize(d.get());
-            setMinimumSize(d.get());
-            setPreferredSize(d.get());
-            setBounds(0, 0, d.get().width, d.get().height);
-            repaint();*/
         });
     }
 
@@ -181,10 +170,10 @@ public abstract class Launcher extends JPanel implements ReadyListener {
     /**
      * called on readyButton pressed
      *
-     * @param _pNumber   0 or 1
-     * @param _nick      the nickname of the player
+     * @param _pNumber 0 or 1
+     * @param _nick the nickname of the player
      * @param _imagePath the complete path of profile image
-     * @param _state     ready or not
+     * @param _state ready or not
      * @return nothing
      */
     @Override

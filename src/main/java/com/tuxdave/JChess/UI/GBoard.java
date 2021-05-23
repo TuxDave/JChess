@@ -21,7 +21,7 @@ public class GBoard extends JComponent {
 
     private Vector2[] selectedCells = {};
     private Vector2 hoveredCell = null;
-    protected GameBoard board;
+    private GameBoard board;
     private static final int CELL_SIZE = 64;
     private GraphicalBoardListener listener;
     private String turn = "WHITE";

@@ -5,9 +5,12 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * make you able to pick an image from a list
@@ -84,9 +87,9 @@ public class GImagePicker extends JDialog {
     /**
      * construct the object, setting the path and the generic image name al quale il following a number from 0 to x
      *
-     * @param _path        the path containing all images
+     * @param _path the path containing all images
      * @param _genericName the name of the base image (es: profile, the program will search profile0.png, 1,2,3 ecc
-     * @param _extension   the extension of the model of image
+     * @param _extension the extension of the model of image
      */
     public GImagePicker(String _path, String _genericName, String _extension) {
         $$$setupUI$$$();
@@ -202,9 +205,7 @@ public class GImagePicker extends JDialog {
         contentPane.add(l1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
-    /**
-     * @noinspection ALL
-     */
+    /** @noinspection ALL */
     private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
         if (currentFont == null) return null;
         String resultName;
@@ -218,12 +219,13 @@ public class GImagePicker extends JDialog {
                 resultName = currentFont.getName();
             }
         }
-        return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
+        Font font = new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
+        boolean isMac = System.getProperty("os.name", "").toLowerCase(Locale.ENGLISH).startsWith("mac");
+        Font fontWithFallback = isMac ? new Font(font.getFamily(), font.getStyle(), font.getSize()) : new StyleContext().getFont(font.getFamily(), font.getStyle(), font.getSize());
+        return fontWithFallback instanceof FontUIResource ? fontWithFallback : new FontUIResource(fontWithFallback);
     }
 
-    /**
-     * @noinspection ALL
-     */
+    /** @noinspection ALL */
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }

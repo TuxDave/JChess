@@ -3,15 +3,14 @@ package com.tuxdave.JChess.UI;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.tuxdave.JChess.extras.MoveInformed;
-import org.jsoup.nodes.Element;
 
 import javax.swing.*;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.html.StyleSheet;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class GPlayerProfile extends JPanel implements MoveInformed {
@@ -57,9 +56,7 @@ public class GPlayerProfile extends JPanel implements MoveInformed {
         panel1.add(label1, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
-    /**
-     * @noinspection ALL
-     */
+    /** @noinspection ALL */
     private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
         if (currentFont == null) return null;
         String resultName;
@@ -73,12 +70,13 @@ public class GPlayerProfile extends JPanel implements MoveInformed {
                 resultName = currentFont.getName();
             }
         }
-        return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
+        Font font = new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
+        boolean isMac = System.getProperty("os.name", "").toLowerCase(Locale.ENGLISH).startsWith("mac");
+        Font fontWithFallback = isMac ? new Font(font.getFamily(), font.getStyle(), font.getSize()) : new StyleContext().getFont(font.getFamily(), font.getStyle(), font.getSize());
+        return fontWithFallback instanceof FontUIResource ? fontWithFallback : new FontUIResource(fontWithFallback);
     }
 
-    /**
-     * @noinspection ALL
-     */
+    /** @noinspection ALL */
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
@@ -89,7 +87,7 @@ public class GPlayerProfile extends JPanel implements MoveInformed {
     /**
      * construct the visual profile
      *
-     * @param _nick      name in game
+     * @param _nick name in game
      * @param _imageName the name of img without the entiere path (es: profile1.png)
      */
     public GPlayerProfile(String _nick, String _imageName) {

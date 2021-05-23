@@ -6,6 +6,11 @@ import com.intellij.uiDesigner.core.Spacer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class JChess extends JPanel {
     private JPanel panel1;
@@ -14,6 +19,8 @@ public class JChess extends JPanel {
     private GPlayerProfile gPlayerProfile2;
     private JMenu gameMenu;
     private JMenuItem exportItem;
+
+    private boolean checkMate = false;
 
     //START AUTO-GENERATED CODE
 
@@ -46,9 +53,7 @@ public class JChess extends JPanel {
         menuBar1.add(spacer1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
     }
 
-    /**
-     * @noinspection ALL
-     */
+    /** @noinspection ALL */
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
@@ -65,10 +70,44 @@ public class JChess extends JPanel {
 
         //configure ui
         gBoard1.getBoardsGameLogger().addMoveInformed(gPlayerProfile2);
-        gBoard1.getBoardsGameLogger().addMoveInformed(gPlayerProfile1);//todo: why null pointer exception
+        gBoard1.getBoardsGameLogger().addMoveInformed(gPlayerProfile1);
         add(panel1);
 
-        //todo: add the exportItem's listener to export the history and save it somewhere
+        //exportItem Implementation
+        JChess self = this;
+        exportItem.addActionListener(new ActionListener() {
+            /**
+             * ask the user where to save the game log, warning him if the game isn't finished yet
+             * @param actionEvent - nothing
+             */
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                String history = gBoard1.getBoardsGameLogger().history;
+                {
+                    //todo:modificare la notation prima della release
+                }
+
+                if (!checkMate) {
+                    JOptionPane.showMessageDialog(self, "The actually chess notation is incomplete because the game isn't finished yet!");
+                }
+                {//choose where to save the file.txt
+                    JFileChooser fileChooser = new JFileChooser();
+                    fileChooser.setDialogTitle("Specify a file where to save the notation...");
+                    int selection = fileChooser.showSaveDialog(self);
+                    if (selection == JFileChooser.CANCEL_OPTION || selection == JFileChooser.ERROR_OPTION) {//if the user aborted the save
+                        return;//stop the function
+                    } else {
+                        try {
+                            FileWriter writer = new FileWriter(fileChooser.getSelectedFile().getAbsolutePath());
+                            writer.write(history);
+                            writer.close();
+                        } catch (IOException e) {
+                            JOptionPane.showMessageDialog(self, "An error occured while saving the file, please try again by following the procedure correctly!", "Errore!", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private final GPlayerProfile gpp1, gpp2;
